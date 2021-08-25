@@ -1,4 +1,4 @@
-# Nintendo DS
+# nds-docs-ja
 
 Nintendo DSについて、技術的な詳細を日本語でまとめたものです。
 
