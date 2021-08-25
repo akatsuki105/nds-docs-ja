@@ -25,7 +25,7 @@ Nintendo DSについて、技術的な詳細を日本語でまとめたもので
 
 NDSは2つの2Dビデオエンジンを備えていて、両方とも基本的にGBAのものと同じです。
 
-詳細は、[画面描画](https://github.com/pokemium/gba-docs-ja#グラフィック)を参照してください。
+詳細は、[GBAのグラフィックについての解説](https://github.com/pokemium/gba-docs-ja#グラフィック)を参照してください。
 
 **NDS Specific 2D Video Features**
 
@@ -45,3 +45,8 @@ Display Power Control（およびDisplay Swap）、VRAMのアロケーション�
 - [電源制御](./system/power_control.md)
 - [電源管理装置](./system/power_management_device.md)
 - [メモリ制御 - VRAM](./memctl/vram.md)
+
+## 参考記事
+
+- [GBATEK](https://problemkaputt.de/gbatek.htm)
+
