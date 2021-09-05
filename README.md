@@ -13,6 +13,13 @@ Nintendo DSについて、技術的な詳細を日本語でまとめたもので
 - [IOレジスタ](io.md)
 - [メモリアクセス時間](memory_timings.md)
 
+### CPU
+
+- [ARM7](https://github.com/pokemium/gba-docs-ja/tree/main/arm7tdmi)
+- [ARM9](arm9.md)
+- [CP15](./cp15/cp15.md)
+  - [ID Codes](./cp15/id_codes.md)
+
 ### メモリ制御
 
 - [CacheとTCM](./memctl/cache_tcm.md)
@@ -45,6 +52,10 @@ Display Power Control（およびDisplay Swap）、VRAMのアロケーション�
 - [電源制御](./system/power_control.md)
 - [電源管理装置](./system/power_management_device.md)
 - [メモリ制御 - VRAM](./memctl/vram.md)
+
+### BIOS
+
+[gba-docs-ja](https://github.com/pokemium/gba-docs-ja) を参照してください
 
 ## 参考記事
 
