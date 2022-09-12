@@ -4,7 +4,7 @@
 
 ## ニンテンドーDS(初代DS)
 
-![nds](images/300px-Nintendo_DS_Trans.png)
+![nds](/images/hw/nds.png)
 
 - コードネーム: NTR
 - 発売日(日本): 2004/12/2
@@ -12,7 +12,7 @@
 
 ## ニンテンドーDS Lite
 
-![ndslite](images/320px-Nintendo-DS-Lite-Black-Open.jpeg)
+![ndslite](/images/hw/lite.jpeg)
 
 - コードネーム: USG
 - 発売日(日本): 2006/3/2
@@ -20,7 +20,7 @@
 
 ## ニンテンドーDSi
 
-![dsi](images/Nintendo-DSi-Bl-Open.png)
+![dsi](/images/hw/dsi.png)
 
 - コードネーム: TWL
 - 発売日(日本): 2008/11/1
@@ -28,7 +28,7 @@
 
 ## ニンテンドーDSi LL
 
-![dsill](images/Nintendo-DSi-XL-Burg.png)
+![dsill](/images/hw/dsill.png)
 
 - コードネーム: UTL
 - 発売日(日本): 2009/11/21
