@@ -1,7 +1,6 @@
 # タッチパネル(TSC)
 
-```
-TSC = Touch Screen Controller
-```
+>**Note**  
+> TSC = Touch Screen Controller
 
 TODO

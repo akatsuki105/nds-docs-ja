@@ -6,7 +6,7 @@
 
 ## TCM
 
-TCM = Tightly Coupled Memory
+TCM = `Tightly Coupled Memory`
 
 メインメモリへのアクセスはバス速度により制限され、CPUのクロックより遅くなります。 
 

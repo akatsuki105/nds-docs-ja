@@ -33,8 +33,8 @@ ARM946E-S: v5TE
 
 - 16 sound channels (16x PCM8/PCM16/IMA-ADPCM, 6x PSG-Wave, 2x PSG-Noise)
 - 2 sound capture units (for echo effects, etc.)
-- Output: Two built-in stereo speakers, and headphones socket
-- Input:  One built-in microphone, and microphone socket
+- 出力: Two built-in stereo speakers, and headphones socket
+- 入力:  One built-in microphone, and microphone socket
 
 ### 操作
 
@@ -47,9 +47,9 @@ Wifi IEEE802.11b
 
 ### その他
 
-- Built-in Real Time Clock
+- 内臓RTC(Real Time Clock)
 - Power Managment Device
-- Hardware divide and square root functions
+- 除算と平方根計算 のハードウェアサポート
 - CP15 System Control Coprocessor (cache, tcm, pu, bist, etc.)
 
 ### 外部メモリ
