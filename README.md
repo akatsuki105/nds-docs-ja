@@ -27,6 +27,10 @@ Nintendo DSについて、技術的な詳細を日本語でまとめたもので
   - [RTC](system/rtc.md)
 - [サウンド](sound/README.md)
 
+### カートリッジ
+
+- [カートリッジヘッダ](cartridge/header.md)
+
 ### CPU
 
 - [ARM7](https://github.com/pokemium/gba-docs-ja/tree/main/arm7tdmi)
