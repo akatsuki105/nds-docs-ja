@@ -14,13 +14,13 @@
   01Eh    1     バージョン (基本的に0)
   01Fh    1     Autostart (Bit2: Skip "Press Button" after Health and Safety. Also skips bootmenu, even in Manual mode & even Start pressed)
   020h    4     ARM9 rom_offset    (4000h and up, align 1000h)
-  024h    4     ARM9 entry_address (2000000h..23BFE00h)
+  024h    4     ARM9 エントリアドレス (2000000h..23BFE00h)
   028h    4     ARM9 ram_address   (2000000h..23BFE00h)
-  02Ch    4     ARM9 size          (max 3BFE00h) (3839.5KB)
+  02Ch    4     ARM9 Binary size   (max 3BFE00h) (3839.5KB)
   030h    4     ARM7 rom_offset    (8000h and up)
-  034h    4     ARM7 entry_address (2000000h..23BFE00h, or 37F8000h..3807E00h)
+  034h    4     ARM7 エントリアドレス (2000000h..23BFE00h, or 37F8000h..3807E00h)
   038h    4     ARM7 ram_address   (2000000h..23BFE00h, or 37F8000h..3807E00h)
-  03Ch    4     ARM7 size          (max 3BFE00h, or FE00h) (3839.5KB, 63.5KB)
+  03Ch    4     ARM7 Binary size   (max 3BFE00h, or FE00h) (3839.5KB, 63.5KB)
   040h    4     File Name Table (FNT) offset
   044h    4     File Name Table (FNT) size
   048h    4     File Allocation Table (FAT) offset

@@ -19,7 +19,7 @@ NDS9から見たメモリマップです。
   07000000h  OAM (2KB) (Engine A, Engine B)
   08000000h  GBA Slot ROM (max 32MB)
   0A000000h  GBA Slot RAM (max 64KB)
-  FFFF0000h  ARM9-BIOS (32KB) (only 3K used)
+  FFFF0000h  ARM9 BIOS (32KB, 使用するのは32KBのうち3KBのみ)
 ```
 
 ARM9のExceptionベクタは`FFFF_0000h`に存在しています。 IRQハンドラは`[DTCM+3FFCh]`にリダイレクトします。 (DTCM=Data TCM)
@@ -29,7 +29,7 @@ ARM9のExceptionベクタは`FFFF_0000h`に存在しています。 IRQハンド
 NDS7から見たメモリマップです。
 
 ```
-  00000000h  ARM7-BIOS (16KB)
+  00000000h  ARM7 BIOS (16KB)
   02000000h  メインメモリ(NDS9と共有) (4MB)
   03000000h  WRAM (32KB, NDS9と共有, CPUから直接アクセス可能)
   03800000h  WRAM (64KB, NDS7専用, CPUから直接アクセス可能)
