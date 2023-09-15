@@ -24,7 +24,7 @@ CLZ{cond} Rd,Rm  ; Rd = Rmの先頭0ビットの数
 
 フラグ: 不変
 
-## QADD, QSUB
+## QADD, QSUB (飽和演算)
 
  bit  |  内容
 ---- | ----
@@ -45,7 +45,7 @@ CLZ{cond} Rd,Rm  ; Rd = Rmの先頭0ビットの数
 0b1000 | QDADD{cond}  Rd,Rm,Rn | Rd=Rm+Rn*2 | D = doubled 
 0b1000 | QDSUB{cond}  Rd,Rm,Rn | Rd=Rm-Rn*2 | D = doubled 
 
-実行時間: 1S+Interlock
+実行時間: 1S+1I
 
 結果は，オーバーフローした場合，符号付き32ビットの範囲に切り詰められ，Qフラグが設定されます。（そうでない場合はQフラグは変更されません）
 
