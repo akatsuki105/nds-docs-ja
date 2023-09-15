@@ -18,6 +18,8 @@
 
 注：8bitデータのアクセスにかかる時間は、16bitデータと同じ時間です。
 
+注: GBAスロットのアクセス時間は`EXMEMCNT`レジスタで設定できます。
+
 ### コードフェッチ
 
 ### NDS7
@@ -39,9 +41,11 @@ VRAM,Palette RAM | 5 | 5 | 2.5 | 2.5 | 16
 GBA ROM (example 10,6 access) | 19 | 19 | 9.5 | 9.5 | 16 
 TCM, キャッシュ | 0.5 | 0.5 | 0.5 | 0.5 | 32 
 
-NDS9のコードフェッチには、キャッシュ、Tcm、メインメモリ以外のすべてのノンシーケンシャルアクセスに3サイクルのペナルティがあります。(=3サイクル余分にかかります)
+NDS9のコードフェッチには、キャッシュ、TCM、メインメモリ以外のすべてのノンシーケンシャルアクセスに3サイクルのペナルティがあります。(=3サイクル余分にかかります)
 
 さらに、NDSはコード領域のシーケンシャルアクセスをサポートしていないため、すべてのコードフェッチは強制的に32bitのノンシーケンシャルアクセスにされます。これはTHUMBコードにも当てはまります。つまり2つの16bitオペコードを1回のノンシーケンシャルな32bitアクセスでフェッチします。
+
+つまり、NDS9のコードフェッチは基本的に `N32 + 3`サイクルかかります。
 
 ### データフェッチ
 
@@ -85,6 +89,8 @@ Cache_Miss (メインメモリ) | 23 | 23 | 23 | -- | 16
 唯一の例外は、キャッシュまたはTCM内のコードアクセスとデータアクセスで、0.5サイクル(NDS9の1クロックサイクル)でアクセスでき66MHzに到達しています。これは、キャッシュがヒットすることを前提としており、キャッシュがミスした場合、キャッシュメモリのタイミングは1.4MHz程度まで下がるかもしれません。
 
 ```
+ARM9 コードフェッチ
+  常に N32 + 3 サイクル
 ARM9 opcode fetches are always N32 + 3 waits.
 - S16 and N16 do not exist (because thumb-double-fetching) (see there).
 - S32 becomes N32 (ie. the ARM9 does NOT support fast sequential timing).
@@ -143,10 +149,6 @@ On the NDS9, all external memory access (and I/O) is delayed to bus clock (or ac
 ## Bus Clock
 
 The exact bus clock is specified as 33.513982 MHz (1FF61FEh Hertz). However, on my own NDS, measured in relation to the RTC seconds IRQ, it appears more like 1FF6231h, that inaccuary of 1 cycle per 657138 cycles (about one second per week) on either oscillator, isn't too significant though.
-
-## GBA Slot
-
-The access time for GBA slot can be configured via EXMEMCNT register.
 
 ## VRAM Waitstates
 
