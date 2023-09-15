@@ -4,21 +4,21 @@
 
 これらはNDS9のためのものです。NDS7はTCMやCache、CP15を持ちません。
 
-## TCM
+## TCM(密結合メモリ)
 
-TCM = `Tightly Coupled Memory`
+TCM = `Tightly Coupled Memory` = `密結合メモリ`
 
-メインメモリへのアクセスはバス速度により制限され、CPUのクロックより遅くなります。 
+バスのクロックがARM9のCPUクロックより遅いため、メインメモリへのアクセスはパフォーマンスに制限がかかります。
 
-TCMはARM9のコアに直接入ってるメモリ(らしい)で、CPUクロックと同じ速度で動作します。
+TCMはARM9のコアに直接入ってるメモリで、CPUクロックと同じ速度(66MHz)で動作します。
 
-キャッシュと違いプログラマが内容をコントロールできるらしいです。命令コード用TCM(ITCM)とデータ用TCM(DTCM)があります。
+キャッシュと違いプログラマが内容をコントロールできるのが特徴で、命令コード用TCM(ITCM)とデータ用TCM(DTCM)があります。
 
-TCM内に完結した状態でCPUが動作している間はバスが空くので、DMAコントローラを同時に動作させることができます。
+CPUがTCMにアクセスしている間はバスが空くので、その間にDMAコントローラを動作させることができます。
 
 ```
-  ITCM 32K, base=00000000h (固定)
-  DTCM 16K, base=moveable  (デフォルトでは base=27C0000h)
+  ITCM 32KB, base=00000000h (固定)
+  DTCM 16KB, base=moveable  (デフォルトでは base=27C0000h)
 ```
 
 ITCMは移動できませんが、NDSのファームウェアではITCMのサイズを32MBに設定しているため、`0x0-0x1FF_FFFF`のITCMミラーが生成されます。
@@ -27,8 +27,8 @@ ITCMは移動できませんが、NDSのファームウェアではITCMのサイ
 
 ## キャッシュ
 
-- Data Cache 4KB, Instruction Cache 8KB
-- 4-way set associative method
+- 4KBのデータキャッシュ と　8KBの命令キャッシュ
+- 4-wayセットアソシアティブ
 - Cache line 8 words (32 bytes)
 - Read-allocate method (ie. writes are not allocating cache lines)
 - Round-robin and Pseudo-random replacement algorithms selectable
@@ -43,7 +43,7 @@ Region Name | Address | Size | Cache | WBuf | Code | Data
 -- | -- | -- | -- | -- | -- | -- 
 Background     | 0x0000_0000 | 4GB   | -  | -  | -   | -
 I/O and VRAM   | 0x0400_0000 | 64MB  | -  | -  | R/W | R/W
-Main Memory    | 0x0200_0000 | 4MB   | On | On | R/W | R/W
+メインメモリ     | 0x0200_0000 | 4MB   | On | On | R/W | R/W
 ARM7-dedicated | 0x027C_0000 | 256KB | -  | -  | -   | -
 GBA Slot       | 0x0800_0000 | 128MB | -  | -  | -   | R/W
 DTCM           | 0x027C_0000 | 16KB  | -  | -  | -   | R/W

@@ -5,8 +5,8 @@
 NDS9から見たメモリマップです。
 
 ```
-  00000000h  Instruction TCM (32KB) (not moveable) (mirror-able to 1000000h)
-  0xxxx000h  Data TCM        (16KB) (moveable)
+  00000000h  ITCM (32KB) (not moveable) (mirror-able to 1000000h)
+  0xxxx000h  DTCM (16KB) (moveable)
   02000000h  メインメモリ(NDS9と共有) (4MB)
   03000000h  WRAM (32KB, NDS7と共有, CPUから直接アクセス可能)
   04000000h  ARM9 I/Oポート
