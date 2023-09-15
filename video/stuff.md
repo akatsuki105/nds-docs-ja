@@ -2,7 +2,7 @@
 
 ## DS Display Dimensions / Timings
 
-Dot clock = 5.585664 MHz (=33.513982 MHz / 6)
+ドットクロック<sup>[1](#dot)</sup> = 5.585664 MHz (=33.513982 MHz / 6)
 
 H-Timing: 256 dots visible, 99 dots blanking, 355 dots total (15.7343KHz)
 V-Timing: 192 lines visible, 71 lines blanking, 263 lines total (59.8261 Hz)
@@ -66,18 +66,17 @@ Also, there's a problem to fit the 256 pixel horizontal screen resolution into 8
 
 However, the window is not displayed if X1=X2=00h; the window width can be max 255 pixels.
 
-## 2D Engines
+## 2Dエンジン
 
-Includes two 2D Engines, called A and B. Both engines are accessed by the ARM9 processor, each using different memory and register addresses:
+NDSは2つの2Dエンジン(エンジンA,B)を持っています。両エンジンはARM9プロセッサによってアクセスでき、それぞれ異なるメモリアドレスとレジスタアドレスを使用します。
 
-```
-  Region______Engine A______________Engine B___________
-  I/O Ports   4000000h              4001000h
-  Palette     5000000h (1K)         5000400h (1K)
-  BG VRAM     6000000h (max 512K)   6200000h (max 128K)
-  OBJ VRAM    6400000h (max 256K)   6600000h (max 128K)
-  OAM         7000000h (1K)         7000400h (1K)
-```
+ 領域  | エンジンA   | エンジンB
+------|--------|--------------
+I/Oポート   | 4000000h    | 4001000h
+パレット   | 5000000h (1KB)   | 5000400h (1KB)
+BG VRAM   | 6000000h (最大512KB) | 6200000h (最大128KB)
+OBJ VRAM  | 6400000h (最大256KB) | 6600000h (最大128KB)
+OAM       | 7000000h (1KB)       | 7000400h (1KB)
 
 Engine A additionally supports 3D and large-screen 256-color Bitmaps, plus main-memory-display and vram-display modes, plus capture unit.
 
@@ -105,3 +104,7 @@ The screens in the DS-Lite seem to allow a wider range of vertical angles.
 The bad news is that the colors of the DS-Lite are (no surprise) not backwards compatible with older NDS and GBA displays. The good news is that Nintendo has finally reached near-CRT-quality (without blurred colors), so one could hope that they won't show up with more displays with other colors in future.
 
 Don't know if there's an official/recommended way to detect DS-Lite displays (?) possible methods would be whatever values in Firmware header, or by functionality of Power Managment device, or (not too LCD-related) by Wifi Chip ID.
+
+## 注釈
+
+<sup id="dot">1: ドット(dot)とは、PPUが1つのピクセルを出力できる最短期間のことです。</sup>

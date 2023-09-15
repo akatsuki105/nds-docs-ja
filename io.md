@@ -1,6 +1,6 @@
 # IOレジスタ
 
-## ARM9 I/O Map
+## ARM9 I/Oマップ
 
 ### ARM9 Display Engine A
 

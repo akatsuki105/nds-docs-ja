@@ -3,7 +3,7 @@
 ## 4000247h - NDS9 - WRAMCNT - 8bit - WRAM Bank Control (R/W)
 ## 4000241h - NDS7 - WRAMSTAT - 8bit - WRAM Bank Status (R)
 
-Nintendoの公式資料によるとこのレジスタの値は変更しない方がよさそうです。
+任天堂の公式資料によるとこのレジスタの値は変更しない方がよさそうです。
 
  bit  |  内容
 ---- | ----
