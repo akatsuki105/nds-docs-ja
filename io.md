@@ -8,7 +8,7 @@
   4000000h  4    2D Engine A - DISPCNT - LCD Control (Read/Write)
   4000004h  2    2D Engine A+B - DISPSTAT - General LCD Status (Read/Write)
   4000006h  2    2D Engine A+B - VCOUNT - Vertical Counter (Read only)
-  4000008h  50h  2D Engine A (same registers as GBA, some changed bits)
+  4000008h  80   2D Engine A (same registers as GBA, some changed bits)
   4000060h  2    DISP3DCNT - 3D Display Control Register (R/W)
   4000064h  4    DISPCAPCNT - Display Capture Control Register (R/W)
   4000068h  4    DISP_MMEM_FIFO - Main Memory Display FIFO (R?/W)

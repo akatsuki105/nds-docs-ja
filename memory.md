@@ -11,14 +11,14 @@ NDS9から見たメモリマップです。
   0300_0000h  WRAM (32KB, NDS7と共有, CPUから直接アクセス可能)
   0400_0000h  ARM9 I/Oポート
   0500_0000h  パレット (2KB, GBAと同じ1KBのパレットが2つ(エンジンA/B))
-  0600_0000h  VRAM - エンジンA, BG  (max 512KB)
-  0620_0000h  VRAM - エンジンB, BG  (max 128KB)
-  0640_0000h  VRAM - エンジンA, OBJ (max 256KB)
-  0660_0000h  VRAM - エンジンB, OBJ (max 128KB)
-  0680_0000h  VRAM - "LCDC"-allocated (max 656KB)
+  0600_0000h  VRAM - エンジンA, BG  (最大 512KB)
+  0620_0000h  VRAM - エンジンB, BG  (最大 128KB)
+  0640_0000h  VRAM - エンジンA, OBJ (最大 256KB)
+  0660_0000h  VRAM - エンジンB, OBJ (最大 128KB)
+  0680_0000h  VRAM - "LCDC"-allocated (最大 656KB)
   0700_0000h  OAM (2KB, GBAと同じ1KBのOAMが2つ(エンジンA/B))
-  0800_0000h  GBA Slot ROM (max 32MB)
-  0A00_0000h  GBA Slot RAM (max 64KB)
+  0800_0000h  GBA Slot ROM (最大 32MB)
+  0A00_0000h  GBA Slot RAM (最大 64KB)
   FFFF_0000h  ARM9 BIOS (32KB, 使用するのは32KBのうち3KBのみ)
 ```
 
@@ -36,9 +36,9 @@ NDS7から見たメモリマップです。
   0400_0000h  ARM7 I/Oポート
   0480_0000h  Wireless Communications Wait State 0 (8KB RAM at 4804000h)
   0480_8000h  Wireless Communications Wait State 1 (I/O Ports at 4808000h)
-  0600_0000h  VRAM allocated as Work RAM to ARM7 (max 256K)
-  0800_0000h  GBA Slot ROM (max 32MB)
-  0A00_0000h  GBA Slot RAM (max 64KB)
+  0600_0000h  VRAM allocated as Work RAM to ARM7 (最大 256KB)
+  0800_0000h  GBA Slot ROM (最大 32MB)
+  0A00_0000h  GBA Slot RAM (最大 64KB)
 ```
 
 ARM7のExceptionベクタは`0000_0000h`に存在しています。IRQハンドラは`[3FFFFFCh](=[380FFFCh])`へとリダイレクトします。
@@ -63,7 +63,7 @@ ARM9/ARM7のバスにはマッピングされていません。
   3D Engine Polygon RAM (52KBx2)
   3D Engine Vertex RAM (72KBx2)
   Firmware (256KB) (built-in serial flash memory)
-  GBA-BIOS (16KB) (not used in NDS mode)
+  GBA-BIOS (16KB) (NDSモードでは不使用)
   NDS Slot ROM (serial 8bit-bus, max 4GB with default protocol)
   NDS Slot FLASH/EEPROM/FRAM (serial 1bit-bus)
 ```
