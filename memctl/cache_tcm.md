@@ -1,8 +1,8 @@
-# Cache と TCM
+# キャッシュ と TCM
 
-キャッシュとTCMはSystem Control Coprocessor(ARM CP15 System Control Coprocessor)によって制御されています。
+キャッシュとTCMはコプロセッサ(CP15)によって制御されています。
 
-これらはNDS9のためのものです。NDS7はTCMやCache、CP15を持ちません。
+これらはNDS9のためのものです。NDS7は TCMやキャッシュ、CP15 を持ちません。
 
 ## TCM(密結合メモリ)
 
@@ -30,14 +30,14 @@ DTCMはCP15の`C9,C1,1`でどこにマッピングするかを設定できます
 ## キャッシュ
 
 - 4KBのデータキャッシュ と　8KBの命令キャッシュ
-- 4-wayセットアソシアティブ
-- Cache line 8 words (32 bytes)
+- 4wayセットアソシアティブ
+- キャッシュラインは1本32バイト
 - Read-allocate method (ie. writes are not allocating cache lines)
 - Round-robin and Pseudo-random replacement algorithms selectable
 - Cache Lockdown, Instruction Prefetch, Data Preload
 - Data write-through and write-back modes selectable
 
-## Protection Unit(PU)
+## 保護ユニット(PU)
 
 デフォルトでは次のように設定されています。
 

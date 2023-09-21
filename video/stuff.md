@@ -4,8 +4,30 @@
 
 ドットクロック<sup>[1](#dot)</sup> = 5.585664 MHz (=33.513982 MHz / 6)
 
-H-Timing: 256 dots visible, 99 dots blanking, 355 dots total (15.7343KHz)
-V-Timing: 192 lines visible, 71 lines blanking, 263 lines total (59.8261 Hz)
+つまり、1ピクセル(=dot)描画するのに6クロックサイクルかかります。
+
+```
+      0                                           256           355
+      ┌────────────────────────────────────────────┬─────────────┐
+      │                                            │             │
+      │                                            │             │
+      │                                            │             │
+      │                                            │             │
+      │                     Visible                │   HBlank    │
+      │                                            │             │
+      │                                            │             │
+      │                                            │             │
+  192 ├────────────────────────────────────────────┴─────────────┤
+      │                                                          │
+      │                        VBlank                            │
+      │                                                          │
+  263 └──────────────────────────────────────────────────────────┘
+```
+
+```
+  H-Timing: 256 dots visible, 99 dots blanking, 355 dots total (15.7343KHz)
+  V-Timing: 192 lines visible, 71 lines blanking, 263 lines total (59.8261 Hz)
+```
 
 The V-Blank cycle for the 3D Engine consists of the 23 lines, 191..213.
 
