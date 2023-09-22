@@ -72,7 +72,7 @@ WRAM,BIOS,I/O,OAM | 4 | 1 | 4 | 1 | 32
 VRAM,Palette RAM | 5 | 2 | 4 | 1 | 16 
 GBA ROM (example 10,6 access) | 19 | 12 | 13 | 6 | 16 
 GBA ROM (example 10 access) | 13 | 10 | 13 | 10 | 8 
-DTCM, キャッシュ | 0.5 | 0.5 | 0.5 | -- | 32 
+TCM, キャッシュ | 0.5 | 0.5 | 0.5 | -- | 32 
 Cache_Miss (BIOS) | 11 | 11 | 11 | -- | 32 
 Cache_Miss (メインメモリ) | 23 | 23 | 23 | -- | 16 
 
