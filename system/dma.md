@@ -2,7 +2,7 @@
 
 DSには、各CPUに4つのDMAチャンネル（計8チャンネル）が搭載されており、GBAとほぼ同様に動作しています。
 
-よって、NDSのDMA転送は、[GBAのDMA転送](https://github.com/pokemium/gba-docs-ja/blob/main/dma.md)を見れば、だいたいは理解できます。
+よって、NDSのDMA転送は、[GBAのDMA転送](https://github.com/akatsuki105/gba-docs-ja/blob/main/dma.md)を見れば、だいたいは理解できます。
 
 ## NDS9のDMA と GBAのDMA の違い
 

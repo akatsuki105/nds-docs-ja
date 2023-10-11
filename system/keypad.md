@@ -1,7 +1,7 @@
 # キー入力
 
 GBAと共通のボタンに関しては、GBA同様、ARM7とARM9にはキーボード入力レジスタがあり、それぞれにキーパッドのIRQ制御レジスタがあります。  
-なので、[GBAのキー入力](https://github.com/pokemium/gba-docs-ja/blob/main/keypad.md)を見れば、だいたいは理解できます。
+なので、[GBAのキー入力](https://github.com/akatsuki105/gba-docs-ja/blob/main/keypad.md)を見れば、だいたいは理解できます。
 
 GBAとDSの違いとしては、
 
