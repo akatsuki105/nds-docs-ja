@@ -1,10 +1,10 @@
-# 拡張パレット
+# [拡張パレット](https://mgba-emu.github.io/gbatek/#dsvideoextendedpalettes)
 
-When allocating extended palettes, the allocated memory is not mapped to the CPU bus, so the CPU can access extended palette only when temporarily de-allocating it.
+拡張パレットを割り当てた場合、割り当てたメモリはCPUバスにマッピングされないため、CPUは一時的に割り当てを解除するときのみ拡張パレットにアクセスできる。
 
-Color 0 of all standard/extended palettes is transparent, color 0 of BG standard palette 0 is used as backdrop. extended palette memory must be allocated to VRAM.
+すべての標準/拡張パレットのカラー0は透明で、BG標準パレット0のカラー0は背景(Backdrop)色として使用されます。拡張パレットのメモリはVRAMに割り当てる必要があります。
 
-BG Extended Palette enabled in DISPCNT Bit 30, when enabled,
+BGの拡張パレットは、DISPCNT.30 で有効化できます。
 
 ```
  standard palette --> 16-color tiles (with 16bit bgmap entries) (text)
@@ -14,12 +14,15 @@ BG Extended Palette enabled in DISPCNT Bit 30, when enabled,
  extended palette --> 256-color tiles (with 16bit bgmap entries)(text,rot/scal)
 ```
 
-Allocated VRAM is split into 4 slots of 8K each (32K used in total), normally BG0..3 are using Slot 0..3, however BG0 and BG1 can be optionally changed to BG0=Slot2, and BG1=Slot3 via BG0CNT and BG1CNT.
+割り当てられたVRAMは 4つの8KBスロット(合計32KB) に分割され、通常はBG0～3がスロット0～3を使用するが、BG0とBG1は任意でBG0CNTとBG1CNTを介して BG0=スロット2、BG1=スロット3 に変更できる。
 
-OBJ Extended Palette enabled in DISPCNT Bit 31, when enabled,
+OBJの拡張パレットは、DISPCNT.31 で有効化できます。
 
-- 16 colors x 16 palettes: standard palette memory (=256 colors)
-- 256 colors x 16 palettes: extended palette memory (=4096 colors)
+```
+ standard palette --> 16 colors x 16 palettes (256色)
+ extended palette --> 256 colors x 16 palettes (4096色)
+```
 
-Extended OBJ palette memory must be allocated to VRAM F, G, or I (which are 16K) of which only the first 8K are used for extended palettes (=1000h 16bit entries).
+OBJの拡張パレットは、VRAMのバンク F、G、I（全部16KB）に割り当てられなければならないが、そのうち最初の8KBだけが拡張パレットに使用される。(RGB555は2バイトなので、4096色で8KB)
+
 
