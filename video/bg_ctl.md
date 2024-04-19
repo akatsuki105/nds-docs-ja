@@ -5,7 +5,7 @@
 ```
   Bit    Engine Expl.
   0-2    A+B    BGモード
-  3      A      BG0 2D/3D Selection (instead CGB Mode) (0=2D, 1=3D)
+  3      A      BG0を2D/3Dエンジンのどちらが描画するか (0=2D, 1=3D)
   4      A+B    Tile OBJ Mapping        (0=2D; max 32KB, 1=1D; max 32KB..256KB)
   5      A+B    Bitmap OBJ 2D-Dimension (0=128x512 dots, 1=256x256 dots)
   6      A+B    Bitmap OBJ Mapping      (0=2D; max 128KB, 1=1D; max 128KB..256KB)

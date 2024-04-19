@@ -35,7 +35,7 @@ Screen size 62.5mm x 47.0mm (each) (256x192 pixels)
 
 Vertical space between screens 22mm (equivalent to 90 pixels)
 
-## 400006Ch - NDS9 - MASTER_BRIGHT - 16bit - Master Brightness Up/Down
+## 0x0400_006C - NDS9 - MASTER_BRIGHT - 16bit - Master Brightness Up/Down
 
 画面の明るさを決めるレジスタ
 
