@@ -1,24 +1,25 @@
 # BGモード と BG制御
 
-## 4000000h - NDS9 - DISPCNT
+## 0x0400_0000 - NDS9 - DISPCNT (R/W)
 
- bit  |  内容
----- | ----
-0-2   | A+B | BGモード
-3     | A   | BG0 2D/3D Selection (instead CGB Mode) (0=2D, 1=3D)
-4     | A+B | Tile OBJ Mapping        (0=2D; max 32KB, 1=1D; max 32KB..256KB)
-5     | A+B | Bitmap OBJ 2D-Dimension (0=128x512 dots, 1=256x256 dots)
-6     | A+B | Bitmap OBJ Mapping      (0=2D; max 128KB, 1=1D; max 128KB..256KB)
-7-15  | A+B | Same as GBA
-16-17 | A+B | Display Mode (Engine A: 0..3, Engine B: 0..1, GBA: Green Swap)
-18-19 | A   | VRAM block (0..3=VRAM A..D) (For Capture & above Display Mode=2)
-20-21 | A+B | Tile OBJ 1D-Boundary   (see Bit4)
-22    | A   | Bitmap OBJ 1D-Boundary (see Bit5-6)
-23    | A+B | OBJ Processing during H-Blank (was located in Bit5 on GBA)
-24-26 | A   | Character Base (in 64K steps) (merged with 16K step in BGxCNT)
-27-29 | A   | Screen Base (in 64K steps) (merged with 2K step in BGxCNT)
-30    | A+B | BG Extended Palettes   (0=Disable, 1=Enable)
-31    | A+B | OBJ Extended Palettes  (0=Disable, 1=Enable)
+```
+  Bit    Engine Expl.
+  0-2    A+B    BGモード
+  3      A      BG0 2D/3D Selection (instead CGB Mode) (0=2D, 1=3D)
+  4      A+B    Tile OBJ Mapping        (0=2D; max 32KB, 1=1D; max 32KB..256KB)
+  5      A+B    Bitmap OBJ 2D-Dimension (0=128x512 dots, 1=256x256 dots)
+  6      A+B    Bitmap OBJ Mapping      (0=2D; max 128KB, 1=1D; max 128KB..256KB)
+  7-15   A+B    Same as GBA
+  16-17  A+B    Display Mode (Engine A: 0..3, Engine B: 0..1, GBA: Green Swap)
+  18-19  A      VRAM block (0..3=VRAM A..D) (For Capture & above Display Mode=2)
+  20-21  A+B    Tile OBJ 1D-Boundary   (see Bit4)
+  22     A      Bitmap OBJ 1D-Boundary (see Bit5-6)
+  23     A+B    OBJ Processing during H-Blank (was located in Bit5 on GBA)
+  24-26  A      Character Base (in 64K steps) (merged with 16K step in BGxCNT)
+  27-29  A      Screen Base (in 64K steps) (merged with 2K step in BGxCNT)
+  30     A+B    BG Extended Palettes   (0=Disable, 1=Enable)
+  31     A+B    OBJ Extended Palettes  (0=Disable, 1=Enable)
+```
 
 ## BGモード
 
