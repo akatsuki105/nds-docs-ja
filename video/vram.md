@@ -1,12 +1,15 @@
 # VRAM
 
+DSには合計656KBのVRAMがあります。
+
 ## 4000240h - NDS7 - VRAMSTAT - 8bit - VRAM Bank Status (R)
 
- bit  |  内容
----- | ---- 
-0   | VRAM C enabled and allocated to NDS7  (0=No, 1=Yes)
-1   | VRAM D enabled and allocated to NDS7  (0=No, 1=Yes)
-2-7 | 不使用 (常に0)
+```
+  Bit   Expl.
+  0     VRAM C enabled and allocated to NDS7  (0=No, 1=Yes)
+  1     VRAM D enabled and allocated to NDS7  (0=No, 1=Yes)
+  2-7   不使用(0)
+```
 
 The register indicates if VRAM C/D are allocated to NDS7 (as Work RAM), ie. if VRAMCNT_C/D are enabled (Bit7=1), with MST=2 (Bit0-2). 
 
@@ -22,12 +25,13 @@ However, it does not reflect the OFS value.
 ## 4000248h - NDS9 - VRAMCNT_H - 8bit - VRAM-H (32K) Bank Control (W)
 ## 4000249h - NDS9 - VRAMCNT_I - 8bit - VRAM-I (16K) Bank Control (W)
 
- bit  |  内容
----- | ---- 
-0-2 | VRAM MST (VRAM-A,B,H,IではBit2は無視)
-3-4 | VRAM Offset (0-3, VRAM-E,H,IではOffsetは使用しない)
-5-6 | 不使用
-7 | VRAM有効化フラグ (0=無効, 1=有効)
+```
+  Bit   Expl.
+  0-2   VRAM MST (VRAM-A,B,H,IではBit2は無視)
+  3-4   VRAM Offset (0-3, VRAM-E,H,IではOffsetは使用しない)
+  5-6   不使用
+  7     VRAM有効化フラグ (0=無効, 1=有効)
+```
 
 There is a total of 656KB of VRAM in Blocks A-I.
 
