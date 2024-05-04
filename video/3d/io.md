@@ -7,7 +7,7 @@
   4000060h 2   DISP3DCNT       3D Display Control Register (R/W)
   4000320h 1   RDLINES_COUNT   Rendered Line Count Register (R)
   4000330h 10h EDGE_COLOR      Edge Colors 0..7 (W)
-  4000340h 1   ALPHA_TEST_REF  Alpha-Test Comparision Value (W)
+  4000340h 1   ALPHA_TEST_REF  アルファテスト閾値 (W)
   4000350h 4   CLEAR_COLOR     Clear Color Attribute Register (W)
   4000354h 2   CLEAR_DEPTH     Clear Depth Register (W)
   4000356h 2   CLRIMAGE_OFFSET Rear-plane Bitmap Scroll Offsets (W)
