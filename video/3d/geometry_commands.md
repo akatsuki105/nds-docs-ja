@@ -1,6 +1,6 @@
 # ジオメトリコマンド
 
-## ジオメトリコマンド (can be invoked by Port Address, or by Command ID)
+## ジオメトリコマンド
 
 Table shows Port Address, Command ID, Number of Parameters, and Clock Cycles.
 
@@ -75,7 +75,7 @@ The FIFO has 256 entries, additionally, there is a PIPE with four entries (givin
 
 Each PIPE/FIFO entry consists of 40bits of data (8bit command code, plus 32bit parameter value). Commands without parameters occupy 1 entry, and Commands with N parameters occupy N entries.
 
-## Sending Commands by Ports 4000440h..40005FFh
+## ジオメトリコマンド送信レジスタ 4000440h..40005FFh
 
 GXFIFO に書き込んでコマンドを送信する代わりに、4000440h以降のポートを使ってコマンドを送信することもできます。
 
@@ -95,7 +95,7 @@ Larger pre-calculated data blocks can be sent directly to the FIFO. This is usua
 
 ## GXFIFO Access via STR,STRD,STM
 
-If desired, STR,STRD,STM opcodes can be used to write to the FIFO.
+必要であれば、STR,STRD,STM オペコードを使用して FIFO に書き込むことができる。
 
 Opcodes that write more than one 32bit value (ie. STRD and STM) can be used to send ONE UNPACKED command, plus any parameters which belong to that command. After that, there must be a 1 cycle delay before sending the next command (ie. one cannot sent more than one command at once with a single opcode, each command must be invoked by a new opcode). STRD and STM can be used because the GXFIFO register is mirrored to 4000400h..43Fh (16 words).
 

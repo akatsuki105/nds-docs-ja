@@ -1,6 +1,6 @@
 # ステータス
 
-## 0x0400_0600 - GXSTAT - Geometry Engine Status Register (R and R/W)
+## 0x0400_0600 - GXSTAT - ジオメトリエンジンステータスレジスタ (R and R/W)
 
 Bit 30-31 are R/W. Writing “1” to Bit15 does reset the Error Flag (Bit15), and additionally resets the Projection Stack Pointer (Bit13), and probably (?) also the Texture Stack Pointer. All other GXSTAT bits are read-only.
 
@@ -16,7 +16,7 @@ Bit 30-31 are R/W. Writing “1” to Bit15 does reset the Error Flag (Bit15), a
  (24)   Command FIFO Full (MSB of above)  (0=No, 1=Yes; Full)
   25    Command FIFO Less Than Half Full  (0=No, 1=Yes; Less than Half-full)
   26    Command FIFO Empty                (0=No, 1=Yes; Empty)
-  27    Geometry Engine Busy (0=No, 1=Yes; Busy; Commands are executing)
+  27    Busy状態か(コマンド実行中か, 1=Busy)
   28-29 不使用
   30-31 Command FIFO IRQ (0=Never, 1=Less than half full, 2=Empty, 3=Reserved)
 ```
@@ -32,7 +32,7 @@ When GXFIFO IRQ is enabled (setting 1 or 2), the IRQ flag (IF.Bit21) is set whil
   29-31  不使用
 ```
 
-SwapBuffersコマンドが送信された場合、カウンタは次のVBlankの（33.51MHzクロックで）10サイクル後にリセットされます。
+SwapBuffersコマンドが送信された場合、カウンタは次のVBlankの10サイクル後にリセットされます。(サイクルは33.51MHzクロック)
 
 ## 0x0400_0320 - RDLINES_COUNT - Rendered Line Count Register (R)
 
@@ -45,4 +45,4 @@ Rendering starts in scanline 214, the rendered lines are stored in a buffer that
 
 If rendering becomes slower than the display output, then the number of buffered lines decreases. Smaller values in RDLINES indicate that additional load to the rendering engine may cause buffer underflows in further frames, if so, the program should reduce the number of polygons to avoid display glitches.
 
-Even if RDLINES becomes zero, it doesn’t indicate whether actual buffer underflows have occured or not (underflows are indicated in DISP3DCNT Bit12).
+Even if RDLINES becomes zero, it doesn’t indicate whether actual buffer underflows have occured or not (underflows are indicated in DISP3DCNT.12).

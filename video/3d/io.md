@@ -17,8 +17,8 @@
   4000380h 40h TOON_TABLE      Toon Table, 32 colors (W)
 
   Geometry Engine (per Polygon/Vertex settings)
-  4000400h 40h GXFIFO          Geometry Command FIFO (W)
-  4000440h ... ...             Geometry Command Ports (see below)
+  4000400h 40h GXFIFO          ジオメトリコマンドFIFO (W)
+  4000440h ... ...             ジオメトリコマンド送信レジスタ (W)
   4000600h 4   GXSTAT          Geometry Engine Status Register (R and R/W)
   4000604h 4   RAM_COUNT       Polygon List & Vertex RAM Count Register (R)
   4000610h 2   DISP_1DOT_DEPTH 1-Dot Polygon Display Boundary Depth (W)
