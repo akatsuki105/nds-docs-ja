@@ -9,8 +9,8 @@
   4      A+B    Tile OBJ Mapping        (0=2D; max 32KB, 1=1D; max 32KB..256KB)
   5      A+B    Bitmap OBJ 2D-Dimension (0=128x512 dots, 1=256x256 dots)
   6      A+B    Bitmap OBJ Mapping      (0=2D; max 128KB, 1=1D; max 128KB..256KB)
-  7-15   A+B    Same as GBA
-  16-17  A+B    Display Mode (Engine A: 0..3, Engine B: 0..1, GBA: Green Swap)
+  7-15   A+B    GBAのDISPCNTと同じ
+  16-17  A+B    描画モード (Engine A: 0..3, Engine B: 0..1, GBA: Green Swap)
   18-19  A      VRAM block (0..3=VRAM A..D) (For Capture & above Display Mode=2)
   20-21  A+B    Tile OBJ 1D-Boundary   (see Bit4)
   22     A      Bitmap OBJ 1D-Boundary (see Bit5-6)
@@ -50,14 +50,14 @@ Affine = formerly Rot/Scal mode (with 8bit BG Map entries)
 
 Large Screen Bitmap = rot/scal 256 color bitmap (using all 512K of 2D VRAM)
 
-## Display Mode (DISPCNT.16-17):
+## 描画モード (DISPCNT.16-17):
 
  bit  |  内容
 ---- | ----
-0 | Display off (screen becomes white)
-1 | Graphics Display (normal BG and OBJ layers)
-2 | Engine A only: VRAM Display (Bitmap from block selected in DISPCNT.18-19)
-3 | Engine A only: Main Memory Display (Bitmap DMA transfer from Main RAM)
+0 | 描画しない (画面は真っ白になる)
+1 | 通常モード (normal BG and OBJ layers)
+2 | VRAMを使ったbitmap描画 (エンジンAだけこのモードを利用可能、VRAMのどのバンクを使うかは DISPCNT.18-19 で指定)
+3 | メインRAMを使ったbitmap描画 (エンジンAだけこのモードを利用可能)
 
 Mode 2-3 display a raw direct color bitmap (15bit RGB values, the upper bit in each halfword is unused), without any further BG,OBJ,3D layers, these modes are completely bypassing the 2D/3D engines as well as any 2D effects, however the Master Brightness effect can be applied to these modes. 
 
