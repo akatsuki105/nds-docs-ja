@@ -1,18 +1,23 @@
 # BIOS
 
-## 4000308h - NDS7 - BIOSPROT - Bios-data-read-protection address
+## 0x0400_0308 - NDS7 - BIOSPROT - BIOS読み取り保護アドレス
 
 `BIOSPROT`レジスタはNDS7のBIOS領域の最初の数KBを`double-protect`する際にその制御を行うレジスタです。
 
 BIOSの保護領域は2つに分けられます。1つは常にアクティブで、もう1つは`BIOSPROT`レジスタによって制御されます。
 
-まとめると、BIOSのみがBIOS領域からの読み取りが可能で、他がBIOS領域からデータを読み出すと`0xff`となります。
+まとめると、BIOS(を実行中のCPU)のみがBIOS領域からの読み取りが可能で、他がBIOS領域からデータを読み出すと`0xFF`となります。
 
  Opcodes at... | Can read from | Expl.
+ -- | -- | --
  0..\[BIOSPROT\]-1   | 0..3FFFh            | Double-protected (when BIOSPROT is set)
  \[BIOSPROT\]..3FFFh | \[BIOSPROT\]..3FFFh | Normal-protected (常にアクティブ)
 
-The initial BIOSPROT setting on power-up is zero (disabled). Before starting the cartridge, the BIOS boot code sets the register to 1204h (actually 1205h, but the mis-aligned low-bit is ignored). Once when initialized, further writes to the register are ignored.
+電源オン時は、`BIOSPROT=0(disabled)`です。
+
+カートリッジの起動前に、BIOSのブートコードはこのレジスタを`0x1204`で初期化します。(実際は`0x1205`を書き込んでいますが、2バイトでアラインメントされるため最下位ビットは無視されます)
+
+初期化後は、このレジスタへの書き込みは無視されます。
 
 The double-protected region contains the exception vectors, some bytes of code, and the cartridge KEY1 encryption seed (about 4KBytes). As far as I know, it is impossible to unlock the memory once when it is locked, however, with some trickery, it is possible execute code before it gets locked. Also, the two THUMB opcodes at 05ECh can be used to read all memory at 0..3FFFh,
 
@@ -25,4 +30,4 @@ The double-protected region contains the exception vectors, some bytes of code, 
 
 ## 注意
 
-NDS9のBIOSには、ソフトウェアやハードウェアによる読み取り保護機能はありません。
+`BIOSPROT`が保護するのはNDS7のBIOSで、NDS9のBIOSには、ソフトウェアやハードウェアによる読み取り保護機能はありません。
