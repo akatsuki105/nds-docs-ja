@@ -65,7 +65,7 @@ Mode 2 is particulary useful to display captured 2D/3D images (in that case it c
 
 ## BGxCNT
 
-character base extended from bit2-3 to bit2-5 (bit4-5 formerly unused)
+タイルデータのベースアドレス指定は、GBAのときの Bit2-3 から Bit2-5 に拡張されました。(Bit4-5 はGBAでは使っていなかった)
 
 ```
   engine A screen base: BGxCNT.bits*2K + DISPCNT.bits*64K
@@ -74,8 +74,8 @@ character base extended from bit2-3 to bit2-5 (bit4-5 formerly unused)
   engine B char base: BGxCNT.bits*16K + 0
 ```
 
-- char base is used only in tile/map modes (not bitmap modes)
-- screen base is used in tile/map modes,
+- タイルベースはタイルモードでのみ使用します(ビットマップモードでは使用しない)
+- マップベースも同様にタイルモードでのみ使用します
 - screen base used in bitmap modes as BGxCNT.bits\*16K, without DISPCNT.bits\*64K
 - screen base however NOT used at all for Large screen bitmap mode
 
@@ -86,7 +86,7 @@ bgcnt size | text | rotscal | bitmap | large bmp
 2 | 256x512 | 512x512   | 512x256 | -
 3 | 512x512 | 1024x1024 | 512x512 | -
 
-bitmaps that require more than 128K VRAM are supported on engine A only.
+128KBより大きなVRAMを必要とするビットマップはエンジンAのみでサポートされます。
 
 For BGxCNT.Bit7 and BGxCNT.Bit2 in Extended Affine modes, see above BG Mode description (extended affine doesn't include 16-color modes, so color depth bit can be used for mode selection. Also, bitmap modes do not use charbase, so charbase.0 can be used for mode selection as well).
 
