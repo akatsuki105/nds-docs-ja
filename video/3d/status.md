@@ -36,7 +36,7 @@ SwapBuffersコマンドが送信された場合、カウンタは次のVBlankの
 
 ## 0x0400_0320 - RDLINES_COUNT - Rendered Line Count Register (R)
 
-Rendering starts in scanline 214, the rendered lines are stored in a buffer that can hold up to 48 scanlines. The actual screen output begins after scanline 262, the lines are then read from the buffer and sent to the display. Simultaneously, the rendering engine keeps writing new lines to the buffer (ideally at the same speed than display output, so the buffer would always contain 48 pre-calculated lines).
+レンダリングはスキャンライン214から始まり、レンダリングされたラインは最大48スキャンラインを保持できるバッファに格納されます。実際の画面出力はスキャンライン262以降に開始され、ラインはバッファから読み出されてディスプレイに送られます。 Simultaneously, the rendering engine keeps writing new lines to the buffer (ideally at the same speed than display output, so the buffer would always contain 48 pre-calculated lines).
 
 ```
   0-5    Minimum Number (minus 2) of buffered lines in previous frame (0..46)

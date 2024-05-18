@@ -6,7 +6,7 @@
   0     テクスチャマッピング      (0=Disable, 1=Enable)
   1     PolygonAttr Shading  (0=Toon Shading, 1=Highlight Shading)
   2     アルファテスト有効化    (0=Disable, 1=Enable) (see ALPHA_TEST_REF)
-  3     Alpha-Blending       (0=Disable, 1=Enable) (see various Alpha values)
+  3     アルファブレンド       (0=Disable, 1=Enable) (see various Alpha values)
   4     Anti-Aliasing        (0=Disable, 1=Enable)
   5     Edge-Marking         (0=Disable, 1=Enable) (see EDGE_COLOR)
   6     Fog Color/Alpha Mode (0=Alpha and Color, 1=Only Alpha) (see FOG_COLOR)
@@ -14,7 +14,7 @@
   8-11  Fog Depth Shift      (FOG_STEP=400h shr FOG_SHIFT) (see FOG_OFFSET)
   12    Color Buffer RDLINES Underflow (0=None, 1=Underflow/Acknowledge)
   13    Polygon/Vertex RAM Overflow    (0=None, 1=Overflow/Acknowledge)
-  14    Rear-Plane Mode                (0=Blank, 1=Bitmap)
+  14    リアプレーンモード       (0=Blank, 1=Bitmap)
   15-31 不使用
 ```
 
