@@ -46,7 +46,9 @@ SwapBuffers does lock-up the 3D hardware if an incomplete polygon list has been 
 
 座標`(0, 0)`は左下です。2Dの場合(左上)とは異なります。
 
-The 3D view-volume (size as defined by the Projection Matrix) is automatically scaled to match into the Viewport area. Although polygon vertices are clipped to the view-volume, some vertices may still exceed to X2,Y1 (lower-right) boundary by one pixel, due to some sort of rounding errors. The Viewport settings don’t affect the size or position of the 3D Rear-Plane. Viewport should not be issued within Begin/End.
+ビューボリューム(大きさは投影行列で定義)は、ビューポート領域に合わせて自動的にスケーリングされます。ポリゴンの頂点はビューボリュームにクリップされますが、いくつかの頂点は丸め誤差のためにX2,Y1(右上)境界を1ピクセル超える場合があります。ビューポート設定は3Dリアプレーンのサイズや位置に影響しません。
+
+`VIEWPORT`コマンドは`BEGIN_VTXS/END_VTXS`内で発行してはいけません。
 
 ## 4000610h - DISP_1DOT_DEPTH - 1-Dot Polygon Display Boundary Depth (W)
 
