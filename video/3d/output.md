@@ -16,7 +16,7 @@ BG0CNTの他のすべてのビットは3Dに影響しません。(例えば、3D
 
 ## 特殊効果
 
-Special Effects Registers (4000050h..54h) can be used as such:
+特殊効果に関するレジスタ(`4000050h..54h`)は次のように使用できます:
 
 ```
   Brightness up/down with BG0 as 1st Target via EVY   (as for 2D)
