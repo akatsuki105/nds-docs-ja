@@ -5,7 +5,7 @@
 The view order is as such:
 
 ```
-  --> 2D Layers --> 3D Polygons --> 3D Rear-plane --> 2D Layers --> 2D Backdrop
+  --> 2D Layers --> 3D Polygons --> 3Dリアプレーン --> 2D Layers --> 2D Backdrop
 ```
 
 The rear-plane can be disabled (by making it transparent; alpha=0), so that the 2D layers become visible as background.

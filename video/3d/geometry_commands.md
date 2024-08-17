@@ -2,7 +2,7 @@
 
 ## ジオメトリコマンド
 
-Table shows Port Address, Command ID, Number of Parameters, and Clock Cycles.
+テーブルは、ポートアドレス、コマンドID、パラメータ数、クロックサイクルを表しています。
 
 ```
   Address  Cmd Pa.Cy.
@@ -46,9 +46,11 @@ Table shows Port Address, Command ID, Number of Parameters, and Clock Cycles.
   40005C8h 72h 1  5   VEC_TEST - Set Directional Vector for Test (W)
 ```
 
-All cycle timings are counted in 33.51MHz units. NORMAL commands takes 9..12 cycles, depending on the number of enabled lights in PolyAttr (Huh, 9..12 (four timings) cycles for 0..4 (five settings) lights?) Total execution time of SwapBuffers is Duration until VBlank, plus 392 cycles.
+サイクルタイミングはすべて33.51MHz単位でカウントされます。
 
-In MTX_MODE=2 (Simultanous Set), MTX_MULT/TRANS take additional 30 cycles.
+NORMAL commands takes 9..12 cycles, depending on the number of enabled lights in PolyAttr (Huh, 9..12 (four timings) cycles for 0..4 (five settings) lights?) Total execution time of SwapBuffers is Duration until VBlank, plus 392 cycles.
+
+`MTX_MODE=2`のとき、`MTX_MULT/TRANS`には追加で30サイクルかかります。
 
 ## 0x0400_0400 - GXFIFO - ジオメトリコマンドFIFO (W) (mirrored up to 400043Fh?
 
@@ -89,13 +91,15 @@ That mechanism puts the 8bit command + 32bit parameter into the FIFO/PIPE.
 
 If the FIFO is full, then a wait is generated until data is removed from the FIFO, ie. the STR opcode gets freezed, during the wait, the bus cannot be used even by DMA, interrupts, or by the NDS7 CPU.
 
-## GXFIFO Access via DMA
+## GXFIFOへのアクセス
+
+### DMA を使う場合
 
 Larger pre-calculated data blocks can be sent directly to the FIFO. This is usually done via DMA (use DMA in Geometry Command Mode, 32bit units, Dest=4000400h/fixed, Length=NumWords, Repeat=0). The timings are handled automatically, ie. the system (should) doesn’t freeze when the FIFO is full (see below Overkill note though). DMA starts when the FIFO becomes less than half full, the DMA does then write 112 words to the GXFIFO register (or less, if the remaining DMA transfer length gets zero).
 
-## GXFIFO Access via STR,STRD,STM
+### STR,STRD,STM を使う場合
 
-必要であれば、STR,STRD,STM オペコードを使用して FIFO に書き込むことができる。
+必要であれば、STR,STRD,STM オペコードを使用して FIFO に書き込むことができます。
 
 Opcodes that write more than one 32bit value (ie. STRD and STM) can be used to send ONE UNPACKED command, plus any parameters which belong to that command. After that, there must be a 1 cycle delay before sending the next command (ie. one cannot sent more than one command at once with a single opcode, each command must be invoked by a new opcode). STRD and STM can be used because the GXFIFO register is mirrored to 4000400h..43Fh (16 words).
 

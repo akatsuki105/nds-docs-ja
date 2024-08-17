@@ -13,12 +13,12 @@ Bit 30-31 are R/W. Writing “1” to Bit15 does reset the Error Flag (Bit15), a
   14    Matrix Stack Busy (0=No, 1=Yes; Currently executing a Push/Pop command)
   15    Matrix Stack Overflow/Underflow Error (0=No, 1=Error/Acknowledge/Reset)
   16-24 Number of 40bit-entries in Command FIFO  (0..256)
- (24)   Command FIFO Full (MSB of above)  (0=No, 1=Yes; Full)
-  25    Command FIFO Less Than Half Full  (0=No, 1=Yes; Less than Half-full)
-  26    Command FIFO Empty                (0=No, 1=Yes; Empty)
+ (24)   GXFIFO が満杯か (MSB of above)  (0=No, 1=Yes; Full)
+  25    GXFIFO が半分未満か  (0=No, 1=Yes; Less than Half-full)
+  26    GXFIFO が空か                (0=No, 1=Yes; Empty)
   27    Busy状態か(コマンド実行中か, 1=Busy)
   28-29 不使用
-  30-31 Command FIFO IRQ (0=Never, 1=Less than half full, 2=Empty, 3=Reserved)
+  30-31 GXFIFO IRQのタイミング (0=なし, 1=(コマンドキューが)半分未満になったとき, 2=(コマンドキューが)空のとき, 3=不使用(予約))
 ```
 
 When GXFIFO IRQ is enabled (setting 1 or 2), the IRQ flag (IF.Bit21) is set while and as long as the IRQ condition is true (and attempts to acknowledge the IRQ by writing to IF.Bit21 have no effect). So that, the IRQ handler must either fill the FIFO, or disable the IRQ (setting 0), BEFORE trying to acknowledge the IRQ.
@@ -26,13 +26,13 @@ When GXFIFO IRQ is enabled (setting 1 or 2), the IRQ flag (IF.Bit21) is set whil
 ## 0x0400_0604 - RAM_COUNT - Polygon List & Vertex RAM Count Register (R)
 
 ```
-  0-11   Number of Polygons currently stored in Polygon List RAM (0..2048)
+  0-11   ポリゴンRAMに格納されているポリゴンの数 (0..2048)
   12-15  不使用
-  16-28  Number of Vertices currently stored in Vertex RAM       (0..6144)
+  16-28  頂点RAMに格納されている頂点の数       (0..6144)
   29-31  不使用
 ```
 
-SwapBuffersコマンドが送信された場合、カウンタは次のVBlankの10サイクル後にリセットされます。(サイクルは33.51MHzクロック)
+`SWAP_BUFFERS`コマンドが送信された場合、カウンタは次のVBlankの10サイクル後にリセットされます。(1サイクルは33.51MHzクロック)
 
 ## 0x0400_0320 - RDLINES_COUNT - Rendered Line Count Register (R)
 

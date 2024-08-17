@@ -4,10 +4,10 @@
 
 ```
   0     テクスチャマッピング      (0=Disable, 1=Enable)
-  1     PolygonAttr Shading  (0=Toon Shading, 1=Highlight Shading)
+  1     PolygonAttr Shading  (0=トゥーンシェーディング, 1=Highlight Shading)
   2     アルファテスト有効化    (0=Disable, 1=Enable) (see ALPHA_TEST_REF)
   3     アルファブレンド       (0=Disable, 1=Enable) (see various Alpha values)
-  4     Anti-Aliasing        (0=Disable, 1=Enable)
+  4     アンチエイリアス       (0=Disable, 1=Enable)
   5     Edge-Marking         (0=Disable, 1=Enable) (see EDGE_COLOR)
   6     Fog Color/Alpha Mode (0=Alpha and Color, 1=Only Alpha) (see FOG_COLOR)
   7     Fog Master Enable    (0=Disable, 1=Enable)
@@ -20,20 +20,25 @@
 
 ## 4000540h - Cmd 50h - SWAP_BUFFERS - Swap Rendering Engine Buffer (W)
 
-SwapBuffersコマンドでは、2組のポリゴン/頂点バッファを交換します。つまり、新しく定義されたポリゴン/頂点がレンダリングエンジンに渡され、その後のフレームで描画されます。
+`SWAP_BUFFERS`コマンドでは、2組のポリゴン/頂点バッファを交換します。つまり、新しく定義されたポリゴン/頂点がレンダリングエンジンに渡され、その後のフレームで描画されます。
 
 レンダリングエンジンからジオメトリエンジンに返却された方のバッファは空になり、ジオメトリエンジンに渡されます。(そして、ジオメトリコマンドによって新しいポリゴン/頂点で埋められます)。
 
 ```
   0     Translucent polygon Y-sorting (0=Auto-sort, 1=Manual-sort)
-  1     Depth Buffering  (0=With Z-value, 1=With W-value)
-        (mode 1 does not function properly with orthogonal projections)
+  1     深度バッファ  (0=With Z-value, 1=With W-value; mode 1 does not function properly with orthogonal projections)
   2-31  不使用
 ```
 
-SwapBuffers isn’t executed until next VBlank (Scanline 192) (the Geometry Engine is halted for that duration). SwapBuffers should not be issued within Begin/End. The two parameter bits of the SwapBuffers command are used for the following gxcommands (ie. not for the old gxcommands prior to SwapBuffers).
+SwapBuffers は次のVBlank(スキャンライン=192)まで実行されず、その間ジオメトリエンジンはHaltします。
 
-SwapBuffers does lock-up the 3D hardware if an incomplete polygon list has been defined (eg. a triangle with only 2 vertices). On lock-up, only 2D video is kept working, any wait-loops for GXSTAT.27 will hang the program. Once lock-up has occured, there seems to be no way to recover by software, not by sending the missing veric(es), and not even by pulsing POWCNT1.Bit2-3.
+`SWAP_BUFFERS` はBegin/End内で発行してはいけません。
+
+2つのパラメータビットは、`SWAP_BUFFERS`コマンドの後のgxcommandsに使用されます(つまり、`SWAP_BUFFERS`コマンドより前のgxcommandsには使用されません)。
+
+SwapBuffersは、(2頂点しかない三角ポリゴンのような)不完全なポリゴンリストが定義された場合、3Dハードウェアをロックします。
+
+On lock-up, only 2D video is kept working, any wait-loops for GXSTAT.27 will hang the program. Once lock-up has occured, there seems to be no way to recover by software, not by sending the missing veric(es), and not even by pulsing POWCNT1.Bit2-3.
 
 ## 4000580h - Cmd 60h - VIEWPORT - Set Viewport (W)
 
