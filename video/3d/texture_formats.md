@@ -27,7 +27,9 @@ In this format, the Palette Base is specified in 8-byte steps; all other formats
 
 ## Format 5: 4x4-Texel Compressed Texture
 
-Consists of 4x4 Texel blocks in Slot 0 or 2, 32bit per block, 2bit per Texel,
+テクスチャのデータは、4x4ピクセルのテクセルブロックで構成されています。テクセルブロックはスロット0または2にあり、1テクセルブロックあたり4バイト、1テクセルあたり2ビットです。(スロットはVRAMの128KBのスロットのこと)
+
+テクセルの2ビットの値(0..3)の意味は、後述するモードによって異なります。
 
 ```
   bit:   Description
@@ -37,21 +39,36 @@ Consists of 4x4 Texel blocks in Slot 0 or 2, 32bit per block, 2bit per Texel,
   24-31: Lower 4-Texel row
 ```
 
-Additional Palette Index Data for each 4x4 Texel Block is located in Slot 1,
+例えば、テクスチャサイズが32x16ピクセルの場合、4x4のテクセルブロックが4x2個、つまり合計8個含まれます。 このとき、
 
 ```
-  0-13:  Palette Offset in 4-byte steps; Addr=(PLTT_BASE*10h)+(Offset*4)
-  14-15: Transparent/Interpolation Mode (0..3, see below)
+byte:
+  0-3:   1番目の4x4テクセルブロック
+  4-7:   2番目の4x4テクセルブロック
+  8-11:  3番目の4x4テクセルブロック
+  12-15: 4番目の4x4テクセルブロック
+  16-19: 5番目の4x4テクセルブロック
+  20-23: 6番目の4x4テクセルブロック
+  24-27: 7番目の4x4テクセルブロック
+  28-31: 8番目の4x4テクセルブロック
 ```
 
-whereas, the Slot 1 offset is related to above Slot 0 or 2 offset,
+スロット1には、各4x4テクセルブロックの追加のパレットインデックスデータがあります。
+
+```
+  bit:
+  0-13:  パレットのオフセット(4バイト単位); Addr=(PLTT_BASE*10h)+(Offset*4)
+  14-15: モード
+```
+
+スロット1のパレットインデックスデータがあるオフセットは、スロット0 or スロット2 のオフセットから次のように計算されます。
 
 ```c
-  slot1_addr = slot0_addr / 2           // lower 64K of Slot1 assoc to Slot0
-  slot1_addr = slot2_addr / 2 + 0x10000 // upper 64K of Slot1 assoc to Slot2
+  slot1_addr = slot0_addr / 2             // スロット1の前半64KBはスロット0に関連付けられる
+  slot1_addr = slot2_addr / 2 + (64*1024) // スロット1の後半64KBはスロット2に関連付けられる
 ```
 
-The 2bit Texel values (0..3) are intepreted depending on the Mode (0..3),
+テクセルの2ビットの値(0..3) と パレットインデックスデータのモード(bit14-15) の関係は以下の通りです。
 
 ```
   Texel  Mode 0       Mode 1             Mode 2         Mode 3
@@ -63,7 +80,7 @@ The 2bit Texel values (0..3) are intepreted depending on the Mode (0..3),
 
 Mode 1 and 3 are using only 2 Palette Colors (which requires only half as much Palette memory), the 3rd (and 4th) Texel Colors are automatically set to above values (eg. to gray-shades if color 0 and 1 are black and white).
 
-Note: The maximum size for 4x4-Texel Compressed Textures is 1024x512 or 512x1024 (which are both occupying the whole 128K in slot 0 or 2, plus 64K in slot1), a larger size of 1024x1024 cannot be used because of the gap between slot 0 and 2.
+Note: スロット0とスロット2はメモリ領域が連続していないため、テクスチャデータの最大サイズは 1024x512 または 512x1024 です。(この場合は、スロット0または2の128KB全体とスロット1の64KBを占有する) つまり、1024x1024のような大きなサイズは使用できません。
 
 ## Format 6: A5I3 Translucent Texture (5bit Alpha, 3bit Color Index)
 

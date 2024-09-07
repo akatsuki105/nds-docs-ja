@@ -7,17 +7,17 @@
 ビット | 内容 | 備考
 -- | -- | -- 
 0-4   | EVA               | 0..16 = Blending Factor for Source A
-5-7   | 未使用             | -- 
+5-7   | 不使用             | -- 
 8-12  | EVB               | 0..16 = Blending Factor for Source B
-13-15 | 未使用             | -- 
+13-15 | 不使用             | -- 
 16-17 | VRAM書き込みブロック  | 0..3 = VRAM A..D (VRAM must be allocated to LCDC)
 18-19 | VRAM書き込みオフセット | 0=00000h, 0=08000h, 0=10000h, 0=18000h
 20-21 | キャプチャサイズ      | 0=128x128, 1=256x64, 2=256x128, 3=256x192 dots
-22-23 | 未使用             | -- 
+22-23 | 不使用             | -- 
 24    | ソースA          | 0=Graphics Screen BG+3D+OBJ, 1=3D Screen
 25    | ソースB          | 0=VRAM, 1=Main Memory Display FIFO
 26-27 | VRAM読み取りオフセット  | 0=00000h, 0=08000h, 0=10000h, 0=18000h
-28    | 未使用             | -- 
+28    | 不使用             | -- 
 29-30 | キャプチャソース    | 0=ソースA, 1=ソースB, 2/3=ソースABをブレンド
 31    | キャプチャ有効化ビット   | 0=Disable/Ready, 1=Enable/Busy
 

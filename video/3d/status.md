@@ -2,11 +2,15 @@
 
 ## 0x0400_0600 - GXSTAT - ジオメトリエンジンステータスレジスタ (R and R/W)
 
-Bit 30-31 are R/W. Writing “1” to Bit15 does reset the Error Flag (Bit15), and additionally resets the Projection Stack Pointer (Bit13), and probably (?) also the Texture Stack Pointer. All other GXSTAT bits are read-only.
+bit30-31は読み書き可能(R/W)です。 
+
+bit15に`1`を書き込むとエラーフラグ(bit15)がリセットされ、さらに射影行列スタックポインタ(bit13)がリセットされ、おそらく(？)テクスチャスタックポインタもリセットされます。
+
+他のすべてのGXSTATのビットは読み取り専用です。
 
 ```
   0     BoxTest,PositionTest,VectorTest Busy (0=Ready, 1=Busy)
-  1     BoxTest Result  (0=All Outside View, 1=Parts or Fully Inside View)
+  1     BoxTestの結果  (0=All Outside View, 1=Parts or Fully Inside View)
   2-7   不使用
   8-12  Position & Vector Matrix Stack Level (0..31) (lower 5bit of 6bit value)
   13    Projection Matrix Stack Level        (0..1)

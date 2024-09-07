@@ -41,3 +41,10 @@ Data that is NOT swapped: SwapBuffers obviously can’t swap Texture memory (so 
 ## Scanline Cache vs Framebuffer
 
 Note: There’s only the 48-line cache (not a full 192-line framebuffer to store the whole rendered image). That is perfectly reasonable since animated data is normally drawn only once (so there would be no need to store it). That, assuming that the Geometry Engine presents new data every frame (otherwise, if the Geometry software is too slow, or if the image isn’t animated, then the hardware is automatically rendering the same image again, and again).
+
+
+## 参考
+
+- [The DS GPU and its fun quirks - melonDS](https://melonds.kuribo64.net/comments.php?id=56)
+
+

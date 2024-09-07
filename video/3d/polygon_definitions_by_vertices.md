@@ -1,4 +1,4 @@
-# Polygon Definitions by Vertices
+# 頂点によるポリゴン定義
 
 ポリゴンについては、[こちら](http://www.charatsoft.com/develop/otogema/page/05d3d/polygon.html)のページが参考になります。
 

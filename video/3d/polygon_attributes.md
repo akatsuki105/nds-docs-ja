@@ -4,16 +4,16 @@
 
 ```
   0-3   Light 0..3 Enable Flags (each bit: 0=Disable, 1=Enable)
-  4-5   Polygon Mode  (0=Modulation,1=Decal,2=Toon/Highlight Shading,3=Shadow)
+  4-5   Polygon Mode  (0=Modulation,1=デカール,2=Toon/Highlight Shading,3=Shadow)
   6     Polygon Back Surface   (0=Hide, 1=Render)  ;Line-segments are always
   7     Polygon Front Surface  (0=Hide, 1=Render)  ;rendered (no front/back)
   8-10  不使用
-  11    Depth-value for Translucent Pixels    (0=Keep Old, 1=Set New Depth)
+  11    半透明なピクセル場合に深度バッファを半透明ピクセルの深度値で更新するか    (0=元の値のまま, 1=更新する)
   12    Far-plane intersecting polygons       (0=Hide, 1=Render/clipped)
-  13    1-Dot polygons behind DISP_1DOT_DEPTH (0=Hide, 1=Render)
+  13    1ドットポリゴンが DISP_1DOT_DEPTH でセットした値より奥の時に表示にするか (0=Hide, 1=Render)
   14    Depth Test, Draw Pixels with Depth    (0=Less, 1=Equal) (usually 0)
   15    フォグ有効化                            (0=Disable, 1=Enable)
-  16-20 Alpha      (0=Wire-Frame, 1..30=Translucent, 31=Solid)
+  16-20 アルファ値      (0=ワイヤーフレーム, 1..30=半透明, 31=ソリッド)
   21-23 不使用
   24-29 ポリゴンID (00h..3Fh, used for translucent, shadow, and edge-marking)
   30-31 不使用
@@ -23,13 +23,13 @@ Writes to POLYGON_ATTR have no effect until next BEGIN_VTXS command.
 
 Changes to the Light bits have no effect until lighting is re-calculated by Normal command. The interior of Wire-frame polygons is transparent (Alpha=0), and only the lines at the polygon edges are rendered, using a fixed Alpha value of 31.
 
-## 4000480h - Cmd 20h - COLOR - Directly Set Vertex Color (W)
+## 4000480h - Cmd 20h - COLOR - 頂点カラー設定 (W)
 
 ```
-  Parameter 1, Bit 0-4    赤
-  Parameter 1, Bit 5-9    緑
-  Parameter 1, Bit 10-14  青
-  Parameter 1, Bit 15-31  不使用
+  0-4    赤
+  5-9    緑
+  10-14  青
+  15-31  不使用
 ```
 
 5ビットのRGB値(RGB555)は、内部的に次のように6ビットのRGBに拡張されます: `X=X*2+(X+31)/32` (つまり、0は0のままだが、それ以外の値(X)は`X=X*2+1`)

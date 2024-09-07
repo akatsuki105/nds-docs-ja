@@ -1,9 +1,9 @@
-# Display Control
+# 制御レジスタ
 
-## 4000060h - DISP3DCNT - 3D Display Control Register (R/W)
+## 4000060h - DISP3DCNT - 3D制御レジスタ (R/W)
 
 ```
-  0     テクスチャマッピング      (0=Disable, 1=Enable)
+  0     テクスチャマッピング     (0=Disable, 1=Enable)
   1     PolygonAttr Shading  (0=トゥーンシェーディング, 1=Highlight Shading)
   2     アルファテスト有効化    (0=Disable, 1=Enable) (see ALPHA_TEST_REF)
   3     アルファブレンド       (0=Disable, 1=Enable) (see various Alpha values)
@@ -25,8 +25,8 @@
 レンダリングエンジンからジオメトリエンジンに返却された方のバッファは空になり、ジオメトリエンジンに渡されます。(そして、ジオメトリコマンドによって新しいポリゴン/頂点で埋められます)。
 
 ```
-  0     Translucent polygon Y-sorting (0=Auto-sort, 1=Manual-sort)
-  1     深度バッファ  (0=With Z-value, 1=With W-value; mode 1 does not function properly with orthogonal projections)
+  0     Translucent polygon Y-sorting (0=自動ソート, 1=手動ソート)
+  1     深度バッファ  (0=Z値, 1=W値; 平行投影時(orthogonal projections)にW値を深度バッファに使っても機能しません)
   2-31  不使用
 ```
 
@@ -40,28 +40,30 @@ SwapBuffersは、(2頂点しかない三角ポリゴンのような)不完全な
 
 On lock-up, only 2D video is kept working, any wait-loops for GXSTAT.27 will hang the program. Once lock-up has occured, there seems to be no way to recover by software, not by sending the missing veric(es), and not even by pulsing POWCNT1.Bit2-3.
 
-## 4000580h - Cmd 60h - VIEWPORT - Set Viewport (W)
+## 4000580h - Cmd 60h - VIEWPORT - ビューポート設定 (W)
 
 ```
-  0-7   Screen/BG0 Coordinate X1 (0..255) (For Fullscreen: 0=Left-most)
-  8-15  Screen/BG0 Coordinate Y1 (0..191) (For Fullscreen: 0=Bottom-most)
-  16-23 Screen/BG0 Coordinate X2 (0..255) (For Fullscreen: 255=Right-most)
-  24-31 Screen/BG0 Coordinate Y2 (0..191) (For Fullscreen: 191=Top-most)
+  0-7   Screen/BG0 Coordinate X1 (0..255) (For Fullscreen: 0=左端)
+  8-15  Screen/BG0 Coordinate Y1 (0..191) (For Fullscreen: 0=画面下)
+  16-23 Screen/BG0 Coordinate X2 (0..255) (For Fullscreen: 255=右端)
+  24-31 Screen/BG0 Coordinate Y2 (0..191) (For Fullscreen: 191=画面上)
 ```
 
-座標`(0, 0)`は左下です。2Dの場合(左上)とは異なります。
+座標`(0, 0)`は**左下**です。2Dの場合(左上)とは異なります。
 
-ビューボリューム(大きさは投影行列で定義)は、ビューポート領域に合わせて自動的にスケーリングされます。ポリゴンの頂点はビューボリュームにクリップされますが、いくつかの頂点は丸め誤差のためにX2,Y1(右上)境界を1ピクセル超える場合があります。ビューポート設定は3Dリアプレーンのサイズや位置に影響しません。
+ビューボリューム(大きさはクリップ行列で定義)は、ビューポート領域に合わせて自動的にスケーリングされます。ポリゴンの頂点はビューボリュームにクリップされますが、いくつかの頂点は丸め誤差のためにX2,Y1(右上)境界を1ピクセル超える場合があります。ビューポート設定は3Dリアプレーンのサイズや位置に影響しません。
 
 `VIEWPORT`コマンドは`BEGIN_VTXS/END_VTXS`内で発行してはいけません。
 
 ## 4000610h - DISP_1DOT_DEPTH - 1-Dot Polygon Display Boundary Depth (W)
 
-1-Dot Polygons are very small, or very distant polygons, which would be rendered as a single pixel on screen. Polygons with a depth value greater (more distant) than DISP_1DOT_DEPTH can be automatically hidden; in order to reduce memory consumption, or to reduce dirt on the screen.
+1ドットポリゴンは非常に小さい、または非常に遠いポリゴンで、画面上では1ピクセルとしてレンダリングされます。
+
+`DISP_1DOT_DEPTH` でセットした値よりも奥行きの値が大きい（遠くにある）ポリゴンは、自動的に非表示にすることができます。(メモリ消費を抑えたり、画面の汚れを軽減する際に役に立ちます)
 
 ```
-  0-14  W-Coordinate (Unsigned, 12bit integer, 3bit fractional part)
-  15-31 Not used                 (0000h=Closest, 7FFFh=Most Distant)
+  0-14  W座標 (Unsigned, 12bit integer, 3bit fractional part)
+  15-31 不使用 (0000h=Closest, 7FFFh=Most Distant)
 ```
 
 The DISP_1DOT_DEPTH comparision can be enabled/disabled per polygon (via POLYGON_ATTR.Bit13), so “important” polygons can be displayed regardless of their size and distance.
