@@ -6,7 +6,7 @@
   0-1   マトリックスモード (0..3)
          0  プロジェクション行列 (MVP変換のP)
          1  モデルビュー行列 (Position Matrix とも呼ばれる, MVP変換のMV)
-         2  Position & Vector Simultaneous Set mode (used for Light+VEC_TEST)
+         2  モデルビュー行列 & 方向行列 (ライティングとVEC_TESTで使用)
          3  テクスチャ変換行列
   2-31  不使用
 ```
