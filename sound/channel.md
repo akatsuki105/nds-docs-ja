@@ -2,23 +2,23 @@
 
 各チャンネルには、`0x40004x0..0x40004xF` の16バイトにIOレジスタが割り当てられています。(xはチャンネル番号)
 
-## 40004x0h - NDS7 - SOUNDxCNT - Sound Channel X Control Register (R/W)
+## 40004x0h - NDS7 - SOUNDxCNT - サウンドチャネルX制御レジスタ (R/W)
 
 ```
   0-6    Volume Mul   (0..127=silent..loud)
-  7      不使用     (always zero)
+  7      不使用     (常に0)
   8-9    Volume Div   (0=Normal, 1=Div2, 2=Div4, 3=Div16)
-  10-14  不使用     (always zero)
+  10-14  不使用     (常に0)
   15     Hold         (0=Normal, 1=Hold last sample after one-shot sound)
   16-22  Panning      (0..127=left..right) (64=half volume on both speakers)
-  23     不使用     (always zero)
-  24-26  Wave Duty    (0..7) ;HIGH=(N+1)*12.5%, LOW=(7-N)*12.5% (PSG only)
+  23     不使用     (常に0)
+  24-26  デューティ比   (0..7) ;HIGH=(N+1)*12.5%, LOW=(7-N)*12.5% (PSG only)
   27-28  Repeat Mode  (0=Manual, 1=Loop Infinite, 2=One-Shot, 3=Prohibited)
-  29-30  Format       (0=PCM8, 1=PCM16, 2=IMA-ADPCM, 3=PSG/Noise)
+  29-30  モード        (0=PCM8, 1=PCM16, 2=IMA-ADPCM, 3=PSG/Noise)
   31     Start/Status (0=Stop, 1=Start/Busy)
 ```
 
-All channels support ADPCM/PCM formats, PSG rectangular wave can be used only on channels 8..13, and white noise only on channels 14..15.
+ADPCM/PCM は全てのチャンネルでサポートされていますが、PSGの矩形波はチャンネル 8..13 のみ、(ホワイト)ノイズはチャンネル 14,15 のみ使用できます。
 
 ## 40004x4h - NDS7 - SOUNDxSAD - Sound Channel X Data Source Register (W)
 
@@ -35,7 +35,7 @@ All channels support ADPCM/PCM formats, PSG rectangular wave can be used only on
 
 The PSG Duty Cycles are composed of eight “samples”, and so, the frequency for Rectangular Wave is 1/8th of the selected sample frequency.
 
-For PSG Noise, the noise frequency is equal to the sample frequency.
+PSG音源によるノイズの場合、ノイズ周波数はサンプル周波数と同じになります。
 
 ## 40004xAh - NDS7 - SOUNDxPNT - Sound Channel X Loopstart Register (W)
 
@@ -45,10 +45,12 @@ For PSG Noise, the noise frequency is equal to the sample frequency.
 
 ## 40004xCh - NDS7 - SOUNDxLEN - Sound Channel X Length Register (W)
 
-The number of samples for N words is `4*N` PCM8 samples, `2*N` PCM16 samples, or `8*(N-1)` ADPCM samples (the first word containing the ADPCM header). The Sound Length is not used in PSG mode.
+The number of samples for N words is `4*N` PCM8 samples, `2*N` PCM16 samples, or `8*(N-1)` ADPCM samples (the first word containing the ADPCM header).
+
+PSGモードでは、このレジスタは使用されません。
 
 ```
-  0-21  Sound length (counted in words, ie. N*4 bytes)
+  0-21  サウンドの長さ (ワード単位, つまり(N*4)バイト)
   22-31 不使用
 ```
 
