@@ -14,7 +14,7 @@
   23     不使用     (常に0)
   24-26  デューティ比   (0..7) ;HIGH=(N+1)*12.5%, LOW=(7-N)*12.5% (PSG only)
   27-28  Repeat Mode  (0=Manual, 1=Loop Infinite, 2=One-Shot, 3=Prohibited)
-  29-30  モード        (0=PCM8, 1=PCM16, 2=IMA-ADPCM, 3=PSG/Noise)
+  29-30  モード        (0=PCM8, 1=PCM16, 2=IMA-ADPCM, 3=PSG(矩形波/ノイズ))
   31     Start/Status (0=Stop, 1=Start/Busy)
 ```
 
