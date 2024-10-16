@@ -1,5 +1,7 @@
 # キャプチャ
 
+キャプチャというと、キャプチャボードを使ったゲームの映像出力をパソコンに取り込むことを思い浮かべるかもしれませんが、NDSのキャプチャは、描画エンジンAの出力をVRAMに取り込む機能です。
+
 ## 4000064h - NDS9 - DISPCAPCNT - 32bit - Display Capture Control Register (R/W)
 
 キャプチャは 描画エンジンA でのみサポートされています。
@@ -23,11 +25,11 @@
 
 Notes:
 
-VRAM読み取りブロック (VRAM A..D)は DISPCNTのbit18-19で指定します。
+VRAM読み取りブロック (VRAM A..D)は `DISPCNT.18-19`で指定します。
 
 VRAM読み取りブロックはLCDC(MST=0)に割り当てられている必要があります。
 
-VRAM読み取りオフセットはVRAM Display Mode(DISPCNT.16-17)のとき、無視され、0として扱われます。
+VRAM読み取りオフセットはVRAM Display Mode(`DISPCNT.16-17`)のとき、無視され、0として扱われます。
 
 VRAM読み取りオフセット・VRAM書き込みオフセットは`1FFFFh`を超えた場合、`00000h`に戻ってきます。(最大 128K)
 

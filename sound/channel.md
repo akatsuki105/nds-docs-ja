@@ -2,7 +2,7 @@
 
 各チャンネルには、`0x40004x0..0x40004xF` の16バイトにIOレジスタが割り当てられています。(xはチャンネル番号)
 
-## 40004x0h - NDS7 - SOUNDxCNT - サウンドチャネルX制御レジスタ (R/W)
+## 40004x0h - NDS7 - SOUNDxCNT - CHx制御レジスタ (R/W)
 
 ```
   0-6    Volume Mul   (0..127=silent..loud)
@@ -18,12 +18,14 @@
   31     Start/Status (0=Stop, 1=Start/Busy)
 ```
 
-ADPCM/PCM は全てのチャンネルでサポートされていますが、PSGの矩形波はチャンネル 8..13 のみ、(ホワイト)ノイズはチャンネル 14,15 のみ使用できます。
+PCM/ADPCM は全てのチャンネルでサポートされていますが、PSGの矩形波はチャンネル 8..13 のみ、(ホワイト)ノイズはチャンネル 14,15 のみ使用できます。
 
-## 40004x4h - NDS7 - SOUNDxSAD - Sound Channel X Data Source Register (W)
+## 40004x4h - NDS7 - SOUNDxSAD - 音源アドレスレジスタ (W)
+
+PCM/ADPCMの場合、音源データはメモリ上に配置されている必要があり、このレジスタではメモリに配置された音源データの開始アドレスを指定します。
 
 ```
-  0-26  Source Address (must be word aligned, bit0-1 are always zero)
+  0-26  音源データの開始アドレス (4バイトでアラインメントされる)
   27-31 不使用
 ```
 
@@ -37,13 +39,17 @@ The PSG Duty Cycles are composed of eight “samples”, and so, the frequency f
 
 PSG音源によるノイズの場合、ノイズ周波数はサンプル周波数と同じになります。
 
-## 40004xAh - NDS7 - SOUNDxPNT - Sound Channel X Loopstart Register (W)
+## 40004xAh - NDS7 - SOUNDxPNT - ループ開始位置 (W)
+
+音源をループさせたい場合にループ開始位置を指定するためのレジスタです。
 
 ```
-  0-15  Loop Start, Sample loop start position (counted in words, ie. N*4 bytes)
+  0-15  音源データのループ開始オフセット (ワード単位, つまり(N*4)バイト)
 ```
 
-## 40004xCh - NDS7 - SOUNDxLEN - Sound Channel X Length Register (W)
+## 40004xCh - NDS7 - SOUNDxLEN - PCM音源サイズレジスタ (W)
+
+PCM音源のサイズを指定するためのレジスタです。
 
 The number of samples for N words is `4*N` PCM8 samples, `2*N` PCM16 samples, or `8*(N-1)` ADPCM samples (the first word containing the ADPCM header).
 
