@@ -22,13 +22,13 @@
 
 ## IMA-ADPCM
 
-IMA-ADPCM is a Adaptive Differential Pulse Code Modulation (ADPCM) variant, designed by International Multimedia Association (IMA), the format is used, among others, in IMA-ADPCM compressed Windows .WAV files.
+IMA-ADPCM は [ADPCM](https://ja.wikipedia.org/wiki/適応的差分パルス符号変調) の一種で、International Multimedia Association (IMA) によって設計されました。 
 
-The NDS data consist of a 32bit header, followed by 4bit values (so each byte contains two values, the first value in the lower 4bits, the second in upper 4 bits). The 32bit header contains initial values:
+NDSで使われる IMA-ADPCM 音源データは、32bitのヘッダの後に4bitの音源データが続いています。ヘッダの内容は次のようになっています。
 
 ```
   Bit:
-    0-15   Initial PCM16 Value (Pcm16bit = -7FFFh..+7FFF) (not -8000h)
+    0-15   初期サンプル (PCM16フォーマット, -7FFFh..+7FFF (-8000h は指定できない))
     16-22  Initial Table Index Value (Index = 0..88)
     23-31  不使用 (0)
 ```
@@ -58,9 +58,11 @@ And, a note on the second/third lines (with clipping-error):
   Min(-7FFFh) clips -8000h to -7FFFh (possibly unlike windows .WAV files?)
 ```
 
-Whereas, `IndexTable[0..7] = -1,-1,-1,-1,2,4,6,8`. And `AdpcmTable[0..88]` is 
+`IndexTable` と `AdpcmTable` の内容は次のようになっています。
 
 ```c
+const s8 IndexTable[8] = {-1, -1, -1, -1, 2, 4, 6, 8};
+
 const u16 AdpcmTable[89] = {
     0x0007, 0x0008, 0x0009, 0x000A, 0x000B, 0x000C, 0x000D, 0x000E,
     0x0010, 0x0011, 0x0013, 0x0015, 0x0017, 0x0019, 0x001C, 0x001F,
