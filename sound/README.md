@@ -35,5 +35,6 @@ After applying the master volume, the signed left/right audio signals are in ran
 
 サウンドがオフ(`SOUNDCNT.15==0`)の場合でも、バイアスの出力は常に有効です。
 
-The sampling frequency of the mixer is 1.04876 MHz with an amplitude resolution of 24 bits, but the sampling frequency after mixing with PWM modulation is 32.768 kHz with an amplitude resolution of 10 bits.
+ミキサーのサンプリング周波数は1.04876MHzで、振幅分解能は24bitです。しかし、PWMとの混合後のサンプリング周波数は32.768kHzで、振幅分解能は10bitです。
+
 
