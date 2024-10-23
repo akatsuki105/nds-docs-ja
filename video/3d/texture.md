@@ -1,6 +1,24 @@
-# テクスチャの種類
+# テクスチャ
 
-## Format 1: A3I5 Translucent Texture (3bit Alpha, 5bit Color Index)
+## 40004A8h - Cmd 2Ah - TEXIMAGE_PARAM - Set Texture Parameters (W)
+
+```
+  0-15  Texture VRAM Offset div 8 (0..FFFFh -> 512K RAM in Slot 0,1,2,3)
+        (VRAM must be allocated as Texture data, see Memory Control chapter)
+  16    Repeat in S Direction (0=Clamp Texture, 1=Repeat Texture)
+  17    Repeat in T Direction (0=Clamp Texture, 1=Repeat Texture)
+  18    Flip in S Direction   (0=No, 1=Flip each 2nd Texture) (requires Repeat)
+  19    Flip in T Direction   (0=No, 1=Flip each 2nd Texture) (requires Repeat)
+  20-22 Texture S-Size        (for N=0..7: Size=(8 SHL N); ie. 8..1024 texels)
+  23-25 Texture T-Size        (for N=0..7: Size=(8 SHL N); ie. 8..1024 texels)
+  26-28 テクスチャの種類        (0..7, see below)
+  29    Color 0 of 4/16/256-Color Palettes (0=Displayed, 1=Made Transparent)
+  30-31 Texture Coordinates Transformation Mode (0..3, see below)
+```
+
+## テクスチャの種類(TEXIMAGE_PARAM.26-28)
+
+### Format 1: A3I5 Translucent Texture (3bit Alpha, 5bit Color Index)
 
 各テクセルは1バイトで、1番目のテクセルが1バイト目に位置します。
 
@@ -11,21 +29,21 @@
 
 3bitのアルファ値(0..7)は内部的に5bitのアルファ値(0..31)に拡張されます。 `Alpha=(Alpha*4)+(Alpha/2)`
 
-## Format 2: 4-Color Palette Texture
+### Format 2: 4-Color Palette Texture
 
 各テクセルは2ビットで、1番目のテクセルが1バイト目のLSBに位置します。
 
 In this format, the Palette Base is specified in 8-byte steps; all other formats use 16-byte steps (see PLTT_BASE register).
 
-## Format 3: 16-Color Palette Texture
+### Format 3: 16-Color Palette Texture
 
 各テクセルは4ビットで、1番目のテクセルが1バイト目のLSBに位置します。
 
-## Format 4: 256-Color Palette Texture
+### Format 4: 256-Color Palette Texture
 
 各テクセルは1バイトで、1番目のテクセルが1バイト目に位置します。
 
-## Format 5: 4x4-Texel Compressed Texture
+### Format 5: 4x4-Texel Compressed Texture
 
 テクスチャのデータは、4x4ピクセルのテクセルブロックで構成されています。テクセルブロックはスロット0または2にあり、1テクセルブロックあたり4バイト、1テクセルあたり2ビットです。(スロットはVRAMの128KBのスロットのこと)
 
@@ -82,7 +100,7 @@ Mode 1 and 3 are using only 2 Palette Colors (which requires only half as much P
 
 Note: スロット0とスロット2はメモリ領域が連続していないため、テクスチャデータの最大サイズは 1024x512 または 512x1024 です。(この場合は、スロット0または2の128KB全体とスロット1の64KBを占有する) つまり、1024x1024のような大きなサイズは使用できません。
 
-## Format 6: A5I3 Translucent Texture (5bit Alpha, 3bit Color Index)
+### Format 6: A5I3 Translucent Texture (5bit Alpha, 3bit Color Index)
 
 各テクセルは1バイトで、1番目のテクセルが1バイト目に位置します。
 
@@ -91,7 +109,7 @@ Note: スロット0とスロット2はメモリ領域が連続していないた
   3-7: アルファ値 (0..31; 0=透明, 31=不透明)
 ```
 
-## Format 7: Direct Color Texture
+### Format 7: Direct Color Texture
 
 各テクセルは2バイトで、1番目のテクセルが最初の2バイトに位置します。
 
@@ -102,3 +120,4 @@ Note: スロット0とスロット2はメモリ領域が連続していないた
     bit10-14: 青 (0..31)
     bit15:    透明度 (0=透明, 1=不透明)
 ```
+

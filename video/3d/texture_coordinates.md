@@ -73,3 +73,22 @@ Can be used to produce texture scrolls dependent on the View coordinates by copy
 
 Observe that the S’,T’ values are clipped to 16bit size. Ie. after the Vector*Matrix calaction, the result is shifted right (to make it having a 4bit fraction), and the value is then masked to 16bit size.
 
+
+## 4000488h - Cmd 22h - TEXCOORD - Set Texture Coordinates (W)
+
+Specifies the texture source coordinates within the texture bitmap which are to be associated with the next vertex.
+
+```
+  0-15:  S-Coordinate (X-Coordinate in Texture Source)
+  16-31: T-Coordinate (Y-Coordinate in Texture Source)
+  Both values are 1bit sign + 11bit integer + 4bit fractional part.
+  A value of 1.0 (=1 SHL 4) equals to one Texel.
+```
+
+With Position 0.0 , 0.0 drawing starts from upperleft of the Texture.
+
+With positive offsets, drawing origin starts more “within” the texture.
+
+With negative offsets, drawing starts “before” the texture.
+
+“When texture mapping, the Geometry Engine works faster if you issue commands in the order TexCoord -> Normal -> Vertex.”

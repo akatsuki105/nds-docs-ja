@@ -1,7 +1,5 @@
 # ジオメトリコマンド
 
-## ジオメトリコマンド
-
 テーブルは、ポートアドレス、コマンドID、パラメータ数、クロックサイクルを表しています。
 
 ```
@@ -56,6 +54,8 @@ NORMAL commands takes 9..12 cycles, depending on the number of enabled lights in
 
 このレジスタに書き込むことで、(圧縮 or 非圧縮の) ジオメトリコマンド と、そのパラメータをジオメトリエンジンに送信します。
 
+0x0400_043Fまで、このレジスタはミラーされています。(つまり、0x0400_0400..0400_043Fのどれかに書き込むことで、0x0400_0400に書き込むことになります)
+
 ```
   ジオメトリコマンド(非圧縮, unpacked)
     0-7   コマンド
@@ -73,7 +73,9 @@ NORMAL commands takes 9..12 cycles, depending on the number of enabled lights in
 
 ## FIFO / PIPE Number of Entries
 
-The FIFO has 256 entries, additionally, there is a PIPE with four entries (giving a total of 260 entries). If the FIFO is empty, and if the PIPE isn’t full, then data is moved directly into the PIPE, otherwise it is moved into the FIFO. If the PIPE runs half empty (less than 3 entries) then 2 entries are moved from the FIFO to the PIPE. The state of the FIFO can be obtained in GXSTAT.Bit16-26, observe that there may be still data in the PIPE, even if the FIFO is empty. Check the busy flag in GXSTAT.Bit27 to see if the PIPE or FIFO contains data (or if a command is still executing).
+NDSは、ジオメトリコマンドを送信するために、FIFOとPIPEを使用します。FIFOは256エントリ、PIPEは4エントリの合計260エントリです。
+
+If the FIFO is empty, and if the PIPE isn’t full, then data is moved directly into the PIPE, otherwise it is moved into the FIFO. If the PIPE runs half empty (less than 3 entries) then 2 entries are moved from the FIFO to the PIPE. The state of the FIFO can be obtained in GXSTAT.Bit16-26, observe that there may be still data in the PIPE, even if the FIFO is empty. Check the busy flag in GXSTAT.Bit27 to see if the PIPE or FIFO contains data (or if a command is still executing).
 
 Each PIPE/FIFO entry consists of 40bits of data (8bit command code, plus 32bit parameter value). Commands without parameters occupy 1 entry, and Commands with N parameters occupy N entries.
 
@@ -141,7 +143,11 @@ Packed commands are first decompressed and then stored in command the FIFO.
 
 ## GXFIFO DMA Overkill on Packed Commands Without Parameters
 
-Normally, the 112 word limit ensures that the FIFO (256 entries) doesn’t get full, however, this limit is much too high for sending a lot of “Packed Commands Without Parameters” (ie. PUSH, IDENTITY, or END) - eg. sending 112 x Packed(00151515h) to GXFIFO would write 336 x Cmd(15h) to the FIFO, which is causing the FIFO to get full, and which is causing the DMA (and CPU) to be paused (for several seconds, in WORST case) until enough FIFO commands have been processed to allow the DMA to finish the 112 word transfer.
+基本的に、GXFIFO DMAでは、112ワードの制限によりFIFO（256エントリ）が一杯になることはありませんが、多くの「パラメータなしのパックされたコマンド」（例：PUSH、IDENTITY、またはEND）を送信するには、この上限は無駄に多すぎます。
+
+例えば、`0x00151515`のような112ワードのパックされたコマンドをGXFIFOに送信すると、FIFOに336ワードのCmd(`0x15`)が書き込まれるため、FIFOがいっぱいになってしまいます。
+
+これは、FIFOコマンドが処理されて、112ワードの転送が終わるまで発生し、(最悪の場合、数秒間)DMA（およびCPU）が一時停止します。
 
 Not sure if there’s much chance to get Overkills in practice. Normally most commands DO have parameters, and so, usually even LESS than 112 FIFO entries are occupied (since 8bit commands with 32bit parameters are merged into single 40bit FIFO entries).
 
