@@ -71,13 +71,15 @@ NORMAL commands takes 9..12 cycles, depending on the number of enabled lights in
     0-31  Parameter data for the previously sent (packed) command(s)
 ```
 
-## FIFO / PIPE Number of Entries
+## FIFOとPIPE
 
 NDSは、ジオメトリコマンドを送信するために、FIFOとPIPEを使用します。FIFOは256エントリ、PIPEは4エントリの合計260エントリです。
 
-If the FIFO is empty, and if the PIPE isn’t full, then data is moved directly into the PIPE, otherwise it is moved into the FIFO. If the PIPE runs half empty (less than 3 entries) then 2 entries are moved from the FIFO to the PIPE. The state of the FIFO can be obtained in GXSTAT.Bit16-26, observe that there may be still data in the PIPE, even if the FIFO is empty. Check the busy flag in GXSTAT.Bit27 to see if the PIPE or FIFO contains data (or if a command is still executing).
+FIFOが空で、PIPEに空きがあれば、データは直接PIPEに移動され、そうでなければFIFOに移動されます。PIPEが半分空（3エントリ未満）で実行されている場合、2エントリがFIFOからPIPEに移動されます。
 
-Each PIPE/FIFO entry consists of 40bits of data (8bit command code, plus 32bit parameter value). Commands without parameters occupy 1 entry, and Commands with N parameters occupy N entries.
+FIFOの状態は、`GXSTAT.16-26`で取得できます。FIFOが空でも、PIPEにデータが残っている場合があるので注意してください。PIPEまたはFIFOにデータが残っているか、またはコマンドがまだ実行中であるかを確認するには、`GXSTAT.27`のbusyフラグをチェックしてください。
+
+各PIPE/FIFOエントリは、40bitのデータ（8bitのコマンドと32bitのパラメータ値）で構成されます。パラメータのないコマンドは1エントリを占有し、N個のパラメータを持つコマンドはNエントリを占有します。
 
 ## ジオメトリコマンド送信レジスタ 4000440h..40005FFh
 
