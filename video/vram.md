@@ -6,8 +6,8 @@ DSには合計656KBのVRAMがあります。
 
 ```
   Bit   Expl.
-  0     VRAM C enabled and allocated to NDS7  (0=No, 1=Yes)
-  1     VRAM D enabled and allocated to NDS7  (0=No, 1=Yes)
+  0     VRAMバンクCがNDS7に割り当てられているか (0=No, 1=Yes)
+  1     VRAMバンクDがNDS7に割り当てられているか (0=No, 1=Yes)
   2-7   不使用(0)
 ```
 
@@ -30,10 +30,10 @@ However, it does not reflect the OFS value.
   0-2   VRAM MST (VRAM-A,B,H,IではBit2は無視)
   3-4   VRAM Offset (0-3, VRAM-E,H,IではOffsetは使用しない)
   5-6   不使用
-  7     VRAM有効化フラグ (0=無効, 1=有効)
+  7     VRAMバンク有効化フラグ (0=無効, 1=有効)
 ```
 
-There is a total of 656KB of VRAM in Blocks A-I.
+バンクA-IのVRAMの合計は656KBです。
 
 Table below shows the possible configurations.
 

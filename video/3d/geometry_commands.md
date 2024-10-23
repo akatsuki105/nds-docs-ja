@@ -95,7 +95,11 @@ If the FIFO is full, then a wait is generated until data is removed from the FIF
 
 ### DMA を使う場合
 
-Larger pre-calculated data blocks can be sent directly to the FIFO. This is usually done via DMA (use DMA in Geometry Command Mode, 32bit units, Dest=4000400h/fixed, Length=NumWords, Repeat=0). The timings are handled automatically, ie. the system (should) doesn’t freeze when the FIFO is full (see below Overkill note though). DMA starts when the FIFO becomes less than half full, the DMA does then write 112 words to the GXFIFO register (or less, if the remaining DMA transfer length gets zero).
+DMAを使って、事前に計算された大きなデータブロックをFIFOに直接送信することができます。基本的に、モードは7(`CNT_H.11-13=7`)で32bit単位、送信先は4000400h/fixed、長さはNumWords、リピートは0で設定します。
+
+The timings are handled automatically, ie. the system (should) doesn’t freeze when the FIFO is full (see below Overkill note though).
+
+DMAはFIFOが半分以下になったときに開始され、DMAは112ワードをGXFIFOレジスタに書き込みます(もしDMA転送の残りが0になった場合は、112ワードより少ない転送になります)。
 
 ### STR,STRD,STM を使う場合
 

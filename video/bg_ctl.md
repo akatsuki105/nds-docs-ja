@@ -17,8 +17,8 @@
   23     A+B    OBJ Processing during H-Blank (was located in Bit5 on GBA)
   24-26  A      Character Base (in 64K steps) (merged with 16K step in BGxCNT)
   27-29  A      Screen Base (in 64K steps) (merged with 2K step in BGxCNT)
-  30     A+B    BG Extended Palettes   (0=Disable, 1=Enable)
-  31     A+B    OBJ Extended Palettes  (0=Disable, 1=Enable)
+  30     A+B    BG拡張パレット   (0=Disable, 1=Enable)
+  31     A+B    OBJ拡張パレット  (0=Disable, 1=Enable)
 ```
 
 ## BGモード
