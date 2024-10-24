@@ -12,23 +12,52 @@ FIFOの状態は、`GXSTAT.16-26`で取得できます。FIFOが空でも、PIPE
 
 ## 0x0400_0400 - GXFIFO - ジオメトリコマンドFIFO (W) (mirrored up to 400043Fh?
 
-このレジスタに書き込むことで、(圧縮 or 非圧縮の) ジオメトリコマンド と、そのパラメータをジオメトリエンジンに送信します。
+このレジスタに書き込むことで、ジオメトリコマンド と、そのパラメータをジオメトリエンジンに送信します。
 
 0x0400_043Fまで、このレジスタはミラーされています。(つまり、0x0400_0400..0400_043Fのどれかに書き込むことで、0x0400_0400に書き込むことになります)
 
+ジオメトリコマンドをGXFIFOに送信する際には、次のような順序で送信する必要があります。コマンドは4つまでまとめることができます。パラメータの個数は、コマンドごとに異なります。
+
 ```
-  ジオメトリコマンド(非圧縮, unpacked)
-    0-7   コマンド
-    8-31  0x00
+  bytes:
+    0: 1stコマンド
+    1: 2ndコマンド
+    2: 3rdコマンド
+    3: 4thコマンド
+    4-a: 1stコマンドのパラメータ列
+    a-b: 2ndコマンドのパラメータ列
+    b-c: 3rdコマンドのパラメータ列
+    c-d: 4thコマンドのパラメータ列
+```
 
-  ジオメトリコマンド(圧縮, packed)
-    0-7   1stコマンド
-    8-15  2ndコマンド
-    16-23 3rdコマンド
-    24-31 4thコマンド
+例えば、以下のように送信します。
 
-  パラメータ
-    0-31  Parameter data for the previously sent (packed) command(s)
+```
+例1:
+  PLTT_BASE 0xA6F
+  VTX_16 0x100, 0x280, 0x100
+  MTX_IDENTITY
+  MTX_MODE 2
+  を4つまとめて送信する場合 のバイト列は
+
+    0x2B, 0x23, 0x15, 0x10  ; 1st, 2nd, 3rd, 4thコマンド
+    0x6F, 0x0A, 0x00, 0x00  ; 1stコマンド(PLTT_BASE)のパラメータ
+    0x00, 0x01, 0x80, 0x02  ; 2ndコマンド(VTX_16)のパラメータ1
+    0x00, 0x01, 0x00, 0x00  ; 2ndコマンド(VTX_16)のパラメータ2
+    0x02, 0x00, 0x00, 0x00  ; 4thコマンド(MTX_MODE)のパラメータ
+
+  となります。(MTX_IDENTITYはパラメータがないので、パラメータ列はありません)
+
+例2:
+  VTX_16 0x100, 0x280, 0x100
+  END_VTXS
+  を2つまとめて送信する場合 のバイト列は
+
+    0x23, 0x41, 0x00, 0x00  ; 1st, 2ndコマンド
+    0x00, 0x01, 0x80, 0x02  ; 2ndコマンド(VTX_16)のパラメータ1
+    0x00, 0x01, 0x00, 0x00  ; 2ndコマンド(VTX_16)のパラメータ2
+
+  となります。(3rd, 4thコマンドが NOP(0x00, パラメータなし) になっているのと同じです)
 ```
 
 ## ジオメトリコマンド送信レジスタ 4000440h..40005FFh
@@ -73,32 +102,3 @@ As with Ports 4000440h and up, the CPU gets stopped if (and as long as) the FIFO
 
 Not sure if there’s much chance to get Overkills in practice. Normally most commands DO have parameters, and so, usually even LESS than 112 FIFO entries are occupied (since 8bit commands with 32bit parameters are merged into single 40bit FIFO entries).
 
-## GXFIFO / Unpacked Commands
-
-```
-  - command1 (upper 24bit zero)
-  - parameter(s) for command1 (if any)
-  - command2 (upper 24bit zero)
-  - parameter(s) for command2 (if any)
-  - command3 (upper 24bit zero)
-  - parameter(s) for command3 (if any)
-```
-
-## GXFIFO / Packed Commands
-
-```
-  - command1,2,3,4 packed into one 32bit value (all bits used)
-  - parameter(s) for command1 (if any)
-  - parameter(s) for command2 (if any)
-  - parameter(s) for command3 (if any)
-  - parameter(s) for command4 (top-most packed command MUST have parameters)
-  - command5,6 packed into one 32bit value (upper 16bit zero)
-  - parameter(s) for command5 (if any)
-  - parameter(s) for command6 (top-most packed command MUST have parameters)
-  - command7,8,9 packed into one 32bit value (upper 8bit zero)
-  - parameter(s) for command7 (if any)
-  - parameter(s) for command8 (if any)
-  - parameter(s) for command9 (top-most packed command MUST have parameters)
-```
-
-Packed commands are first decompressed and then stored in command the FIFO.
