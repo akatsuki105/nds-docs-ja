@@ -1,43 +1,4 @@
-# キャッシュ と TCM
-
-キャッシュとTCMはコプロセッサ(CP15)によって制御されています。
-
-これらはNDS9のためのものです。NDS7は TCMやキャッシュ、CP15 を持ちません。
-
-## TCM(密結合メモリ)
-
-TCM = `Tightly Coupled Memory` = `密結合メモリ`
-
-バスのクロックがARM9のCPUクロックより遅いため、メインメモリへのアクセスはパフォーマンスに制限がかかります。
-
-TCMはARM9のコアに直接入ってるメモリで、CPUクロックと同じ速度(66MHz)で動作します。
-
-キャッシュと違いプログラマが内容をコントロールできるのが特徴で、命令コード用TCM(ITCM)とデータ用TCM(DTCM)があります。
-
-CPUがTCMにアクセスしている間はバスが空くので、その間にDMAコントローラを動作させることができます。
-
-```
-  ITCM 32KB, base=00000000h (固定)
-  DTCM 16KB, base=moveable  (デフォルトでは base=27C0000h)
-```
-
-ITCMは移動できませんが、NDSのファームウェアではITCMのサイズを32MBに設定しているため、`0x0-0x1FF_FFFF`のITCMミラーが生成されます。
-
-DTCMはCP15の`C9,C1,1`でどこにマッピングするかを設定できます。
-
-さらに、PU(後述)を使ってその領域のメモリをロック/アンロックすることができます。このトリックにより、下位32MBのメモリ内のどこにでもITCMを移動させることができます。
-
-## キャッシュ
-
-- 4KBのデータキャッシュ と　8KBの命令キャッシュ
-- 4wayセットアソシアティブ
-- キャッシュラインは1本32バイト
-- Read-allocate method (ie. writes are not allocating cache lines)
-- Round-robin and Pseudo-random replacement algorithms selectable
-- Cache Lockdown, Instruction Prefetch, Data Preload
-- Data write-through and write-back modes selectable
-
-## 保護ユニット(PU)
+# 保護ユニット(PU)
 
 デフォルトでは次のように設定されています。
 
@@ -64,3 +25,4 @@ The main purpose of the Protection Unit is debugging, a major problem with GBA p
 This problem has been fixed in the NDS, for the ARM9 processor at least, still there are various leaks: For example, the 64MB I/O and VRAM area contains only ca. 660KB valid addresses, and the ARM7 probably doesn't have a Protection Unit at all. Alltogether, the protection is better than in GBA, but it's still pretty crude compared with software debugging tools.
 
 Region address/size are unified (same for code and data), however, cachabilty and access rights are non-unified (and may be separately defined for code and data).
+

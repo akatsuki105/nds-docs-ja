@@ -8,7 +8,7 @@ DSの各ユニットには、電源オンオフを行えるものがあり、そ
 
 ```
   0     液晶画面(上下両方, 勝手な変更は禁止？)
-  1     2DエンジンA  (Ports 0x0400_0008..0400_005F, 0x0500_0000..0500_03FF)
+  1     2DエンジンA  (IO: 0x0400_0008..0400_005F, 0x0500_0000..0500_03FF)
   2     3Dレンダリングエンジン (IO: 0x0400_0320..0400_03FF)
   3     3Dジオメトリエンジン (IO: 0x0400_0400..0400_06FF)
   4-8   不使用
@@ -21,8 +21,6 @@ DSの各ユニットには、電源オンオフを行えるものがあり、そ
 Use SwapBuffers command once after enabling Rendering/Geometry Engine.
 
 Bit0を不用意に変更するとハードウェアに損傷を与える可能性があります。
-
-When disabled, corresponding Ports become Read-only, corresponding (palette-) memory becomes read-only-zero-filled.
 
 ## 0x0400_0304 - NDS7 - POWCNT2 - Sound/Wifi Power Control Register (R/W)
 
