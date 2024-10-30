@@ -51,7 +51,6 @@ NDSは2つの2Dエンジンと1つの3Dエンジンを備えていて、2Dエン
 
 **2Dエンジン**
 
-- [概要](./video/stuff.md)
 - [BGMode と BG制御](./video/bg_ctl.md)
 - [OBJ](./video/objs.md)
 - [拡張パレット](./video/extended_palettes.md)
@@ -62,10 +61,6 @@ NDSは2つの2Dエンジンと1つの3Dエンジンを備えていて、2Dエン
 **3Dエンジン**
 
 - [3Dエンジンの概要](./video/3d/README.md)
-
-### BIOS
-
-- [保護機能](bios/protection.md)
 
 [gba-docs-ja](https://github.com/akatsuki105/gba-docs-ja) を参照してください
 
