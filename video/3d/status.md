@@ -1,28 +1,25 @@
 # ステータス
 
-## 0x0400_0600 - GXSTAT - ジオメトリエンジンステータスレジスタ (R and R/W)
-
-bit30-31は読み書き可能(R/W)です。 
+## 0x0400_0600 - GXSTAT - ジオメトリエンジンステータスレジスタ (R/W)
 
 bit15に`1`を書き込むとエラーフラグ(bit15)がリセットされ、さらに射影行列スタックポインタ(bit13)がリセットされ、おそらく(？)テクスチャスタックポインタもリセットされます。
 
-他のすべてのGXSTATのビットは読み取り専用です。
-
 ```
-  0     BoxTest,PositionTest,VectorTest Busy (0=Ready, 1=Busy)
-  1     BoxTestの結果  (0=All Outside View, 1=Parts or Fully Inside View)
-  2-7   不使用
-  8-12  Position & Vector Matrix Stack Level (0..31) (lower 5bit of 6bit value)
-  13    Projection Matrix Stack Level        (0..1)
-  14    Matrix Stack Busy (0=No, 1=Yes; Currently executing a Push/Pop command)
-  15    Matrix Stack Overflow/Underflow Error (0=No, 1=Error/Acknowledge/Reset)
-  16-24 Number of 40bit-entries in Command FIFO  (0..256)
- (24)   GXFIFO が満杯か (MSB of above)  (0=No, 1=Yes; Full)
-  25    GXFIFO が半分未満か  (0=No, 1=Yes; Less than Half-full)
-  26    GXFIFO が空か                (0=No, 1=Yes; Empty)
-  27    Busy状態か(コマンド実行中か, 1=Busy)
-  28-29 不使用
-  30-31 GXFIFO IRQのタイミング (0=なし, 1=(コマンドキューが)半分未満になったとき, 2=(コマンドキューが)空のとき, 3=不使用(予約))
+  Bit
+  0     R   BoxTest,PositionTest,VectorTest Busy (0=Ready, 1=Busy)
+  1     R   BoxTestの結果  (0=All Outside View, 1=Parts or Fully Inside View)
+  2-7   R   不使用
+  8-12  R   Position & Vector Matrix Stack Level (0..31) (lower 5bit of 6bit value)
+  13    R   Projection Matrix Stack Level        (0..1)
+  14    R   Matrix Stack Busy (0=No, 1=Yes; Currently executing a Push/Pop command)
+  15    R/W Matrix Stack Overflow/Underflow Error (0=No, 1=Error/Acknowledge/Reset)
+  16-24 R   Number of 40bit-entries in Command FIFO  (0..256)
+ (24)   R   GXFIFO が満杯か (MSB of above)  (0=No, 1=Yes; Full)
+  25    R   GXFIFO が半分未満か  (0=No, 1=Yes; Less than Half-full)
+  26    R   GXFIFO が空か                (0=No, 1=Yes; Empty)
+  27    R   Busy状態か(コマンド実行中か, 1=Busy)
+  28-29 R   不使用
+  30-31 R/W GXFIFO IRQのタイミング (0=なし, 1=(コマンドキューが)半分未満になったとき, 2=(コマンドキューが)空のとき, 3=不使用(予約))
 ```
 
 When GXFIFO IRQ is enabled (setting 1 or 2), the IRQ flag (IF.Bit21) is set while and as long as the IRQ condition is true (and attempts to acknowledge the IRQ by writing to IF.Bit21 have no effect). So that, the IRQ handler must either fill the FIFO, or disable the IRQ (setting 0), BEFORE trying to acknowledge the IRQ.
