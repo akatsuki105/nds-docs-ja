@@ -25,11 +25,15 @@ After sending the BoxTest command, wait until GXSTAT.Bit0 indicates Ready, then 
 ## 40005C4h - Cmd 71h - POS_TEST - Set Position Coordinates for Test (W)
 
 ```
-  Parameter 1, Bit 0-15   X-Coordinate
-  Parameter 1, Bit 16-31  Y-Coordinate
-  Parameter 2, Bit 0-15   Z-Coordinate
-  Parameter 2, Bit 16-31  Not used
-  All values are 1bit sign, 3bit integer, 12bit fractional part.
+  座標は全て、小数部が12bitの固定小数点数 (1bit sign, 3bit integer, 12bit fractional part)
+  Parameter 1
+    Bit
+    0-15   X座標
+    16-31  Y座標
+  Parameter 2
+    Bit
+    0-15   Z座標
+    16-31  不使用
 ```
 
 Multiplies the specified line-vector (x,y,z,1) by the clip coordinate matrix.
@@ -40,16 +44,18 @@ Caution: POS_TEST overwrites the internal VTX registers, so the next vertex shou
 
 ## 4000620h..62Fh - POS_RESULT - Position Test Results (R)
 
-This 16-byte region (4 words) contains the resulting clip coordinates (x,y,z,w) from the POS_TEST command. Each value is 1bit sign, 19bit integer, 12bit fractional part.
+This 16-byte region (4 words) contains the resulting clip coordinates (x,y,z,w) from the POS_TEST command. 
+
+各値は1ビットの符号、19ビットの整数、12ビットの小数部を持った固定小数点数です。
 
 ## 40005C8h - Cmd 72h - VEC_TEST - Set Directional Vector for Test (W)
 
 ```
-  Parameter 1, Bit 0-9    X-Component
-  Parameter 1, Bit 10-19  Y-Component
-  Parameter 1, Bit 20-29  Z-Component
-  Parameter 1, Bit 30-31  Not used
-  All values are 1bit sign, 9bit fractional part.
+  Bit
+  0-9    X座標 (1bit sign + 9bit fractional part, YZも同様)
+  10-19  Y座標
+  20-29  Z座標
+  30-31  不使用
 ```
 
 Multiplies the specified line-vector (x,y,z,0) by the directional vector matrix. Similar as for the NORMAL command, it does require Matrix Mode 2 (ie. Position & Vector Simultaneous Set mode).
