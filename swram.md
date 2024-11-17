@@ -1,6 +1,6 @@
 # SWRAM (共有WRAM)
 
->**Note**
+> [!NOTE]
 > SWRAM は Shared WRAM の略で、公式資料では WRAM と呼ばれていますが、ここでは便宜上 SWRAM と呼びます。
 
 NDSは、32KBの SWRAM を持っています。 SWRAMは NDS9とNDS7の間で共有されており、以下のレジスタを使って制御されます。

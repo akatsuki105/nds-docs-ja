@@ -1,6 +1,6 @@
 # [タッチパネル(TSC)](https://mgba-emu.github.io/gbatek/#dstouchscreencontrollertsc)
 
->**Note**  
+> [!NOTE]
 > TSC = Touch Screen Controller
 
 ```
