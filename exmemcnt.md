@@ -4,17 +4,18 @@
 ## 4000204h - NDS7 - EXMEMSTAT - 16bit - External Memory Status (R/W..R)
 
 ```
-  bit 0-1   32-pin GBA Slot SRAM Access Time    (0-3 = 10, 8, 6, 18 cycles)
-  bit 2-3   32-pin GBA Slot ROM 1st Access Time (0-3 = 10, 8, 6, 18 cycles)
-  bit 4     32-pin GBA Slot ROM 2nd Access Time (0-1 = 6, 4 cycles)
-  bit 5-6   32-pin GBA Slot PHI-pin out   (0-3 = Low, 4.19MHz, 8.38MHz, 16.76MHz)
-  bit 7     32-pin GBA Slot Access Rights     (0=ARM9, 1=ARM7)
-  bit 8-10  不使用 (常に0)
-  bit 11    17-pin NDS Slot Access Rights     (0=ARM9, 1=ARM7)
-  bit 12    不使用 (常に0)
-  bit 13    NDS:Always set?  ;set/tested by DSi bootcode: Main RAM enable, CE2 pin?
-  bit 14    Main Memory Interface Mode Switch (0=Async/GBA/Reserved, 1=Synchronous)
-  bit 15    Main Memory Access Priority       (0=ARM9 Priority, 1=ARM7 Priority)
+  Bit
+  0-1   32-pin GBA Slot SRAM Access Time    (0-3 = 10, 8, 6, 18 cycles)
+  2-3   32-pin GBA Slot ROM 1st Access Time (0-3 = 10, 8, 6, 18 cycles)
+  4     32-pin GBA Slot ROM 2nd Access Time (0-1 = 6, 4 cycles)
+  5-6   32-pin GBA Slot PHI-pin out   (0-3 = Low, 4.19MHz, 8.38MHz, 16.76MHz)
+  7     32-pin GBA Slot Access Rights     (0=ARM9, 1=ARM7)
+  8-10  不使用 (常に0)
+  11    17-pin NDS Slot Access Rights     (0=ARM9, 1=ARM7)
+  12    不使用 (常に0)
+  13    NDS:Always set?  ;set/tested by DSi bootcode: Main RAM enable, CE2 pin?
+  14    Main Memory Interface Mode Switch (0=Async/GBA/Reserved, 1=Synchronous)
+  15    Main Memory Access Priority       (0=ARM9 Priority, 1=ARM7 Priority)
 ```
 
 bit0-6はNDS9とNDS7の両方で変更可能です。これらのビットを変更すると、ローカルのEXMEMレジスタのみに影響し、他のCPUのレジスタには影響しません。

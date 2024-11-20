@@ -25,7 +25,6 @@
 
 Engine A BG Mode (DISPCNT LSBs) (0-6, 7=Reserved)
 
-
 Mode | BG0 | BG1 | BG2 | BG3 
 -- | -- | -- | -- | -- 
 0 | Text/3D | Text | Text     | Text

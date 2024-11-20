@@ -11,12 +11,13 @@ NDSは、32KBの SWRAM を持っています。 SWRAMは NDS9とNDS7の間で共
 任天堂の公式資料によるとこのレジスタの値は変更しない方がよさそうです。
 
 ```
-  0-1 マッピング
-    0b00: ARM9: 32KB, ARM7: 0KB
-    0b01: ARM9: 後半16KB, ARM7: 前半16KB
-    0b10: ARM9: 前半16KB, ARM7: 後半16KB
-    0b11: ARM9: 0KB, ARM7: 32KB
-  2-7 不使用
+  Bit
+  0-1  マッピング
+          0b00: ARM9: 32KB, ARM7: 0KB
+          0b01: ARM9: 後半16KB, ARM7: 前半16KB
+          0b10: ARM9: 前半16KB, ARM7: 後半16KB
+          0b11: ARM9: 0KB, ARM7: 32KB
+  2-7  不使用
 ```
 
 ARM9は、`0x0300_0000..03FF_FFFF`、 ARM7は、`0x0300_0000..037F_FFFF` に対して、SWRAMがマッピングされています。

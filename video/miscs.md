@@ -4,19 +4,16 @@
 
 画面の明るさを決めるレジスタ
 
-ビット | 内容
--- | -- 
-0-4 | Factor(後述, 0-16で16より大きい場合は16として扱う)
-5-13 | 不使用
-14-15 | モード(0=無効, 1=Up, 2=Down, 3=Reserved)
-16-31 | 不使用
-
-明るさは次のように決定します。
-
-モード(bit14-15)が
-
-- 1(Up)のとき: `New = Old + ((63-Old) * Factor/16)`
-- 2(Down)のとき: `New = Old - (Old * Factor/16)`
+```
+  Bit
+  0-4   RGB666 の Factor (0-16で16より大きい場合は16として扱う)
+          明るさは次のように決定します。
+            bit14-15 が 1 (Up):   New = Old + (63-Old) * Factor/16
+            bit14-15 が 2 (Down): New = Old - Old      * Factor/16
+  5-13  不使用
+  14-15 モード(0=無効, 1=Up, 2=Down, 3=Reserved)
+  16-31 不使用
+```
 
 ## DISPSTAT/VCOUNT
 
@@ -67,19 +64,13 @@ OAM       | 7000000h (1KB)       | 7000400h (1KB)
 
 Engine A additionally supports 3D and large-screen 256-color Bitmaps, plus main-memory-display and vram-display modes, plus capture unit.
 
-## Viewing Angles
-
-The LCD screens are best viewed at viewing angles of 90 degrees. Colors may appear distorted, and may even become invisible at other viewing angles.
-When the console is handheld, both screens can be turned into preferred direction. 
-
-When the console is settled on a table, only the upper screen can be turned, but the lower screen is stuck into horizontal position - which results in rather bad visibility (unless the user moves his/her head directly above of it).
-
 ## 4000070h - NDS9 - TVOUTCNT - Unknown (W)
 
 ```
-  Bit0-3  "COMMAND"  (?)
-  Bit4-7  "COMMAND2" (?)
-  Bit8-11 "COMMAND3" (?)
+  Bit   Expl.
+  0-3   "COMMAND"  (?)
+  4-7   "COMMAND2" (?)
+  8-11  "COMMAND3" (?)
 ```
 
 This register has been mentioned in an early I/O map from Nintendo, as far as I know, the register isn't used by any games/firmware/bios, not sure if it does really exist on release-version, or if it's been prototype stuff...?
