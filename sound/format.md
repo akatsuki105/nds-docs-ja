@@ -28,9 +28,9 @@ NDSで使われる IMA-ADPCM 音源データは、32bitのヘッダの後に4bit
 
 ```
   Bit:
-    0-15   初期サンプル (PCM16フォーマット, -7FFFh..+7FFF (-8000h は指定できない))
-    16-22  Initial Table Index Value (Index = 0..88)
-    23-31  不使用 (0)
+  0-15    初期サンプル (PCM16フォーマット, -7FFFh..+7FFF (-8000h は指定できない))
+  16-22   Initial Table Index Value (Index = 0..88)
+  23-31   不使用 (0)
 ```
 
 In theory, the 4bit values are decoded into PCM16 values, as such:
