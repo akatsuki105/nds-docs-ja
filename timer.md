@@ -1,6 +1,6 @@
 # タイマー
 
-タイマーは、周波数がNDS9,NDS7の両方とも`33.513982 MHz`になったこと以外はGBAと同じです。
+タイマーは、クロックがNDS9,NDS7の両方とも`33.513982 MHz`になったこと以外はGBAと同じです。
 
 よって、詳細は[GBAのタイマー](https://github.com/akatsuki105/gba-docs-ja/blob/main/timer.md)を参照してください。
 
