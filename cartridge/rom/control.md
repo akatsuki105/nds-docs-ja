@@ -1,34 +1,4 @@
-# IOポート
-
-> [!TIP]
-> AUXSPI は Auxiliary SPI の略です。
-
-## 40001A0h - NDS7/NDS9 - AUXSPICNT - Gamecard ROM and SPI Control (R/W)
-
-```
-  Bit   Expl.
-  0-1   SPIボーレート        (0=4MHz/Default, 1=2MHz, 2=1MHz, 3=512KHz)
-  2-5   不使用(常に0)
-  6     SPI Hold Chipselect (0=Deselect after transfer, 1=Keep selected)
-  7     SPI Busy            (0=Ready, 1=Busy) (presumably Read-only)
-  8-12  不使用(常に0)
-  13    NDS Slot Mode       (0=Parallel/ROM, 1=Serial/SPI-Backup)
-  14    Transfer Ready IRQ  (0=Disable, 1=Enable) (for ROM, not for AUXSPI)
-  15    NDS Slot Enable     (0=Disable, 1=Enable) (for both ROM and AUXSPI)
-```
-
-The “Hold” flag should be cleared BEFORE transferring the LAST data unit, the chipselect will be then automatically cleared after the transfer, the program should issue a WaitByLoop(12) on NDS7 (or longer on NDS9) manually AFTER the LAST transfer.
-
-## 40001A2h - NDS7/NDS9 - AUXSPIDATA - Gamecard SPI Bus Data/Strobe (R/W)
-
-SPI転送は、このレジスタへの書き込みにより開始されるため、SPIバスから読み取るつもりであってもダミー値（0）を書き込む必要があります。
-
-```
-  0-7  Data
-  8-15 不使用(常に0)
-```
-
-転送中は、ビジーフラグ`AUXSPICNT.7`がセットされ、書かれたデータ値がデバイスに転送（出力ライン経由）され、同時にデータが受信（入力ライン経由）されます。転送が完了すると、ビジーフラグがオフになり、必要に応じて、受信した値をAUXSPIDATAから読み取ることができます。
+# 制御
 
 ## 40001A4h - NDS7/NDS9 - ROMCTRL - Gamecard Bus ROMCTRL (R/W)
 
@@ -94,3 +64,4 @@ Transfer length of null, four, and 200h..4000h bytes are supported by the consol
 ```
 
 After sending a command, data can be read from this register manually (when the DRQ bit is set), or by DMA (with DMASAD=4100010h, Fixed Source Address, Length=1, Size=32bit, Repeat=On, Mode=DS Gamecard).
+
