@@ -1,18 +1,17 @@
 # 概要
 
-## 0x0400_006C - NDS9 - MASTER_BRIGHT - 16bit - Master Brightness Up/Down
+## 0x0400_006C - NDS9 - MASTER_BRIGHT - 16bit - 明るさ制御レジスタ (R/W)
 
 画面の明るさを決めるレジスタ
 
 ```
   Bit
-  0-4   RGB666 の Factor (0-16で16より大きい場合は16として扱う)
-          明るさは次のように決定します。
-            bit14-15 が 1 (Up):   New = Old + (63-Old) * Factor/16
-            bit14-15 が 2 (Down): New = Old - Old      * Factor/16
-  5-13  不使用
-  14-15 モード(0=無効, 1=Up, 2=Down, 3=Reserved)
-  16-31 不使用
+  0-4    RGB666 の Factor (0-16で16より大きい場合は16として扱う)
+           明るさは次のように決定します。
+             bit14-15 が 1 (Up):   New = Old + (63-Old) * Factor/16
+             bit14-15 が 2 (Down): New = Old - Old      * Factor/16
+  5-13   不使用
+  14-15  モード(0=無効, 1=Up, 2=Down, 3=Reserved)
 ```
 
 ## DISPSTAT/VCOUNT

@@ -10,11 +10,11 @@ FIFOの状態は、`GXSTAT.16-26`で取得できます。FIFOが空でも、PIPE
 
 各PIPE/FIFOエントリは、40bitのデータ（8bitのコマンドと32bitのパラメータ値）で構成されます。パラメータのないコマンドは1エントリを占有し、N個のパラメータを持つコマンドはNエントリを占有します。
 
-## 0x0400_0400 - GXFIFO - ジオメトリコマンドFIFO (W) (mirrored up to 400043Fh?
+## 0x0400_0400 - NDS9 - GXFIFO - ジオメトリコマンドFIFO (W)
 
 このレジスタに書き込むことで、ジオメトリコマンド と、そのパラメータをジオメトリエンジンに送信します。
 
-0x0400_043Fまで、このレジスタはミラーされています。(つまり、0x0400_0400..0400_043Fのどれかに書き込むことで、0x0400_0400に書き込むことになります)
+`0x0400_043F`まで、このレジスタはミラーされています。(つまり、`0x0400_0400..0400_043F`のどれかに書き込むことで、`0x0400_0400`に書き込むことになります)
 
 ジオメトリコマンドをGXFIFOに送信する際には、次のような順序で送信する必要があります。コマンドは4つまでまとめることができます。パラメータの個数は、コマンドごとに異なります。
 
@@ -62,9 +62,9 @@ FIFOの状態は、`GXSTAT.16-26`で取得できます。FIFOが空でも、PIPE
 
 ## ジオメトリコマンド送信レジスタ 4000440h..40005FFh
 
-GXFIFO に書き込んでコマンドを送信する代わりに、4000440h以降のポートを使ってコマンドを送信することもできます。
+GXFIFO に書き込んでコマンドを送信する代わりに、`0x04000440`以降のポートを使ってコマンドを送信することもできます。
 
-例えば、GXFIFOにコマンド`0x15` を書き込む代わりに、`0x0400_0454`に(何らかの値を)書き込むことでジオメトリエンジンにコマンド`0x15`を送信できます。
+例えば、GXFIFOにコマンド`0x15` を書き込む代わりに、`0x0400_0454`に(何らかの値を)書き込むことでジオメトリエンジンにコマンド`0x15`(`MTX_IDENTITY`)を送信できます。
 
 For a command with N paramters: issue N writes to the port.
 
@@ -78,7 +78,7 @@ If the FIFO is full, then a wait is generated until data is removed from the FIF
 
 ### DMA を使う場合
 
-DMAを使って、事前に計算された大きなデータブロックをFIFOに直接送信することができます。基本的に、モードは7(`CNT_H.11-13=7`)で32bit単位、送信先は4000400h/fixed、長さはNumWords、リピートは0で設定します。
+DMAを使って、事前に計算された大きなデータブロックをFIFOに直接送信することができます。基本的に、モードは7(`DMAnCNT.27-29=7`)で32bit単位、送信先は`0x04000400/fixed`、長さはNumWords、リピートは0にします。
 
 The timings are handled automatically, ie. the system (should) doesn’t freeze when the FIFO is full (see below Overkill note though).
 
@@ -94,11 +94,13 @@ As with Ports 4000440h and up, the CPU gets stopped if (and as long as) the FIFO
 
 ## GXFIFO DMA Overkill on Packed Commands Without Parameters
 
-基本的に、GXFIFO DMAでは、112ワードの制限によりFIFO（256エントリ）が一杯になることはありませんが、多くの「パラメータなしのパックされたコマンド」（例：PUSH、IDENTITY、またはEND）を送信するには、この上限は無駄に多すぎます。
+基本的に、GXFIFO DMAでは、112ワードの制限によりFIFO（256エントリ）が一杯になることはありませんが、多くの「パラメータなしのパックされたコマンド」（例：`MTX_PUSH`、`MTX_IDENTITY`、または`END_VTXS`）を送信するには、この上限は無駄に多すぎます。
 
 例えば、`0x00151515`のような112ワードのパックされたコマンドをGXFIFOに送信すると、FIFOに336ワードのCmd(`0x15`)が書き込まれるため、FIFOがいっぱいになってしまいます。
 
-これは、FIFOコマンドが処理されて、112ワードの転送が終わるまで発生し、(最悪の場合、数秒間)DMA（およびCPU）が一時停止します。
+つまり、パラメータなしのコマンドは、"密度"(データあたりのコマンド数)が高いので、FIFOがいっぱいになる可能性があります。
+
+eg. sending 112 x Packed(00151515h) to GXFIFO would write 336 x Cmd(15h) to the FIFO, which is causing the FIFO to get full, and which is causing the DMA (and CPU) to be paused (for several seconds, in WORST case) until enough FIFO commands have been processed to allow the DMA to finish the 112 word transfer.
 
 Not sure if there’s much chance to get Overkills in practice. Normally most commands DO have parameters, and so, usually even LESS than 112 FIFO entries are occupied (since 8bit commands with 32bit parameters are merged into single 40bit FIFO entries).
 

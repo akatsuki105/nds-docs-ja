@@ -3,6 +3,7 @@
 ## 4000060h - DISP3DCNT - 3D制御レジスタ (R/W)
 
 ```
+  Bit
   0     テクスチャマッピング     (0=Disable, 1=Enable)
   1     PolygonAttr Shading  (0=トゥーンシェーディング, 1=Highlight Shading)
   2     アルファテスト有効化    (0=Disable, 1=Enable) (see ALPHA_TEST_REF)
