@@ -1,5 +1,9 @@
 # 制御
 
+## 40001A0h - NDS7/NDS9 - AUXSPICNT - Gamecard ROM and SPI Control (R/W)
+
+[こちら](../backup.md)を参照してください。
+
 ## 40001A4h - NDS7/NDS9 - ROMCTRL - Gamecard Bus ROMCTRL (R/W)
 
 ```
