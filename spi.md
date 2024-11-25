@@ -18,7 +18,7 @@
                NDSでは不使用(0)
   3-6   -    不使用 (0)
   7     R    ビジーフラグ (0=Ready, 1=Busy)
-  8-9   R/W  スレーブセレクト (0=Powerman., 1=Firmware, 2=Touchscr, 3=Reserved)
+  8-9   R/W  スレーブセレクト (0=Powerman, 1=Firmware, 2=Touchscr, 3=Reserved)
   10    R/W  Transfer Size       (0=8bit/Normal, 1=16bit/Bugged)
   11    R/W  Chipselect Hold     (0=Deselect after transfer, 1=Keep selected)
   12-13 -    不使用 (0)
