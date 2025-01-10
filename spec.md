@@ -54,7 +54,7 @@ Wifi IEEE802.11b
 
 ### その他
 
-- 内臓RTC(Real Time Clock)
+- 内蔵RTC(Real Time Clock)
 - Power Managment Device
 - 除算と平方根計算 のハードウェアサポート
 - CP15 System Control Coprocessor (cache, tcm, pu, bist, etc.)
