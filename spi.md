@@ -1,6 +1,6 @@
 # SPI
 
->[!TIP]
+> [!TIP]
 > SPI は Serial Peripheral Interface の略です。 
 
 ## 40001C0h - NDS7 - SPICNT - SPIバス制御 (R/W)
