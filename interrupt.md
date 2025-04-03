@@ -25,7 +25,7 @@ GBA では16bitでしたが割り込みソースの数が増えたため32bitに
 
 IFに対しての書き込みは、bitが0の場合はIFを何も変更せず、1の場合はIFのそのbitをクリア(アクノリッジ)します。
 
-例えば、 IF が 0xFFFF_FFFF のときに 0x0000_0001 を書き込むと 0xFFFF_FFFE になります。
+例えば、 IF が `0xFFFF_FFFF` のときに `0x0010_0001` を書き込むと `0xFFEF_FFFE` になります。
 
 ## 割り込みソース
 
@@ -33,8 +33,8 @@ IE と IF のビットと割り込みの対応は以下の通りです。
 
 ```
   Bit   割り込み
-  0     LCD V-Blank
-  1     LCD H-Blank
+  0     VBlank
+  1     HBlank
   2     LCD V-Counter Match
   3     Timer0 オーバーフロー
   4     Timer1 オーバーフロー

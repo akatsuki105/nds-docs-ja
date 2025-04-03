@@ -55,7 +55,7 @@ Sleepモードでは、サウンドやビデオを含むほとんどのハード
   6-7   動作モード  (0=通常, 1=Enter GBA Mode, 2=Halt, 3=Sleep)
 ```
 
-`HALTCNT`レジスタには直接アクセスすることは推奨されておらず、代わりに SWI で BIOS の Halt、Sleep、CustomHalt、IntrWait、または VBlankIntrWait を使ってアクセスすることが推奨されています。
+`HALTCNT`レジスタには直接アクセスすることは推奨されておらず、代わりに SWI で BIOS の `Halt, Sleep, CustomHalt, IntrWait, VBlankIntrWait` を使ってアクセスすることが推奨されています。
 
 NDS9 は`HALTCNT`レジスタを持っていませんが、その代わりに、Haltモードに入る際にはコプロセッサ・オペコード`mcr p15,0,r0,c7,c0,4`を使用します。(this opcode locks up if interrupts are disabled via IME=0 (unlike NDS7 HALTCNT method which doesn’t check IME).)
 
