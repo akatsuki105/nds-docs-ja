@@ -1,16 +1,16 @@
 # カートリッジヘッダ
 
 ```
-  Address Bytes Expl.
+  Addr    Bytes Expl.
   000h    12    ゲームタイトル  (大文字ASCII, 12文字より少ない時は0でパディング)
   00Ch    4     ゲームコード    (大文字ASCII, NTR-<code>)        (自作ソフトでは0)
   010h    2     メーカーコード   (大文字ASCII, eg. "01"=任天堂) (自作ソフトでは0)
   012h    1     Unitcode    (00h=NDS, 02h=NDS+DSi, 03h=DSi) (bit1=DSi)
   013h    1     Encryption Seed Select (00..07h, usually 00h)
   014h    1     Devicecapacity         (Chipsize = 128KB SHL nn) (eg. 7 = 16MB)
-  015h    7     予約領域    (zero filled)
-  01Ch    1     予約領域    (zero)                      (except, used on DSi)
-  01Dh    1     対象地域  (00h=指定なし, 80h=中国, 40h=韓国) (other on DSi)
+  015h    7     予約領域    (0)
+  01Ch    1     予約領域    (0)                      (except, used on DSi)
+  01Dh    1     リージョン  (00h=指定なし, 80h=中国, 40h=韓国) (other on DSi)
   01Eh    1     バージョン (基本的に0)
   01Fh    1     Autostart (Bit2: Skip "Press Button" after Health and Safety. Also skips bootmenu, even in Manual mode & even Start pressed)
   020h    4     ARM9 rom_offset    (4000h and up, align 1000h)
@@ -48,8 +48,8 @@
   160h    4     Debug rom_offset   (0=none) (8000h and up)       ;only if debug
   164h    4     Debug size         (0=none) (max 3BFE00h)        ;version with
   168h    4     Debug ram_address  (0=none) (2400000h..27BFE00h) ;SIO and 8MB
-  16Ch    4     予約領域 (zero filled) (transferred, and stored, but not used)
-  170h    144   予約領域 (zero filled) (transferred, but not stored in RAM)
+  16Ch    4     予約領域 (0) (transferred, and stored, but not used)
+  170h    144   予約領域 (0) (transferred, but not stored in RAM)
 ```
 
 ## DSi専用カートリッジ
