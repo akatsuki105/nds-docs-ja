@@ -59,6 +59,13 @@ Transfer length of null, four, and 200h..4000h bytes are supported by the consol
 
 ## 4100010h - NDS7/NDS9 - Gamecard bus 4-byte Data In (R)
 
+コマンド送信後、カートリッジから送られてきたデータは、このI/Oポートから読み出すことができます。
+
+読み出すには
+- (DRQビットが立っているときに)手動でこのI/Oポートを読み込む
+- `DMASAD=0x04100010, Fixed Source Address, Length=1, Size=32bit, Repeat=On, Mode=DS Gamecard` に設定したDMAで読み込む
+の2種類の方法があります。
+
 ```
   Bit   Expl.
   0-7   1st received Data Byte (at 4100010h)
@@ -67,5 +74,4 @@ Transfer length of null, four, and 200h..4000h bytes are supported by the consol
   24-31 4th received Data Byte (at 4100013h)
 ```
 
-After sending a command, data can be read from this register manually (when the DRQ bit is set), or by DMA (with DMASAD=4100010h, Fixed Source Address, Length=1, Size=32bit, Repeat=On, Mode=DS Gamecard).
 
