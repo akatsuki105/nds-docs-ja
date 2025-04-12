@@ -4,13 +4,13 @@
 
 ```
   0-3   Light 0..3 Enable Flags (each bit: 0=Disable, 1=Enable)
-  4-5   Polygon Mode  (0=Modulation,1=デカール,2=Toon/Highlight Shading,3=Shadow)
+  4-5   Polygon Mode  (0=Modulation, 1=デカール, 2=Toon/Highlight Shading, 3=Shadow)
   6     Polygon Back Surface   (0=Hide, 1=Render)  ;Line-segments are always
   7     Polygon Front Surface  (0=Hide, 1=Render)  ;rendered (no front/back)
   8-10  不使用
-  11    半透明なピクセル場合に深度バッファを半透明ピクセルの深度値で更新するか    (0=元の値のまま, 1=更新する)
+  11    半透明なピクセルの場合に深度バッファを半透明ピクセルの深度値で更新するか  (0=元の値のまま, 1=更新する)
   12    Far-plane intersecting polygons       (0=Hide, 1=Render/clipped)
-  13    1ドットポリゴンが DISP_1DOT_DEPTH でセットした値より奥の時に表示にするか (0=Hide, 1=Render)
+  13    1ドットポリゴンが DISP_1DOT_DEPTH でセットした値より奥の時に表示にするか (0=しない, 1=する)
   14    Depth Test, Draw Pixels with Depth    (0=Less, 1=Equal) (usually 0)
   15    フォグ有効化                            (0=Disable, 1=Enable)
   16-20 アルファ値      (0=ワイヤーフレーム, 1..30=半透明, 31=ソリッド)
