@@ -36,7 +36,7 @@ The Mask Volume must be rendered prior to the Rendering Volume, ie. Step 1 and 2
 
 The shadow volume must be rendered after the ‘target’ polygons have been rendered, for opaque targets this is done automatically (due to the translucent alpha setting; translucent polygons are always rendered last, even with auto-sort disabled).
 
-## Translucent Targets
+## 影の落ちる先が半透明ポリゴンの場合
 
 Casting shadows on Translucent Polygons. First draw the translucent target (with update depth buffer enabled, required for the shadow z-coordinates), then draw the Shadow Mask/Rendering volumes.
 
