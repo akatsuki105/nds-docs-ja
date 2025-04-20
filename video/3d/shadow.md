@@ -26,17 +26,21 @@ The Back=Render / Front=Hide setting causes the ‘rear-side’ of the shadow vo
 
 The Front=Render setting causes the ‘front-side’ of the shadow volume to be rendered, again, only as far as it is in front of other polygons. The Mode=Shadow / ID>00h setting causes the polygon to be drawn to the Color Buffer as usually, but only if the Stencil Buffer bits are zero (ie. the portion from Step 1 is excluded) (additionally, Step 2 resets the stencil bits after checking them). Moreover, the shadow is rendered only if its Polygon ID differs from the ID in the Attribute Buffer.
 
-## Shadow Alpha and Shadow Color
+## 影の透明度と色
 
-The Alpha=Translucent setting in Step 1 and 2 ensures that the Shadow is drawn AFTER the normal (opaque) polygons have been rendered. In Step 2 it does additionally specify the ‘intensity’ of the shadow. For normal shadows, the Vertex Color should be usually black, however, the shadow volume may be also used as ‘spotlight volume’ when using other colors.
+ステップ1,2 での半透明設定(`Alpha=01h..1Eh`)により、影は通常の(不透明な)ポリゴンがレンダリングされた後に描画されます。
 
-## Rendering Order
+In Step 2 it does additionally specify the ‘intensity’ of the shadow. 
 
-The Mask Volume must be rendered prior to the Rendering Volume, ie. Step 1 and 2 must be performed in that order, and, to keep that order intact, Auto-sorting must have been disabled in the previous Swap_Buffers command.
+For normal shadows, the Vertex Color should be usually black, however, the shadow volume may be also used as ‘spotlight volume’ when using other colors.
 
-The shadow volume must be rendered after the ‘target’ polygons have been rendered, for opaque targets this is done automatically (due to the translucent alpha setting; translucent polygons are always rendered last, even with auto-sort disabled).
+## 描画順
 
-## 影の落ちる先が半透明ポリゴンの場合
+ステップ1と2は必ずでこの順番に実行する必要があります。そのため直前の`SWAP_BUFFERS`コマンドでは自動ソートを無効にしておく必要があります。
+
+影ポリゴンは、ターゲット(影の落ちる先)のポリゴンがレンダリングされた後にレンダリングする必要があります。不透明(opaque)なターゲットの場合、これは自動的に行われます。(自動ソートが無効でも、半透明ポリゴンは必ず不透明ポリゴンの後に描画されるため)
+
+## ターゲットが半透明ポリゴンの場合
 
 Casting shadows on Translucent Polygons. First draw the translucent target (with update depth buffer enabled, required for the shadow z-coordinates), then draw the Shadow Mask/Rendering volumes.
 
