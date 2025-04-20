@@ -18,13 +18,18 @@ The Shadow Volume must be defined by several Shadow Polygons which are enclosing
 
 `POLYGON_ATTR`コマンドで ポリゴン属性を `Mode=Shadow, PolygonID=00h, Back=Render, Front=Hide, Alpha=01h..1Eh` に設定し、シャドウボリューム (つまり、影ポリゴン) をジオメトリエンジンに渡します。
 
-The Back=Render / Front=Hide setting causes the ‘rear-side’ of the shadow volume to be rendered, of course only as far as it is in front of other polygons. The Mode=Shadow / ID=00h setting causes the polygon NOT to be drawn to the Color Buffer - instead, flags are set in the Stencil Buffer (to be used in Step 2).
+`Back=Render, Front=Hide` の設定では、このポリゴンの裏側が、(もちろん他のポリゴンの前にある範囲のみ)レンダリングされます。ただし、このポリゴンはフレームバッファには描画されず、代わりに、ステンシルバッファにフラグが設定されます。(ステップ2で使用)
+
+> [!NOTE]  
+> このステップ1で渡したポリゴンを、シャドウマスク と呼ぶこともあります。
 
 ## Step 2 - Shadow Volume for Rendering
 
 ステップ1と同様に影ポリゴンをジオメトリエンジンに渡しますが、ポリゴン属性は `Mode=Shadow、PolygonID=01h..3Fh、Back=Render(?), Front=Render、Alpha=01h..1Eh` に設定します。
 
-The Front=Render setting causes the ‘front-side’ of the shadow volume to be rendered, again, only as far as it is in front of other polygons. The Mode=Shadow / ID>00h setting causes the polygon to be drawn to the Color Buffer as usually, but only if the Stencil Buffer bits are zero (ie. the portion from Step 1 is excluded) (additionally, Step 2 resets the stencil bits after checking them). Moreover, the shadow is rendered only if its Polygon ID differs from the ID in the Attribute Buffer.
+The Front=Render setting causes the ‘front-side’ of the shadow volume to be rendered, again, only as far as it is in front of other polygons. The Mode=Shadow / ID>00h setting causes the polygon to be drawn to the Color Buffer as usually, but only if the Stencil Buffer bits are zero (ie. the portion from Step 1 is excluded) (additionally, Step 2 resets the stencil bits after checking them). 
+
+さらに、そのポリゴンID が属性バッファ(Attributeバッファ)のIDと異なる場合にのみ、影がフレームバッファにレンダリングされます。
 
 ## 影の透明度と色
 
@@ -46,7 +51,7 @@ Casting shadows on Translucent Polygons. First draw the translucent target (with
 
 Due to the updated depth buffer the shadow will be cast only on the translucent target (not on any other polygons underneath of the translucent polygon). If you want the shadow to appear on both: Draw draw the Shadow Mask/Rendering volume TWICE (once before, and once after drawing the translucent target).
 
-## Polygon ID and Fog Enable
+## ポリゴンID と フォグ
 
 The “Render only if Polygon ID differs” feature (see Step 2) allows to prevent the shadow to be cast on the object that casts the shadow (ie. the object and shadow should have the same IDs). The feature also allows to select whether overlapping shadows (with same/different IDs) are shaded once or twice.
 
