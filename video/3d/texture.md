@@ -3,6 +3,7 @@
 ## 40004A8h - Cmd 2Ah - TEXIMAGE_PARAM - Set Texture Parameters (W)
 
 ```
+  Bit   Expl.
   0-15  Texture VRAM Offset div 8 (0..FFFFh -> 512K RAM in Slot 0,1,2,3)
         (VRAM must be allocated as Texture data, see Memory Control chapter)
   16    Repeat in S Direction (0=Clamp Texture, 1=Repeat Texture)
@@ -11,7 +12,7 @@
   19    Flip in T Direction   (0=No, 1=Flip each 2nd Texture) (requires Repeat)
   20-22 Texture S-Size        (for N=0..7: Size=(8 SHL N); ie. 8..1024 texels)
   23-25 Texture T-Size        (for N=0..7: Size=(8 SHL N); ie. 8..1024 texels)
-  26-28 テクスチャの種類        (0..7, see below)
+  26-28 テクスチャのカラーモード (0..7, see below)
   29    Color 0 of 4/16/256-Color Palettes (0=Displayed, 1=Made Transparent)
   30-31 Texture Coordinates Transformation Mode (0..3, see below)
 ```
@@ -23,8 +24,9 @@
 各テクセルは1バイトで、1番目のテクセルが1バイト目に位置します。
 
 ```
-  0-4: 色番号 (0..31)
-  5-7: アルファ値 (0..7; 0=透明, 7=不透明)
+  Bit  Expl.
+  0-4  色番号 (0..31)
+  5-7  アルファ値 (0..7; 0=透明, 7=不透明)
 ```
 
 3bitのアルファ値(0..7)は内部的に5bitのアルファ値(0..31)に拡張されます。 `Alpha=(Alpha*4)+(Alpha/2)`
@@ -50,33 +52,33 @@ In this format, the Palette Base is specified in 8-byte steps; all other formats
 テクセルの2ビットの値(0..3)の意味は、後述するモードによって異なります。
 
 ```
-  bit:   Description
-  0-7:   Upper 4-Texel row (LSB=first/left-most Texel)
-  8-15:  Next  4-Texel row
-  16-23: Next  4-Texel row
-  24-31: Lower 4-Texel row
+  Bit    Expl.
+  0-7    Upper 4-Texel row (LSB=first/left-most Texel, 0b33221100)
+  8-15   Next  4-Texel row
+  16-23  Next  4-Texel row
+  24-31  Lower 4-Texel row
 ```
 
-例えば、テクスチャサイズが32x16ピクセルの場合、4x4のテクセルブロックが4x2個、つまり合計8個含まれます。 このとき、
+例えば、テクスチャサイズが16x8ピクセルの場合、4x4のテクセルブロックが4x2個、つまり合計8個含まれます。 このとき、
 
 ```
-byte:
-  0-3:   1番目の4x4テクセルブロック
-  4-7:   2番目の4x4テクセルブロック
-  8-11:  3番目の4x4テクセルブロック
-  12-15: 4番目の4x4テクセルブロック
-  16-19: 5番目の4x4テクセルブロック
-  20-23: 6番目の4x4テクセルブロック
-  24-27: 7番目の4x4テクセルブロック
-  28-31: 8番目の4x4テクセルブロック
+  Byte   Expl.
+  0-3    1番目の4x4テクセルブロック ; (0, 0)
+  4-7    2番目の4x4テクセルブロック ; (4, 0)
+  8-11   3番目の4x4テクセルブロック ; (8, 0)
+  12-15  4番目の4x4テクセルブロック ; (12, 0)
+  16-19  5番目の4x4テクセルブロック ; (0, 4)
+  20-23  6番目の4x4テクセルブロック ; (4, 4)
+  24-27  7番目の4x4テクセルブロック ; (8, 4)
+  28-31  8番目の4x4テクセルブロック ; (12, 4)
 ```
 
 スロット1には、各4x4テクセルブロックの追加のパレットインデックスデータがあります。
 
 ```
-  bit:
-  0-13:  パレットのオフセット(4バイト単位); Addr=(PLTT_BASE*10h)+(Offset*4)
-  14-15: モード
+  Bit    Expl.
+  0-13   パレットのオフセット(4バイト単位); Addr = (PLTT_BASE*16) + (Offset*4)
+  14-15  モード (0..3, 後述)
 ```
 
 スロット1のパレットインデックスデータがあるオフセットは、スロット0 or スロット2 のオフセットから次のように計算されます。
@@ -105,8 +107,9 @@ Note: スロット0とスロット2はメモリ領域が連続していないた
 各テクセルは1バイトで、1番目のテクセルが1バイト目に位置します。
 
 ```
-  0-2: 色番号 (0..7)
-  3-7: アルファ値 (0..31; 0=透明, 31=不透明)
+  Bit   Expl.
+  0-2   色番号 (0..7)
+  3-7   アルファ値 (0..31; 0=透明, 31=不透明)
 ```
 
 ### Format 7: Direct Color Texture
