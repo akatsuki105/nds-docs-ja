@@ -1,18 +1,16 @@
-# Rear-Plane
+# リアプレーン
 
-他のドキュメントでは、これをリアプレーン（Rear-plane）ではなくクリアプレーン（Clear-plane）と呼んでいるようです。(プレーンは画像であることもあるので、常にクリアとは限らない)
+リアプレーンとは、PPUでいう バックドロップ(Backdrop) に近いものです。PPUのバックドロップは色がパレットのエントリ0で固定ですが、リアプレーンは色や深度を指定可能です。
 
-The view order is as such:
+> [!TIP]
+> 他のドキュメントでは、これをリアプレーン（Rear-plane）ではなくクリアプレーン（Clear-plane）と呼んでいるようです。(NDSのプレーンは画像であることもあるので、常にクリアとは限らない)
 
-```
-  --> 2D Layers --> 3D Polygons --> 3Dリアプレーン --> 2D Layers --> 2D Backdrop
-```
-
-The rear-plane can be disabled (by making it transparent; alpha=0), so that the 2D layers become visible as background.
-
-2D layers can be moved in front of, or behind the 3D layer-group (which is represented as BG0 to the 2D Engine), 2D layers behind BG0 can be used instead of, or additionally to the rear-plane.
+リアプレーンが透明(`CLEAR_COLOR.16-20=0`)の場合は、BG0より後ろにある2Dレイヤの内容が描画されます。
 
 The rear-plane can be initialized via below two registers (so all pixels in the plane have the same colors and attributes), this method is used when DISP3DCNT.14 is zero:
+
+> [!NOTE]
+> 個人的には リアプレーンの色はフレームバッファの初期色、リアプレーンの深度は深度バッファの初期値 と考えた方がわかりやすいですし、それで特に困らないと思います。
 
 ## 4000350h - CLEAR_COLOR - Clear Color Attribute Register (W)
 
