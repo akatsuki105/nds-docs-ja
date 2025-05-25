@@ -71,7 +71,7 @@ For NitroROM, addresses must be after Secure Area (at 8000h and up).
 
 For NitroARC, addresses can be anywhere in the IMG area (at 0 and up).
 
-Directories are fully defined in FNT area, and do not require FAT entries.
+FAT は、NitroFS の中の全てのファイルの位置データ(とサイズ)を持っているだけで、ディレクトリツリーやファイル名の保持は FNT が行います。
 
 ## FNT (File Name Table)
 
@@ -105,7 +105,7 @@ Further entries (ID F001h..FFFFh, sub-directories):
 ### FNT Sub-tables (base=FNT+offset, ends at Type/Length=00h)
 
 
-Contains ASCII names for all files and sub-directories within a directory.
+ディレクトリ内のすべてのファイルとサブディレクトリのファイル名(ASCII形式)を持っています。
 
 ```
   Addr Size Expl.
