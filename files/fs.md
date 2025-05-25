@@ -59,13 +59,20 @@ The offsets in FAT are relative to `IMG=0` (as if IMG would start at begin of fi
 > [!TIP]  
 > Windows で使われる FATファイルシステム とは無関係です。
 
+```cpp
+  FAT = cart_hdr[0x048];
+  FileCount = cart_hdr[0x04C] / 8; // 8 bytes per entry
+```
+
 DSのゲームは、最大で61440個のファイルを持つことができます。ファイルIDは、0スタートです。
 
+```cpp
+struct FATEntry {
+  u32 startAddr; // Start address (originated at IMG base) (0=Unused Entry)
+  u32 endAddr;   // End address   (Start+Len)              (0=Unused Entry)
+};
 ```
-  Addr Size Expl.
-  00h  4    Start address (originated at IMG base) (0=Unused Entry)
-  04h  4    End address   (Start+Len)              (0=Unused Entry)
-```
+
 
 For NitroROM, addresses must be after Secure Area (at 8000h and up).
 
@@ -75,35 +82,31 @@ FAT は、NitroFS の中の全てのファイルの位置データ(とサイズ)
 
 ## FNT (File Name Table)
 
-Consists of the FNT Directory Table, followed by one or more FNT Sub-Tables.
+FNT は ディレクトリテーブル と その後に続く 1つ以上のFNTサブテーブル から構成されます。
 
 To interprete the directory tree: Start at the 1st Main-Table entry, which is referencing to a Sub-Table, any directories in the Sub-Table are referencing to Main-Table entries, which are referencing to further Sub-Tables, and so on.
 
-### FNT Directory Main-Table (base=FNT+0, size=[FNT+06h]\*8)
+### FNTディレクトリテーブル (base=FNT+0, size=[FNT+06h]\*8)
 
 最大4096個のディレクトリのリストです。ディレクトリIDは、`0xF000`からスタートします。
 
 ```
-  Addr Size Expl.
-  00h  4    Offset to Sub-table             (originated at FNT base)
-  04h  2    ID of first file in Sub-table   (0000h..EFFFh)
+  Addr      Size    Expl.
+  00h       8       1st Entry (ID F000h, ルートディレクトリ)
+      00h     4       Offset to Sub-table             (originated at FNT base)
+      04h     2       ID of first file in Sub-table   (0000h..EFFFh)
+      06h     2       ディレクトリの総数; ルートディレクトリも含めて 1..4096 個
+  08h       8       2nd Entry (ID F001h, サブディレクトリ)
+      00h     4       Offset to Sub-table             (originated at FNT base)
+      04h     2       ID of first file in Sub-table   (0000h..EFFFh)
+      06h     2       親ディレクトリのID (F000h..FFFEh)
+  10h       8       3rd Entry (ID F002h, サブディレクトリ)
+  ...
 ```
 
-For first entry (ID F000h, root directory):
+### FNTサブテーブル (base=FNT+offset, ends at Type/Length=00h)
 
-```
-  06h  2    Total Number of directories     (1..4096)
-```
-
-
-Further entries (ID F001h..FFFFh, sub-directories):
-
-```
-  06h  2    ID of parent directory (F000h..FFFEh)
-```
-
-### FNT Sub-tables (base=FNT+offset, ends at Type/Length=00h)
-
+特定のディレクトリ の内容を表すテーブルです。(どのディレクトリに対応しているかは、FNTディレクトリテーブルのエントリから分かります。)
 
 ディレクトリ内のすべてのファイルとサブディレクトリのファイル名(ASCII形式)を持っています。
 
