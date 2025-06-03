@@ -1,20 +1,24 @@
 # OBJs
 
-## DS OBJ Priority
+## OBJ優先度
 
-The GBA has been assigning OBJ priority in respect to the 7bit OAM entry number, regardless of the OBJs 2bit BG-priority attribute (which allowed to specify invalid priority orders). That problem has been fixed in DS mode by combining the above two values into a 9bit priority value.
+GBAでは、OBJの2bitの対BG優先度(`OAM2.bit10-11`)に関係なく、OAMの128エントリのインデックスに対してOBJ間の優先順位を割り当てていたため、無効な優先順位を指定することができてしまいました。
 
-## OBJ Tile Mapping (DISPCNT.4,20-21)
+DSでは、上記の2つの値を9ビットの優先度値に結合することでこの問題は修正されました。
+
+## OBJタイルマッピング (DISPCNT.4,20-21)
 
  bit4 | bit20-21 | Dimension Boundary Total | Notes
----- | ---- | ---- | ---- | ---- 
+---- | ---- | ---- | ----
 0 | x | 2D | 32  | 32K  | Same as GBA 2D Mapping
 1 | 0 | 1D | 32  | 32K  | Same as GBA 1D Mapping
 1 | 1 | 1D | 64  | 64K  | --
 1 | 2 | 1D | 128 | 128K | --
 1 | 3 | 1D | 256 | 256K | Engine B: 128K max
 
-TileVramAddress = `TileNumber * BoundaryValue`
+```
+  TileVramAddress = TileNumber * BoundaryValue
+```
 
 Even if the boundary gets changed, OBJs are kept composed of 8x8 tiles.
 
@@ -23,6 +27,7 @@ Even if the boundary gets changed, OBJs are kept composed of 8x8 tiles.
 Bitmap OBJs are 15bit Direct Color data, plus 1bit Alpha flag (in bit15).
 
 Bit6 | Bit5 | Bit22 | Dimension   | Boundary  | Total | Notes
+---- | ---- | ---- | ---- | ---- | ---- | ----
 0    | 0    | x     | 2D/128 dots | 8x8 dots  | 128K  | Source Bitmap width 128 dots
 0    | 1    | x     | 2D/256 dots | 8x8 dots  | 128K  | Source Bitmap width 256 dots
 1    | 0    | 0     | 1D          | 128 bytes | 128K  | Source Width = Target Width
@@ -40,7 +45,7 @@ In 2D mode, the Tile Number is split into X and Y indices, the X index is locate
 
 ## OBJ Attribute 0 and 2
 
-Setting the OBJ Mode bits (Attr 0, Bit10-11) to a value of 3 has been prohibited in GBA, however, in NDS it selects the new Bitmap OBJ mode; in that mode, the Color depth bit (Attr 0, Bit13) should be set to zero; also in that mode, the color bits (Attr 2, Bit 12-15) are used as Alpha-OAM value (instead of as palette setting).
+OBJモード(`OAM0.10-11`)を3に設定することはGBAでは禁止されていますが、NDSでは3に設定するとビットマップOBJモードが選択されます。このモードでは、色深度ビット(`OAM0.13`)は0である必要があります。また、このモードでは、パレット番号（`OAM2.12-15`）はAlpha-OAM値として使用されます。
 
 ## OBJ Vertical Wrap
 

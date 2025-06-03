@@ -4,10 +4,17 @@
 
 ### プロセッサ
 
-- 1x ARM946E-S 32bit RISC CPU, 66MHz (NDS9 video) (not used in GBA mode)
-- 1x ARM7TDMI  32bit RISC CPU, 33MHz (NDS7 sound) (16MHz in GBA mode)
+NDSは2つのプロセッサが搭載されています。
 
-ARM946E-S: v5TE
+```
+  ARM946E-S(v5TE):
+    クロック: 66MHz
+    GBAモードでは使用されません
+  ARM7TDMI(v4T):
+    クロック: 33MHz
+    GBAのCPUと同じものですがクロックが2倍になっています。ただしGBAモードでは16MHzで動作します。
+    I/Oとメインプロセッサとのやりとりを行うサブプロセッサです。
+```
 
 ### 内部メモリ
 
@@ -33,8 +40,8 @@ ARM946E-S: v5TE
 
 - 16 sound channels (16x PCM8/PCM16/IMA-ADPCM, 6x PSG-Wave, 2x PSG-Noise)
 - 2 sound capture units (for echo effects, etc.)
-- Output: Two built-in stereo speakers, and headphones socket
-- Input:  One built-in microphone, and microphone socket
+- 出力: Two built-in stereo speakers, and headphones socket
+- 入力:  One built-in microphone, and microphone socket
 
 ### 操作
 
@@ -47,9 +54,9 @@ Wifi IEEE802.11b
 
 ### その他
 
-- Built-in Real Time Clock
+- 内蔵RTC(Real Time Clock)
 - Power Managment Device
-- Hardware divide and square root functions
+- 除算と平方根計算 のハードウェアサポート
 - CP15 System Control Coprocessor (cache, tcm, pu, bist, etc.)
 
 ### 外部メモリ
@@ -87,12 +94,6 @@ DSLiteは、初代NDSよりもわずかに小さく、見た目も洗練され�
 WifiコントローラもDSとは若干異なっています。具体的には、チップIDが異なる、無効なWifiポートや未使用のWifiメモリ領域にアクセスした際の汚れの影響が異なる、GAPDISPレジスタの動作が異なる、RF/BBチップが1つのチップに置き換えられています。
 
 タッチスクリーンコントローラも新しい未使用の入力と、わずかに異なるパワーダウンビットを持つようになり、Wifiコントローラ同様に、DSとは異なったものになりました。
-
-## 動作
-
-- NDS9: ARM9プロセッサ + NDSモードのメモリとIOポート
-- NDS7: ARM7プロセッサ + NDSモードのメモリとIOポート
-- GBA: ARM7プロセッサ + GBAモードのメモリとIOポート
 
 ## 2つのプロセッサ
 
