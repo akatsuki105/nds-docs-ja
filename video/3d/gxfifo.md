@@ -60,9 +60,9 @@ FIFOの状態は、`GXSTAT.16-26`で取得できます。FIFOが空でも、PIPE
   となります。(3rd, 4thコマンドが NOP(0x00, パラメータなし) になっているのと同じです)
 ```
 
-## ジオメトリコマンド送信レジスタ 4000440h..40005FFh
+## ジオメトリコマンド送信レジスタ 0x0400_0440..0400_05FF 
 
-GXFIFO に書き込んでコマンドを送信する代わりに、`0x04000440`以降のポートを使ってコマンドを送信することもできます。
+GXFIFO に書き込んでコマンドを送信する代わりに、`0x0400_0440`以降のI/Oポートを使ってコマンドを送信することもできます。
 
 例えば、GXFIFOにコマンド`0x15` を書き込む代わりに、`0x0400_0454`に(何らかの値を)書き込むことでジオメトリエンジンにコマンド`0x15`(`MTX_IDENTITY`)を送信できます。
 
@@ -98,9 +98,9 @@ As with Ports 4000440h and up, the CPU gets stopped if (and as long as) the FIFO
 
 例えば、`0x00151515`のような112ワードのパックされたコマンドをGXFIFOに送信すると、FIFOに336ワードのCmd(`0x15`)が書き込まれるため、FIFOがいっぱいになってしまいます。
 
-つまり、パラメータなしのコマンドは、"密度"(データあたりのコマンド数)が高いので、FIFOがいっぱいになる可能性があります。
+つまり、パラメータなしのコマンドは、"密度"(データあたりのコマンド数)が高いので、FIFOが満杯になる可能性があります。
 
-eg. sending 112 x Packed(00151515h) to GXFIFO would write 336 x Cmd(15h) to the FIFO, which is causing the FIFO to get full, and which is causing the DMA (and CPU) to be paused (for several seconds, in WORST case) until enough FIFO commands have been processed to allow the DMA to finish the 112 word transfer.
+112ワードのDMA転送中、45ワード転送したところでFIFOが満杯になると、ジオメトリコマンドが処理されFIFOに(残った67ワード分の)十分な空きができるまで、DMA（およびCPU）が一時停止してしまいます。
 
 Not sure if there’s much chance to get Overkills in practice. Normally most commands DO have parameters, and so, usually even LESS than 112 FIFO entries are occupied (since 8bit commands with 32bit parameters are merged into single 40bit FIFO entries).
 
