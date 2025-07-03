@@ -36,7 +36,7 @@ IE と IF のビットと割り込みの対応は以下の通りです。
   Bit   割り込み
   0     VBlank
   1     HBlank
-  2     LCD V-Counter Match
+  2     走査線割り込み(LCD V-Counter Match)
   3     Timer0 オーバーフロー
   4     Timer1 オーバーフロー
   5     Timer2 オーバーフロー
@@ -55,7 +55,7 @@ IE と IF のビットと割り込みの対応は以下の通りです。
   18    IPC Recv FIFO Not Empty
   19    NDS-Slot Game Card Data Transfer Completion
   20    NDS-Slot Game Card IREQ_MC
-  21    NDS9 only: Geometry Command FIFO
+  21    NDS9 only: GXFIFO (このビットだけ挙動が特殊, GXSTATを参照)
   22    NDS7 only: Screens unfolding
   23    NDS7 only: SPI bus
   24    NDS7 only: Wifi    / DSi9: XpertTeak DSP

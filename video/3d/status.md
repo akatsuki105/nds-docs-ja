@@ -2,7 +2,7 @@
 
 ## 0x0400_0600 - GXSTAT - ジオメトリエンジンステータスレジスタ (R/W)
 
-bit15に`1`を書き込むとエラーフラグ(bit15)がリセットされ、さらに射影行列スタックポインタ(bit13)がリセットされ、おそらく(？)テクスチャスタックポインタもリセットされます。
+bit15に`1`を書き込むとエラーフラグ(bit15)がクリアされ、さらに射影行列スタックポインタ(bit13)がリセットされ、おそらく(？)テクスチャスタックポインタもリセットされます。
 
 ```
   Bit
@@ -17,12 +17,12 @@ bit15に`1`を書き込むとエラーフラグ(bit15)がリセットされ、�
  (24)   R   GXFIFO が満杯か (MSB of above)  (0=No, 1=Yes; Full)
   25    R   GXFIFO が半分未満か  (0=No, 1=Yes; Less than Half-full)
   26    R   GXFIFO が空か                (0=No, 1=Yes; Empty)
-  27    R   Busy状態か(コマンド実行中か, 1=Busy)
+  27    R   ビジーフラグ(コマンド実行中か, 1=Busy)
   28-29 R   不使用
   30-31 R/W GXFIFO IRQのタイミング (0=なし, 1=(コマンドキューが)半分未満になったとき, 2=(コマンドキューが)空のとき, 3=不使用(予約))
 ```
 
-When GXFIFO IRQ is enabled (setting 1 or 2), the IRQ flag (IF.Bit21) is set while and as long as the IRQ condition is true (and attempts to acknowledge the IRQ by writing to IF.Bit21 have no effect). So that, the IRQ handler must either fill the FIFO, or disable the IRQ (setting 0), BEFORE trying to acknowledge the IRQ.
+IRQの発生条件(`GXSTAT.30-31`)を `1` か `2` にした場合、条件が真である間は常に `IF.21` がセットされます。その間はCPUが`IF`に書き込んでアクノリッジしても効果はありません。逆に条件を満たさない場合は、CPUがアクノリッジせずとも`IF.21`はクリアされます。そのため、割り込みハンドラが GXFIFO IRQ をアクノリッジするためには、FIFOを満たすか、`GXSTAT.30-31`を`0`にしてIRQを無効にする 必要があります。
 
 ## 0x0400_0604 - RAM_COUNT - Polygon List & Vertex RAM Count Register (R)
 
