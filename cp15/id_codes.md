@@ -43,18 +43,18 @@ Note: On the NDS9, this register is 41059461h (ARMv5TE, ARM946, rev1). NDS7 and 
 ## C0,C0,1 - Cache Type Register (R)
 
 ```
-Bit:
-  0-11  Instruction Cache (bits 0-1=len, 2=m, 3-5=assoc, 6-8=size, 9-11=zero)
-  12-23 Data Cache        (bits 0-1=len, 2=m, 3-5=assoc, 6-8=size, 9-11=zero)
-  24    Separate Cache Flag (0=Unified, 1=Separate Data/Instruction Caches)
-  25-28 Cache Type (0,1,2,6,7=see below, other=reserved)
-         Type Method         Cache cleaning         Cache lock-down
-         0    Write-through  Not needed             Not supported
-         1    Write-back     Read data block        Not supported
-         2    Write-back     Register 7 operations  Not supported
-         6    Write-back     Register 7 operations  Format A
-         7    Write-back     Register 7 operations  Format B      ;<-- NDS9
-  29-31 Reserved (zero)
+  Bit     Expl.
+  0-11    命令キャッシュ       (bits 0-1=len, 2=m, 3-5=assoc, 6-8=size, 9-11=zero)
+  12-23   データキャッシュ     (bits 0-1=len, 2=m, 3-5=assoc, 6-8=size, 9-11=zero)
+  24      キャッシュ分離フラグ (0=ユニファイド, 1=命令/データ分離キャッシュ)
+  25-28   キャッシュタイプ     (0,1,2,6,7=see below, other=reserved)
+            Type Method         Cache cleaning         Cache lock-down
+            0    Write-through  Not needed             Not supported
+            1    Write-back     Read data block        Not supported
+            2    Write-back     Register 7 operations  Not supported
+            6    Write-back     Register 7 operations  Format A
+            7    Write-back     Register 7 operations  Format B      ;<-- NDS9
+  29-31   予約 (0)
 ```
 
 The 12bit Instruction/Data values are decoded as shown below,
