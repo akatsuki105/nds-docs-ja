@@ -2,6 +2,9 @@
 
 ## C0,C0,0 - MainIDレジスタ (R)
 
+> [!NOTE]
+> NDS9 ではこのレジスタは `0x41059461 (ARMv5TE, ARM946, rev1)` で固定です。
+
 MainIDレジスタはARMプロセッサ(≠コプロセッサ)の情報を提供するレジスタです。
 
  bit  |  内容
@@ -38,9 +41,10 @@ MainIDレジスタはARMプロセッサ(≠コプロセッサ)の情報を提供
 4-11  | Processor ID LSBs (30h=ARM3/v2, 60h,61h,62=ARM600,610,620/v3)
 12-31 | Processor ID MSBs (fixed, 41560h)
 
-Note: On the NDS9, this register is 41059461h (ARMv5TE, ARM946, rev1). NDS7 and GBA don't have CP15s.
-
 ## C0,C0,1 - Cache Type Register (R)
+
+> [!NOTE]
+> NDS9 ではこのレジスタは `0x0F0D2112` で固定です。
 
 ```
   Bit     Expl.
@@ -60,17 +64,16 @@ Note: On the NDS9, this register is 41059461h (ARMv5TE, ARM946, rev1). NDS7 and 
 The 12bit Instruction/Data values are decoded as shown below,
 
 ```
-  Cache Absent  = (ASSOC=0 and M=1)       ;in that case overriding below
-  Cache Size    = 200h+(100h*M) shl SIZE  ;min 0.5Kbytes, max 96Kbytes
-  Associativity = (1+(0.5*M)) shl ASSOC   ;min 1-way,     max 192-way
-  Line Length   = 8 shl LEN               ;min 8 bytes,   max 64 bytes
+  Cache Absent  = (ASSOC=0 and M=1);       // in that case overriding below
+  Cache Size    = 200h+(100h*M) shl SIZE;  // min 0.5Kbytes, max 96Kbytes
+  Associativity = (1+(0.5*M)) shl ASSOC;   // min 1-way,     max 192-way
+  Line Length   = 8 shl LEN;               // min 8 bytes,   max 64 bytes
 ```
 
-For Unified cache (Bit 24=0), Instruction and Data values are identical.
-
-Note: On the NDS9, this register is 0F0D2112h (Code=2000h bytes, Data=1000h bytes, assoc=whatever, and line size 32 bytes each). NDS7 and GBA don’t have CP15s (nor any code/data cache).
-
 ## C0,C0,2 - Tightly Coupled Memory (TCM) Size Register (R)
+
+> [!NOTE]
+> NDS9 ではこのレジスタは `0x00140180` で固定です。
 
 ```
   0-1   Reserved    (0)
@@ -83,8 +86,6 @@ Note: On the NDS9, this register is 0F0D2112h (Code=2000h bytes, Data=1000h byte
   18-21 DTCM Size   (Size = 512 SHL N) (or 0=None)
   22-31 Reserved    (0)
 ```
-
-Note: On the NDS9, this register is 00140180h (ITCM=8000h bytes, DTCM=4000h bytes). NDS7 and GBA don’t have CP15s (nor any ITCM/DTCM).
 
 ## C0,C0,3..7 - Reserved (R)
 
