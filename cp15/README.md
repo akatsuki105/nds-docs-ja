@@ -100,3 +100,7 @@ RdはARMレジスタを指しており、R0-R14から選択可能です。R15は
 Some Cache/PU/TCM registers are declared as "Data/Unified".
 
 That registers are used for Data accesses in case that the CPU contains separate Data and Instruction registers, otherwise the registers are used for both (unified) Data and Instruction accesses.
+
+## Reference
+
+- [ARM946E-S Technical Reference Manual](https://developer.arm.com/documentation/ddi0201/d?lang=en)

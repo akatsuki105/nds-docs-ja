@@ -8,7 +8,7 @@
 ```
   Bit   Expl.
   0-7   Cachable (C) bits for region 0-7
-  8-31  Reserved (0)
+  8-31  予約 (0)
 ```
 
 ## C3,C0,0 - Cache Write-Bufferability Bits for Data Protection Regions (R/W)
