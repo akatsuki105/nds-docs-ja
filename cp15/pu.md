@@ -1,6 +1,6 @@
 # 保護ユニット(Protection Unit)
 
-保護ユニット は 制御レジスタ`C1,C0,0`の bit0 をセットすることで有効になります。
+保護ユニット(PU) は 制御レジスタ`C1,C0,0`の bit0 をセットすることで有効になります。
 
 ## C2,C0,0 - Cachability Bits for Data/Unified Protection Region (R/W)
 ## C2,C0,1 - Cachability Bits for Instruction Protection Region (if any) (R/W)

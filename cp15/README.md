@@ -23,9 +23,12 @@ CP0..9, CP12, CP13 は、ARMアーキテクチャの標準仕様ではなく、�
 
 ## CP15
 
-上で述べたように、CP15はシステム制御用のコプロセッサで、DS(というかARM9)では、TCMやキャッシュの制御を行うために利用されています。
+上で述べたように、CP15はシステム制御用のコプロセッサで、NDS9(というかARM9)では、TCMやキャッシュの制御を行うために利用されています。
 
 CP15自体が制御用レジスタを持っていて、CPUからこれに値を書き込むことでCP15の動作を制御します。
+
+CP15の役割にはMMUの制御があります。MMUの機能は アドレス変換 と メモリ保護 ですが、NDS9のMMUはアドレス変換機能は持たず、メモリ保護機能のみを持っています。
+そのため、NDS9では MMU は `PU(Protection Unit)` と呼ばれています。(`MPU(Memory Protection Unit)` とも呼ばれることも)
 
 ## CP15 オペコード
 
@@ -94,12 +97,6 @@ RdはARMレジスタを指しており、R0-R14から選択可能です。R15は
 0,C13,Cm,Op2  :  Misc Process ID registers
 0,C15,Cm,Op2  :  Misc Implementation Defined and Test/Debug registers
 ```
-
-## Data/Unified Registers
-
-Some Cache/PU/TCM registers are declared as "Data/Unified".
-
-That registers are used for Data accesses in case that the CPU contains separate Data and Instruction registers, otherwise the registers are used for both (unified) Data and Instruction accesses.
 
 ## Reference
 
