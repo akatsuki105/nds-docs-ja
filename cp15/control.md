@@ -11,14 +11,14 @@
   Bit     Expl.
   0       MMU有効化 or PU有効化      (0=無効, 1=有効, NDS9はPUのみ, 3DSはMMU)
   1       Alignment Fault Check      (0=無効, 1=有効)
-  2       データキャッシュ or ユニファイドキャッシュ (0=無効, 1=有効, データかユニファイド かは C0,C0,1 で指定 (NDS9は常にデータキャッシュ))
+  2       データキャッシュ           (0=無効, 1=有効)
   3-6     予約 (1)
   7       エンディアン               (0=Little, 1=Big)
   8       System Protection bit      (MMU-only)
   9       ROM Protection bit         (MMU-only)
   10      Implementation defined
   11      分岐予測                   (0=無効, 1=有効)
-  12      命令キャッシュ             (0=無効, 1=有効) (ユニファイドキャッシュの場合はこのbitは無視)
+  12      命令キャッシュ             (0=無効, 1=有効)
   13      例外ベクタの開始アドレス   (0=0x0000_0000, 1=0xFFFF_0000)
   14      Cache Replacement          (0=Normal/PseudoRandom, 1=Predictable/RoundRobin)
   15      Pre-ARMv5 Mode             (0=Normal, 1=Pre ARMv5; LDM/LDR/POP_PC.Bit0/Thumb)

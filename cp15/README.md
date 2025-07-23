@@ -28,7 +28,9 @@ CP0..9, CP12, CP13 は、ARMアーキテクチャの標準仕様ではなく、�
 CP15自体が制御用レジスタを持っていて、CPUからこれに値を書き込むことでCP15の動作を制御します。
 
 CP15の役割にはMMUの制御があります。MMUの機能は アドレス変換 と メモリ保護 ですが、NDS9のMMUはアドレス変換機能は持たず、メモリ保護機能のみを持っています。
-そのため、NDS9では MMU は `PU(Protection Unit)` と呼ばれています。(`MPU(Memory Protection Unit)` とも呼ばれることも)
+そのため、NDS9では MMU は `MPU(Protection Unit)` と呼ばれています。(`PU(Protection Unit)` とも呼ばれることも)
+
+またCP15では、キャッシュをデータと命令で分離するか、ユニファイドキャッシュにするかを設定できますが、NDS9ではキャッシュを必ずデータと命令で分離します。ちなみにユニファイドキャッシュとして利用する場合は、データキャッシュの設定をすることでユニファイドキャッシュとして利用できます。(命令キャッシュへの設定は無視されます)
 
 ## CP15 オペコード
 
@@ -80,15 +82,15 @@ RdはARMレジスタを指しており、R0-R14から選択可能です。R15は
 0,C5,C0,1     :  ARM11: Instruction Fault Status Register
 0,C6,C0,0     :  ARM11: Fault Address Register (FAR)
 0,C6,C0,1     :  ARM11: Watchpoint Fault Address Register (WFAR)
-0,C2,C0,0     :  PU Cachability Bits for Data/Unified Protection Region
-0,C2,C0,1     :  PU Cachability Bits for Instruction Protection Region
-0,C3,C0,0     :  PU Cache Write-Bufferability Bits for Data Protection Regions
-0,C5,C0,0     :  PU Access Permission Data/Unified Protection Region
-0,C5,C0,1     :  PU Access Permission Instruction Protection Region
-0,C5,C0,2     :  PU Extended Access Permission Data/Unified Protection Region
-0,C5,C0,3     :  PU Extended Access Permission Instruction Protection Region
-0,C6,C0..C7,0 :  PU Protection Unit Data/Unified Region 0..7
-0,C6,C0..C7,1 :  PU Protection Unit Instruction Region 0..7
+0,C2,C0,0     :  MPU Cachability Bits for Data/Unified Protection Region
+0,C2,C0,1     :  MPU Cachability Bits for Instruction Protection Region
+0,C3,C0,0     :  MPU Cache Write-Bufferability Bits for Data Protection Regions
+0,C5,C0,0     :  MPU Access Permission Data/Unified Protection Region
+0,C5,C0,1     :  MPU Access Permission Instruction Protection Region
+0,C5,C0,2     :  MPU Extended Access Permission Data/Unified Protection Region
+0,C5,C0,3     :  MPU Extended Access Permission Instruction Protection Region
+0,C6,C0..C7,0 :  MPU Protection Unit Data/Unified Region 0..7
+0,C6,C0..C7,1 :  MPU Protection Unit Instruction Region 0..7
 0,C7,Cm,Op2   :  Cache Commands and Halt Function (W)
 0,C9,C0,0     :  Cache Data Lockdown
 0,C9,C0,1     :  Cache Instruction Lockdown
@@ -101,3 +103,4 @@ RdはARMレジスタを指しており、R0-R14から選択可能です。R15は
 ## Reference
 
 - [ARM946E-S Technical Reference Manual](https://developer.arm.com/documentation/ddi0201/d?lang=en)
+- [Arm MPUに関するRA2シリーズ ユーザーズマニュアル記載変更](https://www.renesas.com/ja/document/tcu/correction-arm-mpu-descriptions-ra2-series-users-manual?srsltid=AfmBOoo9FccMV8HCSnWlEIR7xAnOErPz3bzmPGCgxNuSjcgRYpHoQRae)

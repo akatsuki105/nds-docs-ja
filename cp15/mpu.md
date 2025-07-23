@@ -1,6 +1,23 @@
-# 保護ユニット(Protection Unit)
+# メモリ保護ユニット(Memory Protection Unit)
 
-保護ユニット(PU) は 制御レジスタ`C1,C0,0`の bit0 をセットすることで有効になります。
+メモリ保護ユニット(MPU) は 制御レジスタ`C1,C0,0`の bit0 をセットすることで有効になります。
+
+CP15では、16個の保護領域を定義できます。(データと命令で8個ずつ)
+
+## C6,Cn,0 - データアクセス保護領域n (R/W)
+## C6,Cn,1 - 命令アクセス保護領域n (R/W)
+
+保護領域`n`の有効化とサイズ、ベースアドレスを設定します。
+
+```
+  Bit     Expl.
+  0       保護領域の有効化 (0=Disable, 1=Enable)
+  1-5     保護領域のサイズ   (2 SHL X) ;min=(X=11)=4KB, max=(X=31)=4GB
+  6-11    予約 (0)
+  12-31   保護領域のベースアドレス (Addr = Y*4K; must be SIZE-aligned)
+```
+
+Overlapping Regions are allowed, Region 7 is having highest priority, region 0 lowest priority.
 
 ## C2,C0,0 - Cachability Bits for Data/Unified Protection Region (R/W)
 ## C2,C0,1 - Cachability Bits for Instruction Protection Region (if any) (R/W)
@@ -62,19 +79,6 @@ The possible AP settings (0-3 for C5,C0,0..1, or 0-15 for C5,C0,2..3) are:
 ```
 
 Settings 5,6 only for Extended Registers, settings 4,7..15 are Reserved.
-
-## C6,C0..C7,0 - Protection Unit Data/Unified Region 0..7 (R/W)
-## C6,C0..C7,1 - Protection Unit Instruction Region 0..7 (if any) (R/W)
-
-```
-  Bit     Expl.
-  0       Protection Region Enable (0=Disable, 1=Enable)
-  1-5     Protection Region Size   (2 SHL X) ;min=(X=11)=4KB, max=(X=31)=4GB
-  6-11    Reserved (0)
-  12-31   Protection Region Base address (Addr = Y*4K; must be SIZE-aligned)
-```
-
-Overlapping Regions are allowed, Region 7 is having highest priority, region 0 lowest priority.
 
 ## Background Region
 

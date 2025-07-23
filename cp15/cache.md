@@ -2,7 +2,7 @@
 
 Cache is enabled/controlled by Bit 2,3,12,14 in Control Register.
 
-Cache regions are controlled via Protection Unit (PU).
+Cache regions are controlled via Memory Protection Unit (MPU).
 
 Cache type can be detected via Cache Type Register.
 
@@ -51,7 +51,7 @@ Note:
 ```
   Invalidate means to forget all data
   Clean means to write-back dirty cache lines to underlaying memory
-  (Clean is important when having "Cache Write-Bufferability" enabled in PU)
+  (Clean is important when having "Cache Write-Bufferability" enabled in MPU)
 ```
 
 ## C9,C0,0 - Data Cache Lockdown
