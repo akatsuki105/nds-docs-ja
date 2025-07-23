@@ -25,7 +25,7 @@ MPUは、メモリの保護を行うための機能で、特定のメモリ領�
   12-31   保護領域のベースアドレス (Addr = Y*4K; must be SIZE-aligned)
 ```
 
-Overlapping Regions are allowed, Region 7 is having highest priority, region 0 lowest priority.
+保護領域の範囲が被った場合は、最も優先度の高い保護領域として扱われます。(0が最も優先度が低く、7が最も優先度が高い)
 
 ## C2,C0,0 - Cachability Bits for Data/Unified Protection Region (R/W)
 ## C2,C0,1 - Cachability Bits for Instruction Protection Region (if any) (R/W)
