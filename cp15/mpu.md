@@ -2,10 +2,18 @@
 
 メモリ保護ユニット(MPU) は 制御レジスタ`C1,C0,0`の bit0 をセットすることで有効になります。
 
-CP15では、16個の保護領域を定義できます。(データと命令で8個ずつ)
+MPUは、メモリの保護を行うための機能で、特定のメモリ領域に対してアクセス権限を設定できます。これにより、特定のコードやデータが不正にアクセスされるのを防ぐことができます。
+
+> [!IMPORTANT]
+> CP15では、本来(データと命令で8個ずつの)16個の保護領域を定義できますが、NDSでは保護領域はデータと命令で共有しています。
+> ただし保護領域に対するアクセスパーミッションは、データアクセスと命令アクセスで別々のパーミッションを設定できます。
 
 ## C6,Cn,0 - データアクセス保護領域n (R/W)
 ## C6,Cn,1 - 命令アクセス保護領域n (R/W)
+
+> [!IMPORTANT]
+> NDSでは保護領域の範囲だけはデータと命令で共有のため`C6,Cn,1`は`C6,Cn,0`のミラーとなっています。
+> また、どの保護領域にも属さないメモリ領域は、[Background regions](https://developer.arm.com/documentation/ddi0201/d/protection-unit/overlapping-regions/background-regions)として扱われ、アクセスすることができません。
 
 保護領域`n`の有効化とサイズ、ベースアドレスを設定します。
 
@@ -80,10 +88,4 @@ The possible AP settings (0-3 for C5,C0,0..1, or 0-15 for C5,C0,2..3) are:
 
 Settings 5,6 only for Extended Registers, settings 4,7..15 are Reserved.
 
-## Background Region
 
-Additionally, any memory areas outside of the eight Protection Regions are handled as Background Region, this region has neither Read nor Write access.
-
-## Unified Region Note
-
-On the NDS, the Region registers are unified (C6,C0..C7,1 are read/write-able mirrors of C6,C0..C7,0). Nethertheless, the Cachabilty and Permission registers are NOT unified (separate registers exists for code and data settings).
