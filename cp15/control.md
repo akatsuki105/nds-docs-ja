@@ -9,13 +9,13 @@
 
 ```
   Bit     Expl.
-  0       MMU有効化 or PU有効化      (0=無効, 1=有効, NDS9はPUのみ, 3DSはMMU)
+  0       MMU/MPU有効化              (0=無効, 1=有効, NDS9はMPU, 3DSはMMU)
   1       Alignment Fault Check      (0=無効, 1=有効)
   2       データキャッシュ           (0=無効, 1=有効)
   3-6     予約 (1)
   7       エンディアン               (0=Little, 1=Big)
-  8       System Protection bit      (MMU-only)
-  9       ROM Protection bit         (MMU-only)
+  8       System Protection bit      (MMUがないなら0)
+  9       ROM Protection bit         (MMUがないなら0)
   10      Implementation defined
   11      分岐予測                   (0=無効, 1=有効)
   12      命令キャッシュ             (0=無効, 1=有効)
