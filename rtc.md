@@ -12,13 +12,13 @@ Seiko S-35199A01 (12pin BGA, with some extra functions like FOUT and Alarm Date)
 ## 4000138h - NDS7 - Real Time Clock Register
 
 ```
-  Bit  Expl.
-  0    Data I/O   (0=Low, 1=High)
-  1    Clock Out  (0=Low, 1=High)
-  2    Select Out (0=Low, 1=High/Select)
-  4    Data  Direction  (0=Read, 1=Write)
-  5    Clock Direction  (should be 1=Write)
-  6    Select Direction (should be 1=Write)
+  Bit      Expl.
+  0        Data I/O   (0=Low, 1=High)
+  1        Clock Out  (0=Low, 1=High)
+  2        Select Out (0=Low, 1=High/Select)
+  4        Data  Direction  (0=Read, 1=Write)
+  5        Clock Direction  (should be 1=Write)
+  6        Select Direction (should be 1=Write)
   3,8-11   Unused I/O Lines
   7,12-15  Direction for Bit3,8-11 (usually 0)
   16-31    Not used
@@ -248,15 +248,11 @@ required for exchanging Atheros WMI commands/events).
 
 
 
-## Interrupt
+## 割り込み
 
+/INT信号のピンは1つしか存在せず、INT1とINT2の両方で共有されています。
 
-There's only one /INT signal, shared for both INT1 and INT2.
-
-In the NDS, it is connected to the SI-input of the SIO unit (and so, also
-shared with SIO interrupts). To enable the interrupt, RCNT should be set to
-8144h (Bit14-15=General Purpose mode, Bit8=SI Interrupt Enable, Bit6,2=SI
-Output/High).
+In the NDS, it is connected to the SI-input of the SIO unit (and so, also shared with SIO interrupts). To enable the interrupt, RCNT should be set to 8144h (Bit14-15=General Purpose mode, Bit8=SI Interrupt Enable, Bit6,2=SI Output/High).
 
 The Output/High settings seems to be used as pullup (giving faster reactions on
 low-to-high transitions) (nethertheless, in most cases it seems to be also
