@@ -27,7 +27,7 @@
 
 ```
   0     Translucent polygon Y-sorting (0=自動ソート, 1=手動ソート)
-  1     深度バッファ  (0=Z値, 1=W値; 平行投影時(orthogonal projections)にW値を深度バッファに使っても機能しません)
+  1     深度バッファ  (0=Zバッファ, 1=Wバッファ; 平行投影時(orthogonal projections)にWバッファを使っても機能しません)
   2-31  不使用
 ```
 
@@ -58,9 +58,9 @@ On lock-up, only 2D video is kept working, any wait-loops for GXSTAT.27 will han
 
 ## 4000610h - DISP_1DOT_DEPTH - 1-Dot Polygon Display Boundary Depth (W)
 
-1ドットポリゴンは非常に小さい、または非常に遠いポリゴンで、画面上では1ピクセルとしてレンダリングされます。
+1ドットポリゴンはジオメトリ処理を行った後のポリゴンの頂点のxy座標が全て同じ値を取るポリゴンのことです。(= 画面上で1ドットしか映らないポリゴン)
 
-`DISP_1DOT_DEPTH` でセットした値よりも奥行きの値が大きい（遠くにある）ポリゴンは、自動的に非表示にすることができます。(メモリ消費を抑えたり、画面の汚れを軽減する際に役に立ちます)
+`DISP_1DOT_DEPTH` でセットした値よりも奥行きの値が大きい（遠くにある）1ドットポリゴンは、自動的に非表示にすることができます。(メモリ消費を抑えたり、画面の汚れを軽減する際に役に立ちます)
 
 ```
   0-14  W座標 (Unsigned, 12bit integer, 3bit fractional part)
