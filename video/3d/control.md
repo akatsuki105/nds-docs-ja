@@ -11,7 +11,7 @@
   4     アンチエイリアス       (0=Disable, 1=Enable)
   5     Edge-Marking         (0=Disable, 1=Enable) (see EDGE_COLOR)
   6     Fog Color/Alpha Mode (0=Alpha and Color, 1=Only Alpha) (see FOG_COLOR)
-  7     Fog Master Enable    (0=Disable, 1=Enable)
+  7     Fog有効化フラグ     (0=Disable, 1=Enable)
   8-11  Fog Depth Shift      (FOG_STEP=400h shr FOG_SHIFT) (see FOG_OFFSET)
   12    Color Buffer RDLINES Underflow (0=None, 1=Underflow/Acknowledge)
   13    Polygon/Vertex RAM Overflow    (0=None, 1=Overflow/Acknowledge)
