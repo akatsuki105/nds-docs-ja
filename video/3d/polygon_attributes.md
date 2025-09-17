@@ -1,6 +1,6 @@
 # ポリゴン属性
 
-## 40004A4h - Cmd 29h - POLYGON_ATTR - ポリゴン属性の設定 (W)
+## 40004A4h - Cmd 29h - POLYGON_ATTR - ポリゴン属性 (W)
 
 ```
   Bit    Expl.
@@ -9,11 +9,11 @@
   6      Polygon Back Surface   (0=Hide, 1=Render)  ;Line-segments are always
   7      Polygon Front Surface  (0=Hide, 1=Render)  ;rendered (no front/back)
   8-10   不使用
-  11     半透明なピクセルの場合に深度バッファを半透明ピクセルの深度値で更新するか  (0=元の値のまま, 1=更新する)
+  11     (描画するピクセルが)半透明のときに深度バッファを更新するか  (0=しない, 1=する); フォグで使用
   12     Far-plane intersecting polygons       (0=Hide, 1=Render/clipped)
   13     1ドットポリゴンが DISP_1DOT_DEPTH でセットした値より奥の時に表示にするか (0=しない, 1=する)
   14     Depth Test, Draw Pixels with Depth    (0=Less, 1=Equal) (usually 0)
-  15     フォグ有効化                            (0=Disable, 1=Enable)
+  15     フォグ有効化 (0=無効, 1=有効(このポリゴンにフォグを適用可能))
   16-20  アルファ値      (0=ワイヤーフレーム, 1..30=半透明, 31=ソリッド)
   21-23  不使用
   24-29  ポリゴンID (00h..3Fh, used for translucent, shadow, and edge-marking)
