@@ -9,9 +9,9 @@
   2     アルファテスト有効化    (0=Disable, 1=Enable) (see ALPHA_TEST_REF)
   3     アルファブレンド       (0=Disable, 1=Enable) (see various Alpha values)
   4     アンチエイリアス       (0=Disable, 1=Enable)
-  5     Edge-Marking         (0=Disable, 1=Enable) (see EDGE_COLOR)
+  5     エッジ抽出有効化          (0=Disable, 1=Enable) (see EDGE_COLOR)
   6     Fog Color/Alpha Mode (0=Alpha and Color, 1=Only Alpha) (see FOG_COLOR)
-  7     Fog有効化フラグ     (0=Disable, 1=Enable)
+  7     Fog有効化     (0=Disable, 1=Enable)
   8-11  Fog Depth Shift      (FOG_STEP=400h shr FOG_SHIFT) (see FOG_OFFSET)
   12    Color Buffer RDLINES Underflow (0=None, 1=Underflow/Acknowledge)
   13    Polygon/Vertex RAM Overflow    (0=None, 1=Overflow/Acknowledge)
@@ -75,21 +75,6 @@ Note: The hardware does round-up the width and height of all polygons to at leas
 
 Caution: Although DISP_1DOT_DEPTH is a Geometry Engine parameter, it is NOT routed through GXFIFO, ie. changes will take place immediately, and will affect all following polygons, including such that are still in GXFIFO. Workaround: ensure that GXFIFO is empty before changing this parameter.
 
-## 4000340h - ALPHA_TEST_REF - アルファテスト閾値 (W)
 
-アルファテストは`DISP3DCNT.2`で有効にでき、有効にすると、ピクセルはそのアルファ値が`ALPHA_TEST_REF`より大きい場合にのみレンダリングされます。
-
-アルファテストが無効なら、このレジスタの値は使われず、ピクセルはアルファ値が0より大きいならレンダリングされます。
-
-アルファテストは、最終的なポリゴンのピクセル(=テクスチャブレンドの後)で実行されます。
-
-```
-  0-4   閾値   (0..31, アルファ値がこの値より大きい場合にレンダリングされる)
-  5-31  不使用
-```
-
-`0x00`にした場合、`DISP3DCNT.2`でアルファテストを無効にした状態と同じになります。
-
-`0x1F`にした場合、全てのポリゴンのピクセルがレンダリングされなくなります。
 
 

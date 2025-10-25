@@ -7,7 +7,7 @@
 
 左: フォグOFF, 右: フォグON
 
-![nofog](../../images/g3/fog_disable.jpeg)&nbsp;&nbsp;![fog](../../images/g3/fog_enable.jpeg)
+![nofog](../../../images/g3/fog_disable.jpeg)&nbsp;&nbsp;![fog](../../../images/g3/fog_enable.jpeg)
 
 </details>
 

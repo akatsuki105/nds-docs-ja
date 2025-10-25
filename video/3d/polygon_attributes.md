@@ -22,7 +22,9 @@
 
 Writes to POLYGON_ATTR have no effect until next BEGIN_VTXS command.
 
-Changes to the Light bits have no effect until lighting is re-calculated by Normal command. The interior of Wire-frame polygons is transparent (Alpha=0), and only the lines at the polygon edges are rendered, using a fixed Alpha value of 31.
+光源ビット(`POLYGON_ATTR.0-3`)の変更は、`NORMAL`コマンドによるライティングの再計算が行われるまで効果を発揮しません。
+
+ワイヤーフレームポリゴンの内部は透明（アルファ値0）であり、ポリゴンのエッジのみが不透明(アルファ値31)で描画されます。
 
 ## 4000480h - Cmd 20h - COLOR - 頂点カラー設定 (W)
 
@@ -39,7 +41,7 @@ Changes to the Light bits have no effect until lighting is re-calculated by Norm
 
 ## 深度テスト
 
-The Depth Test compares the depth of the pixels of the polygon with the depth of previously rendered polygons (or of the rear plane if there have been none rendered yet). The new pixels are drawn if the new depth is Less (closer to the camera), or if it is Equal, as selected by POLYGON_ATTR.Bit14.
+The Depth Test compares the depth of the pixels of the polygon with the depth of previously rendered polygons (or of the rear plane if there have been none rendered yet). The new pixels are drawn if the new depth is Less (closer to the camera), or if it is Equal, as selected by `POLYGON_ATTR.14`.
 
 Normally, Depth Equal would work only exact matches (ie. if the overlapping polygons have exactly the same coordinates; and thus have the same rounding errors), however, the NDS hardware is allowing “Equal” to have a tolerance of +/-200h (within the 24bit depth range of 0..FFFFFFh), that may bypass rounding errors, but it may also cause nearby polygons to be accidently treated to have equal depth.
 
