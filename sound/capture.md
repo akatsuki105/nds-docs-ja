@@ -4,6 +4,20 @@ NDSには2つのサウンドキャプチャデバイスが内蔵されており�
 
 サウンドキャプチャ0は左ミキサーまたはチャンネル0からの出力を、サウンドキャプチャ1は右ミキサーまたはチャンネル2からの出力を取り込むことができます。
 
+サンプリング周波数は最大1.04876MHzまで設定可能です。振幅分解能も8ビットから16ビットまで設定できます。
+
+## 利用例
+
+### リバーブ
+
+サウンドキャプチャ機能を用いてリバーブ効果（エコー）を実現できます。
+
+キャプチャ機能でミキサー出力をメモリに保存し、その保存したサウンドデータをチャンネルで再生し、ミキサー経由でスピーカーに出力することでリバーブ効果を実現できます。
+
+### [エフェクター](https://ja.wikipedia.org/wiki/エフェクター)
+
+キャプチャしたデータをメモリに保存し、サブプロセッサでメモリのキャプチャしたデータを変更した後、チャンネルからデータを出力します。
+
 ## 4000508h - NDS7 - SNDCAP0CNT - Sound Capture 0 Control Register (R/W)
 
 ## 4000509h - NDS7 - SNDCAP1CNT - Sound Capture 1 Control Register (R/W)
@@ -51,11 +65,9 @@ Minimum length is 1 word (attempts to use 0 words are interpreted as 1 word).
 
 ## SOUND3TMR - NDS7 - Sound Channel 3 Timer shared as Capture 1 Timer
 
-There are no separate capture frequency registers, instead, the sample frequency of Channel 1/3 is shared for Capture 0/1. These channels are intended to output the captured data, so it makes sense that both capture and sound output use the same frequency.
+キャプチャのサンプリング周波数は (`SOUNDxTMR` で設定した) チャンネル1,3 のサンプル周波数と同じになります。
 
-For Capture 0, a=0, b=1, x=0.
-
-For Capture 1, a=2, b=3, x=1.
+キャプチャされたデータは、同じチャンネルが再利用することを想定しているため(利用例参照)、キャプチャと音声出力で同じ周波数を使用しても問題はないということすかね...(サウンド何もわからん)
 
 ## Capture Bugs
 
