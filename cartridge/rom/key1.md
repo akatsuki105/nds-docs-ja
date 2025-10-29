@@ -21,6 +21,39 @@ KEY1暗号には、Blowfish暗号を使用しています。
 
 The DSi BIOS sections are disabled after booting, but the RAM/TCM copies can be dumped (eg. with some complex main memory hardware mods, or via unlaunch exploit). The DSi.Debug key is stored in launcher, and it’s used when SCFG_OP is nonzero (as so on debugging on hardware).
 
+## `init_keycode(u32 idcode, int level, u32 modulo)`
+
+```c
+  u32 offset = (console == DSi) ? 50896 : 48;
+  memcpy(KeyBuf, BIOS7[offset], 4168);
+
+  u32 keycode[3] = {idcode, (idcode>>1), (idcode<<1)};
+  if (level >= 1) apply_keycode(keycode, modulo);
+  if (level >= 2) apply_keycode(keycode, modulo);
+  if (level >= 3) {
+    keycode[1] <<= 1;
+    keycode[2] >>= 1;
+    apply_keycode(keycode, modulo);
+  }
+```
+
+## `apply_keycode(u32* keycode, u32 modulo)`
+
+```c
+  encrypt_64bit(&keycode[1]);
+  encrypt_64bit(&keycode[0]);
+  for (u32 i = 0; i <= 17; i++) {
+    KeyBuf[i] = KeyBuf[i] ^ bswap_32bit(keycode[i % modulo]);
+  }
+
+  u32 scratch[2] = {0, 0}; 
+  for (u32 i = 0; i <= 1040; i+=2) {
+    encrypt_64bit(scratch);
+    KeyBuf[i]   = scratch[1];
+    KeyBuf[i+1] = scratch[0];
+  }
+```
+
 ## `encrypt_64bit(u32* ptr)`
 
 ```c
@@ -65,39 +98,6 @@ The DSi BIOS sections are disabled after booting, but the RAM/TCM copies can be 
 
   ptr[0] = x ^ KeyBuf[0x1];
   ptr[1] = y ^ KeyBuf[0x0];
-```
-
-## `apply_keycode(u32 modulo)`
-
-```c
-  // keycode は 後述の init_keycode で得られる u32[3]
-  encrypt_64bit(&keycode[1]);
-  encrypt_64bit(&keycode[0]);
-  for (u32 i = 0; i <= 17; i++) {
-    KeyBuf[i] = KeyBuf[i] ^ bswap_32bit(keycode[i % modulo]);
-  }
-
-  u32 scratch[2] = {0, 0}; 
-  for (u32 i = 0; i <= 1040; i+=2) {
-    encrypt_64bit(scratch);
-    KeyBuf[i]   = scratch[1];
-    KeyBuf[i+1] = scratch[0];
-  }
-```
-
-## `init_keycode(idcode, level, modulo, key)`
-
-```
-  if key=nds then copy [nds_arm7bios+0030h..1077h] to [keybuf+0..1047h]
-  if key=dsi then copy [dsi_arm7bios+C6D0h..D717h] to [keybuf+0..1047h]
-  [keycode+0]=[idcode]
-  [keycode+4]=[idcode]/2
-  [keycode+8]=[idcode]*2
-  IF level>=1 THEN apply_keycode(modulo) ;first apply (always)
-  IF level>=2 THEN apply_keycode(modulo) ;second apply (optional)
-  [keycode+4]=[keycode+4]*2
-  [keycode+8]=[keycode+8]/2
-  IF level>=3 THEN apply_keycode(modulo) ;third apply (optional)
 ```
 
 ## firmware_decryption
