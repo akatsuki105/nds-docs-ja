@@ -8,54 +8,84 @@ KEY1暗号には、Blowfish暗号を使用しています。
 
 ## Initial Encryption Values
 
-後述の計算式は、NDS/DSi BIOSから1048hバイトのキーテーブルをコピーした場合のみ使用できます。
+後述の計算式は、NDS/DSi の BIOS から4168バイトのキーテーブル(`KeyBuf`)をコピーした場合のみ使用できます。
 
 ```
-  NDS.ARM7 ROM: 00000030h..00001077h (values 99 D5 20 5F ..) Blowfish/NDS-mode
-  DSi.ARM9 ROM: FFFF99A0h..FFFFA9E7h (values 99 D5 20 5F ..) ""
-  DSi.TCM Copy: 01FFC894h..01FFD8DBh (values 99 D5 20 5F ..) ""
-  DSi.ARM7 ROM: 0000C6D0h..0000D717h (values 59 AA 56 8E ..) Blowfish/DSi-mode
-  DSi.RAM Copy: 03FFC654h..03FFD69Bh (values 59 AA 56 8E ..) ""
-  DSi.Debug:    (stored in launcher) (values 69 63 52 05 ..) Blowfish/DSi-debug
+  NDS.ARM7 BIOS: 00000030h..00001077h (values 99 D5 20 5F ..) Blowfish/NDS-mode
+  DSi.ARM9 BIOS: FFFF99A0h..FFFFA9E7h (values 99 D5 20 5F ..) ""
+  DSi.TCM Copy:  01FFC894h..01FFD8DBh (values 99 D5 20 5F ..) ""
+  DSi.ARM7 BIOS: 0000C6D0h..0000D717h (values 59 AA 56 8E ..) Blowfish/DSi-mode
+  DSi.RAM Copy:  03FFC654h..03FFD69Bh (values 59 AA 56 8E ..) ""
+  DSi.Debug:     (stored in launcher) (values 69 63 52 05 ..) Blowfish/DSi-debug
 ```
 
-The DSi ROM sections are disabled after booting, but the RAM/TCM copies can be dumped (eg. with some complex main memory hardware mods, or via unlaunch exploit). The DSi.Debug key is stored in launcher, and it’s used when SCFG_OP is nonzero (as so on debugging on hardware).
+The DSi BIOS sections are disabled after booting, but the RAM/TCM copies can be dumped (eg. with some complex main memory hardware mods, or via unlaunch exploit). The DSi.Debug key is stored in launcher, and it’s used when SCFG_OP is nonzero (as so on debugging on hardware).
 
-## encrypt_64bit(ptr) / decrypt_64bit(ptr)
+## `encrypt_64bit(u32* ptr)`
 
-```
-  Y=[ptr+0]
-  X=[ptr+4]
-  FOR I=0 TO 0Fh (encrypt), or FOR I=11h TO 02h (decrypt)
-    Z=[keybuf+I*4] XOR X
-    X=[keybuf+048h+((Z SHR 24) AND FFh)*4]
-    X=[keybuf+448h+((Z SHR 16) AND FFh)*4] + X
-    X=[keybuf+848h+((Z SHR  8) AND FFh)*4] XOR X
-    X=[keybuf+C48h+((Z SHR  0) AND FFh)*4] + X
-    X=Y XOR X
-    Y=Z
-  NEXT I
-  [ptr+0]=X XOR [keybuf+40h] (encrypt), or [ptr+0]=X XOR [keybuf+4h] (decrypt)
-  [ptr+4]=Y XOR [keybuf+44h] (encrypt), or [ptr+4]=Y XOR [keybuf+0h] (decrypt)
-```
+```c
+  // KeyBuf は u32[1042]
+  u32 y=ptr[0];
+  u32 x=ptr[1];
+  
+  for (u32 i = 0; i <= 15; i++) {
+    u32 z = KeyBuf[i] ^ x;
 
-## apply_keycode(modulo)
+    x =  KeyBuf[ 18 +        ((z >> 24) & 0xFF)];
+    x += KeyBuf[(18 + 256) + ((z >> 16) & 0xFF)];
+    x ^= KeyBuf[(18 + 512) + ((z >>  8) & 0xFF)];
+    x += KeyBuf[(18 + 768) + ((z >>  0) & 0xFF)];
 
-```
-  encrypt_64bit(keycode+4)
-  encrypt_64bit(keycode+0)
-  [scratch]=0000000000000000h   ;S=0 (64bit)
-  FOR I=0 TO 44h STEP 4         ;xor with reversed byte-order (bswap)
-    [keybuf+I]=[keybuf+I] XOR bswap_32bit([keycode+(I MOD modulo)])
-  NEXT I
-  FOR I=0 TO 1040h STEP 8
-    encrypt_64bit(scratch)      ;encrypt S (64bit) by keybuf
-    [keybuf+I+0]=[scratch+4]    ;write S to keybuf (first upper 32bit)
-    [keybuf+I+4]=[scratch+0]    ;write S to keybuf (then lower 32bit)
-  NEXT I
+    x ^= y;
+    y =  z;
+  }
+
+  ptr[0] = x ^ KeyBuf[0x10];
+  ptr[1] = y ^ KeyBuf[0x11];
 ```
 
-## init_keycode(idcode,level,modulo,key)
+## `decrypt_64bit(u32* ptr)`
+
+```c
+  // KeyBuf は u32[1042]
+  u32 y=ptr[0];
+  u32 x=ptr[1];
+  
+  for (u32 i = 17; i >= 2; i--) {
+    u32 z = KeyBuf[i] ^ x;
+
+    x =  KeyBuf[ 18 +        ((z >> 24) & 0xFF)];
+    x += KeyBuf[(18 + 256) + ((z >> 16) & 0xFF)];
+    x ^= KeyBuf[(18 + 512) + ((z >>  8) & 0xFF)];
+    x += KeyBuf[(18 + 768) + ((z >>  0) & 0xFF)];
+
+    x ^= y;
+    y =  z;
+  }
+
+  ptr[0] = x ^ KeyBuf[0x1];
+  ptr[1] = y ^ KeyBuf[0x0];
+```
+
+## `apply_keycode(u32 modulo)`
+
+```c
+  // keycode は 後述の init_keycode で得られる u32[3]
+  encrypt_64bit(&keycode[1]);
+  encrypt_64bit(&keycode[0]);
+  for (u32 i = 0; i <= 17; i++) {
+    KeyBuf[i] = KeyBuf[i] ^ bswap_32bit(keycode[i % modulo]);
+  }
+
+  u32 scratch[2] = {0, 0}; 
+  for (u32 i = 0; i <= 1040; i+=2) {
+    encrypt_64bit(scratch);
+    KeyBuf[i]   = scratch[1];
+    KeyBuf[i+1] = scratch[0];
+  }
+```
+
+## `init_keycode(idcode, level, modulo, key)`
 
 ```
   if key=nds then copy [nds_arm7bios+0030h..1077h] to [keybuf+0..1047h]
@@ -99,10 +129,5 @@ Note: The sizes of the compressed/encrypted bootcode areas are unknown (until th
   encrypt_64bit all DSi KEY1 commands (1st command byte in MSB of 64bit value)
 ```
 
-セキュアエリアの復号後、最初の8バイトのIDフィールドは`"encryObj"`であるべきで、もしそれが一致すれば、最初の8バイトは`E7FFFDEFFh`で埋められ、そうでなければ2KB全体がその値で埋められます。
-
-## Gamecart Command Register
-
-Observe that the byte-order of the command register [40001A8h] is reversed. The way how the CPU stores 64bit data in memory (and the way how the “encrypt_64bit” function for KEY1-encrypted commands expects data in memory) is LSB at [addr+0] and MSB at [addr+7]. This value is to be transferred MSB first. However, the DS hardware transfers [40001A8h+0] first, and [40001A8h+7] last. So, the byte order must be reversed when copying the value from memory to the command register.
-
+復号されたセキュアエリアの最初の8バイトのIDフィールドはASCII文字列で`"encryObj"`であるべきで、もしそれが一致すれば、最初の8バイトは`0xE7FFFDEFF`で埋められ、そうでなければ2KB全体がその値で埋められます。
 
