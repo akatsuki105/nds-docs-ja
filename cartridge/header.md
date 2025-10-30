@@ -5,7 +5,7 @@
   000h    12    ゲームタイトル  (大文字ASCII, 12文字より少ない時は0でパディング)
   00Ch    4     ゲームコード    (大文字ASCII, NTR-<code>)        (自作ソフトでは0)
   010h    2     メーカーコード   (大文字ASCII, eg. "01"=任天堂) (自作ソフトでは0)
-  012h    1     Unitcode    (00h=NDS, 02h=NDS+DSi, 03h=DSi) (bit1=DSi)
+  012h    1     Unitcode    (0=NDS, 2=DSi対応(NDSでも遊べるがDSiだと追加機能があるもの, 例:ポケモンBW), 3=DSi専用(NDSでは遊べずDSiでしか遊べない, 例:モンスターファインダー)) (bit1=DSi?)
   013h    1     Encryption Seed Select (00..07h, usually 00h)
   014h    1     Devicecapacity         (Chipsize = 128KB SHL nn) (eg. 7 = 16MB)
   015h    7     予約領域    (0)
