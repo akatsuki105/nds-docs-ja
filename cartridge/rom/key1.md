@@ -116,18 +116,38 @@ Note: The sizes of the compressed/encrypted bootcode areas are unknown (until th
 
 ## gamecart_decryption
 
-```
-  init_keycode(cart_header+0Ch,1,08h,nds)   ;gamecode, level 1, modulo 8
-  decrypt_64bit(cart_header+78h)            ;rominfo (secure area disable)
-  init_keycode(cart_header+0Ch,2,08h,nds)   ;gamecode, level 2, modulo 8
-  encrypt_64bit all NDS KEY1 commands (1st command byte in MSB of 64bit value)
-  after loading the secure_area, calculate secure_area crc, then
-  decrypt_64bit(secure_area+0)              ;first 8 bytes of secure area
-  init_keycode(cart_header+0Ch,3,08h,nds)   ;gamecode, level 3, modulo 8
-  decrypt_64bit(secure_area+0..7F8h)        ;each 8 bytes in first 2K of secure
-  init_keycode(cart_header+0Ch,1,08h,dsi)   ;gamecode, level 1, modulo 8
-  encrypt_64bit all DSi KEY1 commands (1st command byte in MSB of 64bit value)
+```c
+  // ROM は u8*
+  u32 gamecode = *(u32*)&ROM[0xC];
+  init_keycode(gamecode, 1, 2);
+  decrypt_64bit(*(u32*)&ROM[0x78]);
+  init_keycode(gamecode, 2, 2);
+
+  // encrypt_64bit all NDS KEY1 commands (1st command byte in MSB of 64bit value)
+  // after loading the secure_area, calculate secure_area crc, then
+  // secure_area は u32*
+  decrypt_64bit(secure_area);
+  init_keycode(gamecode, 3, 2);
+  for (u32 i = 0; i < 512; i += 2) {
+    decrypt_64bit(&secure_area[i]);
+  }
+
+  if (console == DSi) {
+    init_keycode(gamecode, 1, 2);
+    // encrypt_64bit all DSi KEY1 commands (1st command byte in MSB of 64bit value)
+  }
+
+  // 復号されたセキュアエリアの最初の8バイトがASCII文字列で"encryObj"になれば成功
+  if (!strncmp((const char*)secure_area, "encryObj", 8)) {
+    // 成功: セキュアエリアの最初の8バイト(今"encryObj"になっている部分) だけを 0xE7FFDEFF で埋める
+    secure_area[0] = 0xE7FFDEFF;
+    secure_area[1] = 0xE7FFDEFF;
+  } else {
+    // 失敗: セキュアエリア全部が 0xE7FFDEFF で埋められる
+    for (u32 i = 0; i < 512; i += 1) {
+      secure_area[i] = 0xE7FFDEFF;
+    }
+  }
 ```
 
-復号されたセキュアエリアの最初の8バイトのIDフィールドはASCII文字列で`"encryObj"`であるべきで、もしそれが一致すれば、最初の8バイトは`0xE7FFFDEFF`で埋められ、そうでなければ2KB全体がその値で埋められます。
 
